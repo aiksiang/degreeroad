@@ -3,4 +3,28 @@
 	text-align: center;
 	padding-top: 80px;
 	padding-right: 15px;
+	padding-bottom: 40px;
+}
+.footer {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	text-align: center;
+	color: #000000;
+	margin-top: 100px;
+	background-color: #E6E6E6;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+.roadmap {
+	width: 2840px;
+	height: 500px;
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+}.roadmap-container {
+	overflow-x:auto;
+}
+.module-container {
+	height: 50px;
 }
