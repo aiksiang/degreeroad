@@ -1,30 +1,108 @@
 @charset "utf-8";
-.starter-template {
+body {
+	color: #111111;
+}
+/* Cover Page*/
+.coverpage {
+	height: 100vh;
+	background: #6BCD98;
+}
+.coverpage .footer {
+	position:absolute;
+}
+.introduction {
 	text-align: center;
-	padding-top: 80px;
+	padding-top: 150px;
 	padding-right: 15px;
 	padding-bottom: 40px;
 }
-.footer {
-	padding-top: 40px;
-	padding-bottom: 40px;
-	text-align: center;
-	color: #000000;
-	margin-top: 100px;
-	background-color: #E6E6E6;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
+.title {
+	font-size: 72px;
 }
+.courseinput {
+	width: 300px;
+	padding-top: 120px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.form-control {
+	width: 80%;
+	display:inline;
+}
+.btn-primary {
+	display:inline;
+	margin-top: -3px;
+}
+/* Navigation Bar*/
+.navbar-inverse {
+	background-color: rgba(255, 255, 255, 0.8);
+	border-color: #0F8445;
+}
+
+.navbar-brand {
+	padding-left: 45px;
+	padding-right: 30px;
+}
+.navbar-inverse .navbar-brand {
+	color: #000;
+}
+.navbar-brand:hover,
+.navbar-brand:focus {
+	color: #111111;
+}
+
+.navbar-header:hover,
+.navbar-header:focus {
+	background:white;
+}
+.navbar-nav>li>a {
+	padding-left: 30px;
+	padding-right: 30px;	
+}
+.navbar-nav>li:hover,
+.navbar-nav>li:focus {
+	background-color: white;
+}
+.navbar-inverse .navbar-nav>li>a {
+	color: #111;
+}
+.navbar-inverse .navbar-nav>li>a:active,
+.navbar-inverse .navbar-nav>li>a:hover,
+.navbar-inverse .navbar-nav>li>a:focus {
+	color: black;
+}
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:hover,
+.navbar-inverse .navbar-nav>.active>a:focus {
+	background-color: #0F8445;
+}
+/* Roadmap Page*/
 .roadmap {
 	width: 2840px;
 	height: 500px;
 	margin-left:auto;
 	margin-right:auto;
 	display:block;
-}.roadmap-container {
+}
+.roadmap-container {
 	overflow-x:auto;
 }
 .module-container {
 	height: 50px;
+}
+.main {
+	height: 100vh;
+	background: rgb(164, 218, 181);
+}
+
+.footer {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	text-align: center;
+	color: #000000;
+	margin-top: 100px;
+	background-color: white;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
 }
