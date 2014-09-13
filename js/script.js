@@ -4,3 +4,9 @@ $(function(){
 		event.preventDefault();
 	});   
 });
+
+function course_selected() {
+	$(".coverpage").fadeOut(400,function(){
+		$(".main").removeClass("hidden");
+	});
+}
