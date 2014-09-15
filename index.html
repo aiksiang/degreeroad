@@ -28,13 +28,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">Degree Road</a>
+          <a class="navbar-brand" href="index.html">
+          	<span class="glyphicon glyphicon-road"></span>
+            Degree Road
+          </a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li class = "school dropdown">
+            	<a data-toggle="dropdown" href="#">National University of Singapore
+                	<!--<span class="glyphicon glyphicon-chevron-down"></span>-->
+                </a>
+                <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                	Currently only NUS
+                </ul>-->
+            </li>
+            <li class="view-type"><a class="view-glyph" href="#list"><span class="glyphicon glyphicon-th-list"></span></a></li>
+            <li class="view-type active"><a class="view-glyph" href="#map"><span class="glyphicon glyphicon-th-large"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -43,7 +55,8 @@
     <div class="coverpage">
     	<div class="container">
             <div class="introduction">
-                <h1 class="title">Degree Road</h1>
+                <h1 class="title">
+          	<span class="glyphicon glyphicon-road" style="font-size:53px;"></span> Degree Road</h1>
                 <h2>Easy Degree Planning</h2>
                 <div class="courseinput">
                 	<input type="text" class="form-control" placeholder="Course">
@@ -56,15 +69,39 @@
         </div>
     </div>
     <div class="main hidden">
+    	<div class="leftsidebar" data-spy="affix" data-offset-bottom="110">
+        	<form role="form">
+                <div class="form-group">
+                    <input type="module-search" class="form-control module-search" placeholder="Module">
+                    <table class="table">
+                    	<tbody>
+                    		<tr>
+                            	<td><a>CG1101 - Programming Methodology</a></td>
+                            </tr>
+                            <tr>
+                            	<td>CS1231 - Discrete Stuctures</td>
+                            </tr>
+                            <tr>
+                            	<td>CG1101</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
         <div class="container">
             <div class="roadmap-title">
-                <h1>Degree Roadmap System</h1>
+                <h1>B.Eng in Computer Engineering</h1>
             </div>
             
             <div class="roadmap-container">
-                <div class="roadmap">
-                    THE VERY LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG ROADMAP
-                </div>
+                <svg class="roadmap">
+					<rect class="map-module" x="50" y="20" rx="10" ry="10" width="150" height="50"/>
+					<rect class="map-module" x="50" y="110" rx="10" ry="10" width="150" height="50"/>
+					<rect class="map-module" x="50" y="200" rx="10" ry="10" width="150" height="50"/>
+					<rect class="map-module" x="50" y="290" rx="10" ry="10" width="150" height="50"/>
+					<rect class="map-module" x="50" y="380" rx="10" ry="10" width="150" height="50"/>
+                </svg>
             </div>
             
             <div class="module-container">

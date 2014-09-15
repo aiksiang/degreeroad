@@ -103,6 +103,32 @@ body {
 .navbar-inverse .navbar-nav>.active>a:focus {
 	background-color: #0F8445;
 }
+.navbar-nav {
+	float: none;
+}
+.view-type {
+	float: right !important;
+}
+.glyphicon {
+	font-size: 15px;
+	top: 2px;
+	left: 1px;
+}
+.view-glyph {
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+}
+.school {
+	float: right !important;
+}
+.glyphicon-chevron-down {
+	top: 3px;
+}
+.dropdown-menu {
+	min-width: 260px;
+}
+
+
 .form-control:focus {
 	border-color: #cdf3df;
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(51, 169, 105,.6);
@@ -129,19 +155,6 @@ body {
 }
 
 /* Roadmap Page*/
-.roadmap {
-	width: 2840px;
-	height: 500px;
-	margin-left:auto;
-	margin-right:auto;
-	display:block;
-}
-.roadmap-container {
-	overflow-x:auto;
-}
-.module-container {
-	height: 500px;
-}
 .main {
 	height: 100%;
 	background: rgb(225,242,233); /* Old browsers */
@@ -153,9 +166,54 @@ body {
 	background: linear-gradient(to bottom,  rgba(225,242,233,1) 25%,rgba(107,205,152,1) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e1f2e9', endColorstr='#6bcd98',GradientType=0 ); /* IE6-9 */
 }
+/*left side bar*/
+.leftsidebar {
+	margin-top: 51px;
+	height: 100vh;
+	width: 300px;
+	float: left;
+	background: rgba(204, 228, 240, 0.5);
+	border-color: #6AA2C0;
+	border-width: 0px 1px 0px 0px;
+	border-style: solid;
+}
+.affix-bottom {
+	position:absolute;
+}
+.module-search {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: inherit;
+}
+
+.roadmap {
+	width: 1840px;
+	height: 500px;
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+}
+.roadmap-container {
+	overflow-x:auto;
+}
+/*svg stuff*/
+.map-module {
+	fill: #35b3e6;
+	stroke: grey;
+	stroke-width: 3px;
+}
+
+/*module stuff*/
+.module-container {
+	height: 500px;
+}
+
 .roadmap-title {
 	margin-top:80px;
 }
+
 
 .footer {
 	padding-top: 40px;
