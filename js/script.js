@@ -1,3 +1,5 @@
+var noOfSems = 6;
+
 function course_selected() {
 	$(".coverpage").fadeOut(400,function(){
 		$(".main").removeClass("hidden");
@@ -17,54 +19,183 @@ $(".module-set").sortable({
 });
 
 
-// $("#sem1").droppable({
-//   drop: function(){
-//     alert("dropped 1");
-//   }
-// });
-// $("#sem2").droppable({
-//   drop: function(){
-//     alert("dropped 2");
-//   }
-// });
-// $("#sem3").droppable({
-//   drop: function(){
-//     alert("dropped 3");
-//   }
-// });
-// $("#sem4").droppable({
-//   drop: function(){
-//     alert("dropped 4");
-//   }
-// });
-// $("#sem5").droppable({
-//   drop: function(){
-//     alert("dropped 5");
-//   }
-// });
-// $("#sem6").droppable({
-//   drop: function(){
-//     alert("dropped 6");
-//   }
-// });
-// $("#sem7").droppable({
-//   drop: function(){
-//     alert("dropped 7");
-//   }
-// });
-// $("#sem8").droppable({
-//   drop: function(){
-//     alert("dropped 8");
-//   }
-// });
+var semInfo = {
+  sem1: {modules: [], mcs: 0},
+  sem2: {modules: [], mcs: 0},
+  sem3: {modules: [], mcs: 0},
+  sem4: {modules: [], mcs: 0},
+  sem5: {modules: [], mcs: 0},
+  sem6: {modules: [], mcs: 0},
+  sem7: {modules: [], mcs: 0},
+  sem8: {modules: [], mcs: 0}
+};
 
-//scroll with mouse
-//$(function(){
-//	$(".roadmap-container").mousewheel(function(event, delta) {
-//		this.scrollLeft -= (delta * 60);
-//		event.preventDefault();
-//	});   
-//});
+
+
+$("#sem1").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem1.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem1.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem1.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem1.modules.splice(index,1);
+    }
+  }
+});
+$("#sem2").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem2.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem2.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem2.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem2.modules.splice(index,1);
+    }
+  }
+});
+$("#sem3").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem3.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem3.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem3.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem3.modules.splice(index,1);
+    }
+  }
+});
+$("#sem4").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem4.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem4.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem4.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem4.modules.splice(index,1);
+    }
+  }
+});
+$("#sem5").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem5.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem5.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem5.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem5.modules.splice(index,1);
+    }
+  }
+});
+$("#sem6").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem6.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem6.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem6.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem6.modules.splice(index,1);
+    }
+  }
+});
+$("#sem7").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem7.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem7.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem7.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem7.modules.splice(index,1);
+    }
+  }
+});
+$("#sem8").droppable({
+  drop: function(event,ui){
+    var index = semInfo.sem8.modules.indexOf(ui.draggable.html());
+    if (index == -1){
+      semInfo.sem8.modules.push(ui.draggable.html());
+    }
+  },
+  out: function(event,ui){
+    var index = semInfo.sem8.modules.indexOf(ui.draggable.html());
+    if (index != -1){
+      semInfo.sem8.modules.splice(index,1);
+    }
+  }
+});
+
+var coreModules = [];
+var extension = 0;
+
+$("#coreMods").droppable({
+  drop: function(event,ui) {
+    var index = coreModules.indexOf(ui.draggable.html());
+    if (index == -1) {
+      coreModules.push(ui.draggable.html());
+      console.log(coreModules);
+      reorderModules();
+    }
+  },
+  out: function(event,ui) {
+    var index = coreModules.indexOf(ui.draggable.html());
+    if (index != -1) {
+      coreModules.splice(index,1);
+      console.log(coreModules);
+      reorderModules();
+    }
+  }
+});
+
+function reorderModules() {
+  if (coreModules.length < 7) {
+    while (extension != 0) {
+      moduleContractBox(1);
+    }
+  } else if (coreModules.length > 6) {
+    if (extension == 0) {
+      moduleExtendBox(1);
+    }
+  }
+}
+
+function moduleExtendBox(i) {
+  $('<div id="extension' + i + '" class="sem-container-extension"><div class="sem-extension"><div class="sem-title"></div><ul class="module-set"></ul></div></div>').insertAfter($("#coreMods").parent());
+  extension++;
+};
+
+function moduleContractBox(i) {
+  $('#extension' + i).remove();
+  extension--;
+}
+
+// scroll with mouse
+// $(function(){
+// 	$(".roadmap-container").mousewheel(function(event, delta) {
+// 		this.scrollLeft -= (delta * 60);
+// 		event.preventDefault();
+// 	});   
+// });
 
 //drag scrolling
 //var mapclicked = false;
