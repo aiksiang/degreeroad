@@ -20,6 +20,7 @@ http://paletton.com/#uid=72+0u0kmqtWDrdgssnlfdFo53VU
 
 body {
 	color: #111111;
+	background: #2ecc71;
 }
 /* Cover Page*/
 .coverpage {
@@ -62,8 +63,8 @@ body {
 }
 /* Navigation Bar*/
 .navbar-inverse {
-	background-color: #d0efdf;
-	border-color: #0F8445;
+	background-color: #ecf0f1;
+	border-color: #27ae60;
 }
 
 .navbar-brand {
@@ -157,14 +158,6 @@ body {
 /* Roadmap Page*/
 .main {
 	height: 100%;
-	background: rgb(225,242,233); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(225,242,233,1) 25%, rgba(107,205,152,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(25%,rgba(225,242,233,1)), color-stop(100%,rgba(107,205,152,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(225,242,233,1) 25%,rgba(107,205,152,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(225,242,233,1) 25%,rgba(107,205,152,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(225,242,233,1) 25%,rgba(107,205,152,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(225,242,233,1) 25%,rgba(107,205,152,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e1f2e9', endColorstr='#6bcd98',GradientType=0 ); /* IE6-9 */
 }
 /*left side bar
 .leftsidebar {
@@ -190,9 +183,11 @@ body {
 */
 .roadmap-title {
 	margin-top: 51px;
-	margin-left: 3%;
-	padding-top: 1px;
+	text-align: center;
+	padding-top: 10px;
 	font-size: 36px;
+	color: black;
+	background: #2ecc71;
 }
 .roadmap-container {
 	overflow-x:auto;
@@ -205,7 +200,7 @@ body {
 }
 .roadmap {
 	width: 100%;
-	height: 412px;
+	height: 530px;
 	background: #2ecc71;
 	cursor: default;
 }
@@ -216,10 +211,8 @@ body {
 	margin-right: auto;
 	display: block;
 	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
 }
-.sem-container {
+.mod-container {
 	width: 12.5%;
 	float: left;
 	height: 100%;
@@ -292,8 +285,10 @@ li:focus {
 	background: #7f8c8d;
 	cursor: default;
 }
-.module-title {
-	margin-left: 3%;
+.requirement-title {
+	background: #7f8c8d;
+	text-align: center;
+	color: white;
 	font-size: 36px;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -307,7 +302,7 @@ li:focus {
 	-ms-user-select: none;
 	user-select: none;
 }
-.sem-container-extension {
+.mod-container-extension {
 	width: 10%;
 	float: left;
 	height: 100%;
@@ -331,12 +326,11 @@ li:focus {
 
 
 .footer {
-	padding-top: 40px;
+	padding-top: 240px;
 	padding-bottom: 40px;
 	text-align: center;
-	color: #000000;
-	margin-top: 100px;
-	background-color: white;
+	color: white;
+	background-color: #2c3e50;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;

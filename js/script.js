@@ -1,5 +1,11 @@
 var noOfSems = 6;
 
+(function initializeModules() {
+  getModules(function(data) {
+    console.log(data);
+  });
+})();
+
 function course_selected() {
 	$(".coverpage").fadeOut(400,function(){
 		$(".main").removeClass("hidden");
@@ -7,7 +13,7 @@ function course_selected() {
 }
 
 
-$(".module-set").sortable({
+var initializeSortable = function(){$(".module-set").sortable({
   connectWith: ".module-set",
   dropOnEmpty: true,
   forcePlaceholderSize: true,
@@ -16,8 +22,8 @@ $(".module-set").sortable({
   helper: "clone",
   appendTo: "body",
   cursor: "-webkit-grabbing"
-});
-
+})};
+initializeSortable();
 
 var semInfo = {
   sem1: {modules: [], mcs: 0},
@@ -168,19 +174,43 @@ $("#coreMods").droppable({
 });
 
 function reorderModules() {
-  if (coreModules.length < 7) {
-    while (extension != 0) {
-      moduleContractBox(1);
+  if ($("#coreMods li").length < 7) {
+    if ($("#extlist1 li").length != 0) {
+      $("#coreMods .module-set").append($("#extlist1 li")[0]);
+    } else {
+      if (extension == 1) {
+        moduleContractBox(1);
+      }
     }
-  } else if (coreModules.length > 6) {
+  } else if ($("#coreMods li").length > 6) {
     if (extension == 0) {
       moduleExtendBox(1);
     }
+    $("#extlist1 .module-set").prepend($("#coreMods li")[6]);
+    initializeSortable();
   }
 }
 
 function moduleExtendBox(i) {
-  $('<div id="extension' + i + '" class="sem-container-extension"><div class="sem-extension"><div class="sem-title"></div><ul class="module-set"></ul></div></div>').insertAfter($("#coreMods").parent());
+  $('<div id="extension' + i + '" class="mod-container-extension"><div id=extlist' + i + ' class="sem-extension"><div class="sem-title">&nbsp;</div><ul class="module-set"></ul></div></div>').insertAfter($("#coreMods").parent());
+  $("#extlist" + i).droppable({
+    drop: function(event,ui) {
+      var index = coreModules.indexOf(ui.draggable.html());
+      if (index == -1) {
+        coreModules.push(ui.draggable.html());
+        console.log(coreModules);
+        reorderModules();
+      }
+    },
+    out: function(event,ui) {
+      var index = coreModules.indexOf(ui.draggable.html());
+      if (index != -1) {
+        coreModules.splice(index,1);
+        console.log(coreModules);
+        reorderModules();
+      }
+    }
+  });
   extension++;
 };
 
