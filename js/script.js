@@ -1,6 +1,11 @@
 var noOfSems = 8;
 var listFrom = "";
 var listFromWithSpace = "";
+var drop = false;
+var lostModule = false;
+var lostChild;
+var lostChildHome;
+
 function course_selected() {
 	$(".coverpage").fadeOut(400,function(){
 		$(".main").removeClass("hidden");
@@ -16,7 +21,40 @@ var initializeSortable = function(){$(".module-set").sortable({
   scroll: false,
   helper: "clone",
   appendTo: "body",
-  cursor: "-webkit-grabbing"
+  cursor: "-webkit-grabbing",
+  update: function(event,ui) {
+    var module = findModule(ui.item.html());
+    var identifier = $(this)[0].parentNode.id;
+    if (ui.sender == null) { //removal
+      if (identifier.indexOf("sem") >= 0) {
+        var index = semInfo[identifier].modules.indexOf(ui.item.html());
+        if (index != -1){
+          semInfo[identifier].modules.splice(index,1);
+        }
+        var currentMC = semInfo[identifier].mcs;
+        currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+        semInfo[identifier].mcs = currentMC;
+      } else {
+        //
+        var currentMC = moduleList[identifier].totalMC;
+        currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+        moduleList[identifier].totalMC = currentMC;
+      }
+    } else { //insertion
+      if (identifier.indexOf("sem") >= 0) {
+        semInfo[identifier].modules.push(ui.item.html());
+        var currentMC = semInfo[identifier].mcs;
+        currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+        semInfo[identifier].mcs = currentMC;
+      } else {
+        //
+        var currentMC = moduleList[identifier].totalMC;
+        currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+        moduleList[identifier].totalMC = currentMC;
+      }
+    }
+    $("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+  }
 })};
 initializeSortable();
 
@@ -31,47 +69,6 @@ var semInfo = {
   sem8: {modules: [], mcs: 0}
 };
 
-
-for (var i = 0; i < noOfSems; i++) {
-  (function (i) {
-    $("#sem" + i).droppable({
-        drop: function(event,ui){
-          var currentMC = semInfo["sem" + i].mcs;
-          var module = findModule(ui.draggable.html());
-          //insertion
-          if (listFrom != "" && listFrom != i) {
-            currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-            $("#sem" + i + " .sem-mcs").html("MC: " + currentMC);
-            semInfo["sem" + i].mcs = currentMC;
-            semInfo["sem" + i].modules.push(ui.draggable.html());
-          }
-          //removal
-          if (isNaN(listFrom) && listFrom != "") {
-            currentMC = moduleList[listFromWithSpace].totalMC;
-            currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-            $("#" + listFrom + " .sem-mcs").html("MC: " + currentMC);
-            moduleList[listFromWithSpace].totalMC = currentMC;
-          } else if (!isNaN(listFrom) && listFrom != "") {
-            currentMC = semInfo["sem" + listFrom].mcs;
-            currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-            $("#sem" + listFrom + " .sem-mcs").html("MC: " + currentMC);
-            semInfo["sem" + listFrom].mcs = currentMC;
-            var index = semInfo["sem" + listFrom].modules.indexOf(ui.draggable.html());
-            if (index != -1){
-              semInfo["sem" + listFrom].modules.splice(index,1);
-            }
-          }
-          listFrom = "";
-        },
-        out: function(event,ui){
-          if (listFrom == "") {
-            listFrom = i;
-          }
-        }
-    })
-  })(i + 1);
-};
-
 function findModule(module) {
   for (moduleType in moduleList) {
     for (i in moduleList[moduleType].modules) {
@@ -82,15 +79,6 @@ function findModule(module) {
       }
     }
   }
-}
-
-function updateMC(module, semNo, type) {
-  if (type == "increase"){ 
-    semInfo["sem" + semNo].mcs += parseInt(moduleList[findModule(module).moduleType][findModule(module).i].modularCredits);
-  } else {
-    semInfo["sem" + semNo].mcs -= parseInt(moduleList[findModule(module).moduleType][findModule(module).i].modularCredits);
-  }
-  $("#sem" + semNo + " .sem-mcs").html("MC: " + semInfo["sem" + semNo].mcs);
 }
 
 //drag scrolling

@@ -11,69 +11,32 @@ var moduleList = {};
 
 function parseModules(data) {
 	for (var i in data) {
-		if (!moduleList.hasOwnProperty(data[i].moduleType)) {
-			moduleList[data[i].moduleType] = {};
-			moduleList[data[i].moduleType].modules = [];
+		var moduleType = data[i].moduleType;
+		var identifier = moduleType.replace(/\s/g, '');
+		if (!moduleList.hasOwnProperty(identifier)) {
+			moduleList[identifier] = {};
+			moduleList[identifier].modules = [];
 		}
-		moduleList[data[i].moduleType].modules.push({
+		moduleList[identifier].modules.push({
 			module: data[i].moduleCode + " " + data[i].moduleTitle,
 			modularCredits: data[i].modularCredits
 			});
 	}
 }
 function loadModules() {
-	for (var moduleType in moduleList) {
-		var id = moduleType.replace(/\s/g, '');
-		$(".requirement-container").append('<div class="mod-container"><div id = "' + id + '" class="sem"><div class="sem-title">' + moduleType + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div></div>');
+	for (var identifier in moduleList) {
+		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + identifier + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div></div>');
 		var totalMC = 0;
-		for (var i in moduleList[moduleType].modules) {
-			extensionLength = (Math.ceil(moduleList[moduleType].modules.length / 6)) * 200;
-			extensionPercentage = (Math.floor(moduleList[moduleType].modules.length / 6)) * 11 + 12.5;
-			totalMC += parseInt(moduleList[moduleType].modules[i].modularCredits);
-			moduleList[moduleType].totalMC =  totalMC;
-			$("#" + id).parent().css("width", extensionPercentage + "%");
-			$("#" + id).css("min-width", extensionLength);
-			$("#" + id + " .module-set").append('<li class="module">' + moduleList[moduleType].modules[i].module + '</li>');
-			$("#" + id + " .sem-mcs").html("MC: " + totalMC);
+		for (var i in moduleList[identifier].modules) {
+			extensionLength = (Math.ceil(moduleList[identifier].modules.length / 6)) * 200;
+			extensionPercentage = (Math.floor(moduleList[identifier].modules.length / 6)) * 11 + 12.5;
+			totalMC += parseInt(moduleList[identifier].modules[i].modularCredits);
+			moduleList[identifier].totalMC =  totalMC;
+			$("#" + identifier).parent().css("width", extensionPercentage + "%");
+			$("#" + identifier).css("min-width", extensionLength);
+			$("#" + identifier + " .module-set").append('<li class="module">' + moduleList[identifier].modules[i].module + '</li>');
+			$("#" + identifier + " .sem-mcs").html("MC: " + totalMC);
 		}
-
-		(function(id,moduleType) {
-			$("#" + id).droppable({
-				drop: function(event,ui){
-					var currentMC = moduleList[moduleType].totalMC;
-					var module = findModule(ui.draggable.html());
-					//insertion
-					if (listFrom != "" && listFrom != id) {
-						currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-						$("#" + id + " .sem-mcs").html("MC: " + currentMC);
-						moduleList[moduleType].totalMC = currentMC;
-					}
-					//removal
-					if (isNaN(listFrom) && listFrom != "") {
-						currentMC = moduleList[listFromWithSpace].totalMC;
-						currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-						$("#" + listFrom + " .sem-mcs").html("MC: " + currentMC);
-						moduleList[listFromWithSpace].totalMC = currentMC;
-					} else if (!isNaN(listFrom) && listFrom != "") {
-						currentMC = semInfo["sem" + listFrom].mcs;
-						currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-						$("#sem" + listFrom + " .sem-mcs").html("MC: " + currentMC);
-						semInfo["sem" + listFrom].mcs = currentMC;
-						var index = semInfo["sem" + listFrom].modules.indexOf(ui.draggable.html());
-			            if (index != -1){
-			              semInfo["sem" + listFrom].modules.splice(index,1);
-			            }
-					}
-					listFrom = "";
-				},
-				out: function(event,ui){
-					if (listFrom == "") {
-						listFrom = id;
-						listFromWithSpace = moduleType;
-					}
-				}
-	    	});
-		})(id,moduleType);
 	}
 	initializeSortable();
 }
