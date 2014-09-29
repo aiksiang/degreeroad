@@ -1,11 +1,5 @@
 var noOfSems = 6;
 
-(function initializeModules() {
-  getModules(function(data) {
-    console.log(data);
-  });
-})();
-
 function course_selected() {
 	$(".coverpage").fadeOut(400,function(){
 		$(".main").removeClass("hidden");
@@ -150,82 +144,6 @@ $("#sem8").droppable({
     }
   }
 });
-
-var coreModules = [];
-var extension = 0;
-
-$("#coreMods").droppable({
-  drop: function(event,ui) {
-    var index = coreModules.indexOf(ui.draggable.html());
-    if (index == -1) {
-      coreModules.push(ui.draggable.html());
-      console.log(coreModules);
-      reorderModules();
-    }
-  },
-  out: function(event,ui) {
-    var index = coreModules.indexOf(ui.draggable.html());
-    if (index != -1) {
-      coreModules.splice(index,1);
-      console.log(coreModules);
-      reorderModules();
-    }
-  }
-});
-
-function reorderModules() {
-  if ($("#coreMods li").length < 7) {
-    if ($("#extlist1 li").length != 0) {
-      $("#coreMods .module-set").append($("#extlist1 li")[0]);
-    } else {
-      if (extension == 1) {
-        moduleContractBox(1);
-      }
-    }
-  } else if ($("#coreMods li").length > 6) {
-    if (extension == 0) {
-      moduleExtendBox(1);
-    }
-    $("#extlist1 .module-set").prepend($("#coreMods li")[6]);
-    initializeSortable();
-  }
-}
-
-function moduleExtendBox(i) {
-  $('<div id="extension' + i + '" class="mod-container-extension"><div id=extlist' + i + ' class="sem-extension"><div class="sem-title">&nbsp;</div><ul class="module-set"></ul></div></div>').insertAfter($("#coreMods").parent());
-  $("#extlist" + i).droppable({
-    drop: function(event,ui) {
-      var index = coreModules.indexOf(ui.draggable.html());
-      if (index == -1) {
-        coreModules.push(ui.draggable.html());
-        console.log(coreModules);
-        reorderModules();
-      }
-    },
-    out: function(event,ui) {
-      var index = coreModules.indexOf(ui.draggable.html());
-      if (index != -1) {
-        coreModules.splice(index,1);
-        console.log(coreModules);
-        reorderModules();
-      }
-    }
-  });
-  extension++;
-};
-
-function moduleContractBox(i) {
-  $('#extension' + i).remove();
-  extension--;
-}
-
-// scroll with mouse
-// $(function(){
-// 	$(".roadmap-container").mousewheel(function(event, delta) {
-// 		this.scrollLeft -= (delta * 60);
-// 		event.preventDefault();
-// 	});   
-// });
 
 //drag scrolling
 //var mapclicked = false;
