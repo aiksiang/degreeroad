@@ -188,6 +188,13 @@ body {
 	font-size: 36px;
 	color: black;
 	background: rgb(63, 195, 128);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;
 }
 .roadmap-container {
 	overflow-x:auto;
@@ -292,7 +299,7 @@ li:focus {
 /*requirement stuff*/
 .requirement {
 	width: 100%;
-	height: 412px;
+	height: 500px;
 	background: #7f8c8d;
 	cursor: default;
 }
@@ -303,6 +310,13 @@ li:focus {
 	font-size: 36px;
 	padding-top: 5px;
 	padding-bottom: 5px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;
 }
 .requirement-container {
 	height: 402px;
