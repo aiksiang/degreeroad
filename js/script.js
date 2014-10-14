@@ -1,10 +1,4 @@
 var noOfSems = 8;
-var listFrom = "";
-var listFromWithSpace = "";
-var drop = false;
-var lostModule = false;
-var lostChild;
-var lostChildHome;
 
 function course_selected() {
 	$(".coverpage").fadeOut(400,function(){
@@ -22,39 +16,41 @@ var initializeSortable = function(){$(".module-set").sortable({
   helper: "clone",
   appendTo: "body",
   cursor: "-webkit-grabbing",
-  update: function(event,ui) {
-    var module = findModule(ui.item.html());
-    var identifier = $(this)[0].parentNode.id;
-    if (ui.sender == null) { //removal
-      if (identifier.indexOf("sem") >= 0) {
-        var index = semInfo[identifier].modules.indexOf(ui.item.html());
-        if (index != -1){
-          semInfo[identifier].modules.splice(index,1);
-        }
-        var currentMC = semInfo[identifier].mcs;
-        currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-        semInfo[identifier].mcs = currentMC;
-      } else {
-        //
-        var currentMC = moduleList[identifier].totalMC;
-        currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-        moduleList[identifier].totalMC = currentMC;
-      }
-    } else { //insertion
-      if (identifier.indexOf("sem") >= 0) {
-        semInfo[identifier].modules.push(ui.item.html());
-        var currentMC = semInfo[identifier].mcs;
-        currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-        semInfo[identifier].mcs = currentMC;
-      } else {
-        //
-        var currentMC = moduleList[identifier].totalMC;
-        currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-        moduleList[identifier].totalMC = currentMC;
-      }
-    }
-    $("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
-  }
+	remove: function(event,ui) {
+		var module = findModule(ui.item.html());
+		var identifier = $(this)[0].parentNode.id;
+		if (identifier.indexOf("sem") >= 0) {
+			var index = semInfo[identifier].modules.indexOf(ui.item.html());
+			if (index != -1){
+				semInfo[identifier].modules.splice(index,1);
+			}
+			var currentMC = semInfo[identifier].mcs;
+			currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+			semInfo[identifier].mcs = currentMC;
+		} else {
+			//
+			var currentMC = moduleList[identifier].totalMC;
+			currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+			moduleList[identifier].totalMC = currentMC;
+		}
+		$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+	},
+	receive: function(event,ui) {
+		var module = findModule(ui.item.html());
+		var identifier = $(this)[0].parentNode.id;
+		if (identifier.indexOf("sem") >= 0) {
+			semInfo[identifier].modules.push(ui.item.html());
+			var currentMC = semInfo[identifier].mcs;
+			currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+			semInfo[identifier].mcs = currentMC;
+		} else {
+			//
+			var currentMC = moduleList[identifier].totalMC;
+			currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
+			moduleList[identifier].totalMC = currentMC;
+		}
+		$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+	}
 })};
 initializeSortable();
 
@@ -107,6 +103,6 @@ function findModule(module) {
 //		$(this).css("cursor","default");
 //	},
 //	'mouseenter': function(e) {
-//		$(this).css("cursor","-webkit-grab");	
+//		$(this).css("cursor","-webkit-grab");
 //	}
 //});

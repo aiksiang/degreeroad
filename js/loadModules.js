@@ -1,7 +1,7 @@
 (function initializeModules() {
 	var degreeName;
 	degreeName = "Computer Engineering";
-  	getModules(degreeName, function(data) {
+	getRequirements(degreeName, function(data) {
     parseModules(data);
     loadModules();
   });
@@ -16,16 +16,17 @@ function parseModules(data) {
 		if (!moduleList.hasOwnProperty(identifier)) {
 			moduleList[identifier] = {};
 			moduleList[identifier].modules = [];
+			moduleList[identifier].name = moduleType;
 		}
 		moduleList[identifier].modules.push({
-			module: data[i].moduleCode + " " + data[i].moduleTitle,
-			modularCredits: data[i].modularCredits
+			module: data[i].Code + " " + data[i].Name,
+			modularCredits: data[i].Credit
 			});
 	}
 }
 function loadModules() {
 	for (var identifier in moduleList) {
-		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + identifier + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div></div>');
+		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + moduleList[identifier].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div></div>');
 		var totalMC = 0;
 		for (var i in moduleList[identifier].modules) {
 			extensionLength = (Math.ceil(moduleList[identifier].modules.length / 6)) * 200;
