@@ -64,6 +64,9 @@ body {
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding: 0px;
+	border: solid;
+	border-color: #ECF0F1;
+	border-width: 1px;
 }
 .module-drop {
 	margin-left: 188px;
@@ -85,6 +88,12 @@ body {
 .module-drop li:hover,
 .module-drop li:focus {
 	background: #2c3e50;
+}
+.modBodyKey {
+	font-size: 15px;
+}
+.modBodyValue {
+	color: black;
 }
 .form-control {
 	display:inline;
