@@ -12,12 +12,15 @@ $('.moduleinput').on('show.bs.dropdown', function () {
     for (var i = 0; i < allModuleList.length; i++){
       var moduleName;
       moduleName = allModuleList[i].Code + " " + allModuleList[i].Name;
-      $(".module-drop").append('<li onClick="updateModuleData('+ i +')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
+      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '])"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
     }
   }
 });
 
 $('.moduleinput').on('input', function() {
+  if (!$('.moduleinput').hasClass("open")){
+    $(".module-drop").dropdown('toggle');
+  }
   var query = $('.moduleinput .form-control').val();
   $(".module-drop").empty();
   var mod_count = 0;
@@ -25,7 +28,7 @@ $('.moduleinput').on('input', function() {
     var moduleName;
     moduleName = allModuleList[i].Code + " " + allModuleList[i].Name;
     if (moduleName.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
-      $(".module-drop").append('<li>' + moduleName + '</li>');
+      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '])"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
       mod_count++;
     }
   }
@@ -40,13 +43,12 @@ $('.moduleinput').on('input', function() {
   }
 });
 
-function updateModuleData(i) {
-  console.log(allModuleList[i]);
-  $("#myModalLabel").html(allModuleList[i].Name);
-  $("#myModalBody").html("<div><span class='modBodyKey'>" + "Module Code: " + "</span>" + "<span class='modBodyValue'>" + allModuleList[i].Code + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Modular Credits: " + "</span>" + "<span class='modBodyValue'>" + allModuleList[i].Credit + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Exam Date: " + "</span>" + "<span class='modBodyValue'>" + allModuleList[i].Examdate + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Preclusion: " + "</span>" + "<span class='modBodyValue'>" + allModuleList[i].Preclude + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Prerequisite: " + "</span>" + "<span class='modBodyValue'>" + allModuleList[i].Prereq + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Description: " + "</span>" + "<span class='modBodyValue'>" + allModuleList[i].Description + "</span></div>");
+function updateModuleData(mod) {
+  $("#myModalLabel").html(mod.Name);
+  $("#myModalBody").html("<div><span class='modBodyKey'>" + "Module Code: " + "</span>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
+  "<div><span class='modBodyKey'>" + "Modular Credits: " + "</span>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
+  "<div><span class='modBodyKey'>" + "Exam Date: " + "</span>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
+  "<div><span class='modBodyKey'>" + "Preclusion: " + "</span>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
+  "<div><span class='modBodyKey'>" + "Prerequisite: " + "</span>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
+  "<div><span class='modBodyKey'>" + "Description: " + "</span>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>");
 }

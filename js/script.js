@@ -7,51 +7,53 @@ function course_selected() {
 }
 
 
-var initializeSortable = function(){$(".module-set").sortable({
-  connectWith: ".module-set",
-  dropOnEmpty: true,
-  forcePlaceholderSize: true,
-  placeholder: "module-placeholder",
-  scroll: false,
-  helper: "clone",
-  appendTo: "body",
-  cursor: "-webkit-grabbing",
-	remove: function(event,ui) {
-		var module = findModule(ui.item.html());
-		var identifier = $(this)[0].parentNode.id;
-		if (identifier.indexOf("sem") >= 0) {
-			var index = semInfo[identifier].modules.indexOf(ui.item.html());
-			if (index != -1){
-				semInfo[identifier].modules.splice(index,1);
+var initializeSortable = function(){
+	$(".module-set").sortable({
+	  connectWith: ".module-set",
+	  dropOnEmpty: true,
+	  forcePlaceholderSize: true,
+	  placeholder: "module-placeholder",
+	  scroll: false,
+	  helper: "clone",
+	  appendTo: "body",
+	  cursor: "-webkit-grabbing",
+		remove: function(event,ui) {
+			var module = findModule(ui.item.html());
+			var identifier = $(this)[0].parentNode.id;
+			if (identifier.indexOf("sem") >= 0) {
+				var index = semInfo[identifier].modules.indexOf(ui.item.html());
+				if (index != -1){
+					semInfo[identifier].modules.splice(index,1);
+				}
+				var currentMC = semInfo[identifier].mcs;
+				currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].Credit);
+				semInfo[identifier].mcs = currentMC;
+			} else {
+				//
+				var currentMC = moduleList[identifier].totalMC;
+				currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].Credit);
+				moduleList[identifier].totalMC = currentMC;
 			}
-			var currentMC = semInfo[identifier].mcs;
-			currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-			semInfo[identifier].mcs = currentMC;
-		} else {
-			//
-			var currentMC = moduleList[identifier].totalMC;
-			currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-			moduleList[identifier].totalMC = currentMC;
+			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+		},
+		receive: function(event,ui) {
+			var module = findModule(ui.item.html());
+			var identifier = $(this)[0].parentNode.id;
+			if (identifier.indexOf("sem") >= 0) {
+				semInfo[identifier].modules.push(ui.item.html());
+				var currentMC = semInfo[identifier].mcs;
+				currentMC += parseInt(moduleList[module.moduleType].modules[module.i].Credit);
+				semInfo[identifier].mcs = currentMC;
+			} else {
+				//
+				var currentMC = moduleList[identifier].totalMC;
+				currentMC += parseInt(moduleList[module.moduleType].modules[module.i].Credit);
+				moduleList[identifier].totalMC = currentMC;
+			}
+			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 		}
-		$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
-	},
-	receive: function(event,ui) {
-		var module = findModule(ui.item.html());
-		var identifier = $(this)[0].parentNode.id;
-		if (identifier.indexOf("sem") >= 0) {
-			semInfo[identifier].modules.push(ui.item.html());
-			var currentMC = semInfo[identifier].mcs;
-			currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-			semInfo[identifier].mcs = currentMC;
-		} else {
-			//
-			var currentMC = moduleList[identifier].totalMC;
-			currentMC += parseInt(moduleList[module.moduleType].modules[module.i].modularCredits);
-			moduleList[identifier].totalMC = currentMC;
-		}
-		$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
-	}
-})};
+	})
+};
 initializeSortable();
 
 var semInfo = {
@@ -68,7 +70,8 @@ var semInfo = {
 function findModule(module) {
   for (moduleType in moduleList) {
     for (i in moduleList[moduleType].modules) {
-        var target = moduleList[moduleType].modules[i].module.replace(/&amp;/g, '&');
+        var target = moduleList[moduleType].modules[i].Code + " " + moduleList[moduleType].modules[i].Name;
+				target = target.replace(/&amp;/g, '&');
         var source = module.replace(/&amp;/g, '&');
       if (target == source) {
         return {moduleType: moduleType, i: i};
@@ -76,6 +79,8 @@ function findModule(module) {
     }
   }
 }
+
+
 
 //drag scrolling
 //var mapclicked = false;
