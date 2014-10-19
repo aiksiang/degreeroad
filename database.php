@@ -20,17 +20,21 @@ if (isset($_GET['action']) && $_GET['action'] == 'getAllModuleList') {
 }
 
 function db_get_requirements() {
-	if (isset($_GET['degreeName'])) {
-		$degreeName = $_GET['degreeName'];
+	if (isset($_GET['degreeCode'])) {
+		$degreeCode = $_GET['degreeCode'];
 	} else {
-		$degreeName = NULL;
+		$degreeCode = NULL;
 	}
 	global $mysqli;
-	$query = "SELECT *
-				FROM `Module`,`Degrees`,`DegreeModuleLink`
-				WHERE `Degrees`.`degreeName` =  '".$degreeName."'
-				AND `Degrees`.`degreeName` = `DegreeModuleLink`.`degreeName`
-				AND `Module`.`Code` = `DegreeModuleLink`.`moduleCode`";
+	// $query = "SELECT *
+	// 			FROM `Module`,`Degrees`,`DegreeModuleLink`
+	// 			WHERE `Degrees`.`degreeName` =  '".$degreeName."'
+	// 			AND `Degrees`.`degreeName` = `DegreeModuleLink`.`degreeName`
+	// 			AND `Module`.`Code` = `DegreeModuleLink`.`moduleCode`";
+	$query = "SELECT `Code`,`Credit`,`Description`,`Examdate`,`Name`,`Preclude`,`Prereq`,`coursecode` AS `CourseCode`,`fulfil` AS `ModuleType`
+					FROM `unicoursereq`,`Module`
+					WHERE `unicoursereq`.`coursecode` = '".$degreeCode."'
+					AND `unicoursereq`.`modulecode` = `Module`.`Code`";
 	$result = array();
 	if ($queryResult = $mysqli->query($query)) {
 		while ($entry = $queryResult->fetch_assoc()) {
