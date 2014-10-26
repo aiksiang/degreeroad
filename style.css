@@ -310,8 +310,7 @@ body {
 	height: 48px;
 	width: 200px;
 	border-width: 1px;
-	border-top-style: solid;
-	border-bottom-style: solid;
+	border-style: solid;
 	background: #34495e;
 	border-color: #2c3e50;
 }
@@ -322,8 +321,7 @@ body {
 	height: 48px;
 	width: 200px;
 	border-width: 1px;
-	border-top-style: solid;
-	border-bottom-style: solid;
+	border-style: solid;
 	background: #34495e;
 	border-color: #2c3e50;
 }

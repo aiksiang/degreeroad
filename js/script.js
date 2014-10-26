@@ -1,4 +1,17 @@
 var noOfSems = 8;
+var userSavedModules = {
+		sem1: {modules: [], mcs: 0},
+		sem2: {modules: [], mcs: 0},
+		sem3: {modules: [], mcs: 0},
+		sem4: {modules: [], mcs: 0},
+		sem5: {modules: [], mcs: 0},
+		sem6: {modules: [], mcs: 0},
+		sem7: {modules: [], mcs: 0},
+		sem8: {modules: [], mcs: 0},
+		course: "CEG",
+		specialization: "None"
+};
+var storage;
 
 function course_selected() {
 	$(".coverpage").fadeOut(400,function(){
@@ -18,61 +31,62 @@ var initializeSortable = function(){
 	  appendTo: "body",
 	  cursor: "-webkit-grabbing",
 		remove: function(event,ui) {
-			var module = findModule(ui.item.html());
+			var moduleloc = findModule(ui.item.html());
+			var module = moduleList[moduleloc.moduleType].modules[moduleloc.i];
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) {
-				var index = semInfo[identifier].modules.indexOf(ui.item.html());
-				if (index != -1){
-					semInfo[identifier].modules.splice(index,1);
+				var index = -1;
+				for (var i in userSavedModules[identifier].modules) {
+					if (userSavedModules[identifier].modules[i].Code == module.Code) {
+						index = i;
+						break;
+					}
 				}
-				var currentMC = semInfo[identifier].mcs;
-				currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].Credit);
-				semInfo[identifier].mcs = currentMC;
+				if (index != -1){
+					userSavedModules[identifier].modules.splice(index,1);
+				}
+				var currentMC = userSavedModules[identifier].mcs;
+				currentMC -= parseInt(module.Credit);
+				userSavedModules[identifier].mcs = currentMC;
 			} else {
 				//
-				var currentMC = moduleList[identifier].totalMC;
-				currentMC -= parseInt(moduleList[module.moduleType].modules[module.i].Credit);
-				moduleList[identifier].totalMC = currentMC;
+				var currentMC = moduleList[identifier].currentMC;
+				currentMC -= parseInt(module.Credit);
+				moduleList[identifier].currentMC = currentMC;
 			}
 			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 		},
 		receive: function(event,ui) {
-			var module = findModule(ui.item.html());
+			var moduleloc = findModule(ui.item.html());
+			var module = moduleList[moduleloc.moduleType].modules[moduleloc.i];
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) {
-				semInfo[identifier].modules.push(ui.item.html());
-				var currentMC = semInfo[identifier].mcs;
-				currentMC += parseInt(moduleList[module.moduleType].modules[module.i].Credit);
-				semInfo[identifier].mcs = currentMC;
+				userSavedModules[identifier].modules.push(module);
+				var currentMC = userSavedModules[identifier].mcs;
+				currentMC += parseInt(module.Credit);
+				userSavedModules[identifier].mcs = currentMC;
 			} else {
 				//
-				var currentMC = moduleList[identifier].totalMC;
-				currentMC += parseInt(moduleList[module.moduleType].modules[module.i].Credit);
-				moduleList[identifier].totalMC = currentMC;
+				var currentMC = moduleList[identifier].currentMC;
+				currentMC += parseInt(module.Credit);
+				moduleList[identifier].currentMC = currentMC;
 			}
 			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+		},
+		update: function() {
+			storage.put(userSavedModules);
+			storage.save();
 		}
 	})
 };
 initializeSortable();
 
-var semInfo = {
-  sem1: {modules: [], mcs: 0},
-  sem2: {modules: [], mcs: 0},
-  sem3: {modules: [], mcs: 0},
-  sem4: {modules: [], mcs: 0},
-  sem5: {modules: [], mcs: 0},
-  sem6: {modules: [], mcs: 0},
-  sem7: {modules: [], mcs: 0},
-  sem8: {modules: [], mcs: 0}
-};
-
-function findModule(module) {
+function findModule(moduleName) {
   for (moduleType in moduleList) {
     for (i in moduleList[moduleType].modules) {
-        var target = moduleList[moduleType].modules[i].Code + " " + moduleList[moduleType].modules[i].Name;
+      	var target = moduleList[moduleType].modules[i].Code + " " + moduleList[moduleType].modules[i].Name;
 				target = target.replace(/&amp;/g, '&');
-        var source = module.replace(/&amp;/g, '&');
+				var source = moduleName.replace(/&amp;/g, '&');
       if (target == source) {
         return {moduleType: moduleType, i: i};
       }
