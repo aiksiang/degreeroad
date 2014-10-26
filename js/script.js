@@ -74,7 +74,6 @@ var initializeSortable = function(){
 			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 		},
 		update: function() {
-			clean();
 			storage.put(userSavedModules);
 			storage.save();
 		}
