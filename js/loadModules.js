@@ -18,6 +18,7 @@ function parseModules(data) {
 			moduleList[identifier] = {};
 			moduleList[identifier].modules = [];
 			moduleList[identifier].name = ModuleType;
+			moduleList[identifier].currentMC = 0;
 		}
 		moduleList[identifier].modules.push(data[i]);
 	}
@@ -32,11 +33,11 @@ function loadModules() {
 			extensionPercentage = (Math.floor((moduleList[identifier].modules.length - 1) / 6)) * 11 + 12.5;
 			totalMC += parseInt(moduleList[identifier].modules[i].Credit);
 			moduleList[identifier].totalMC =  totalMC;
-			moduleList[identifier].currentMC = totalMC;
+			moduleList[identifier].currentMC = moduleList[identifier].currentMC;
 			$("#" + identifier).parent().css("width", extensionPercentage + "%");
 			$("#" + identifier).css("min-width", extensionLength);
-			$("#" + identifier + " .module-set").append('<li class="module" onClick = "updateModuleData(moduleList['+ identifier +'].modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + moduleList[identifier].modules[i].Code + " " + moduleList[identifier].modules[i].Name + '</li>');
-			$("#" + identifier + " .sem-mcs").html("MC: " + totalMC);
+			$("#" + identifier + " .module-set").append('<li class="module" onClick = "updateModuleData(moduleList.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + moduleList[identifier].modules[i].Code + " " + moduleList[identifier].modules[i].Name + '</li>');
+			$("#" + identifier + " .sem-mcs").html("MC: " + moduleList[identifier].currentMC + "/" + moduleList[identifier].totalMC);
 		}
 	}
 	$(".module").mouseover(function() {
@@ -53,6 +54,12 @@ function loadUserSavedModules() {
 	storage = new Storage();
 	storage.load();
 	userSavedModules = storage.get();
+	for (var sem in userSavedModules) {
+		$("#" + sem + " .module-set").html("");
+	}
+	for (var moduleType in moduleList) {
+		moduleList[moduleType].currentMC = 0;
+	}
 	initializeSortable();
 	var savedMod;
 	var identifier = 0;
@@ -60,18 +67,18 @@ function loadUserSavedModules() {
 		for (var i in userSavedModules[sem].modules) {
 			savedMod = userSavedModules[sem].modules[i];
 			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
-			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(moduleList[' + savedModLoc.moduleType + '].modules[' + savedModLoc.i + ']);" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
+			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(moduleList.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + ']);" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
 			for (var moduleType in moduleList) {
 				var uiList = $("#" + moduleType + " .module-set").children();
 				for (var j = 0; j < uiList.length; j++) {
 					var savedModFullName = savedMod.Code + " " + savedMod.Name;
 					savedModFullname = savedModFullName.replace(/&amp;/g, '&');
 					if ($(uiList[j]).html() == savedModFullname) {
-						moduleList[moduleType].currentMC -= savedMod.Credit;
+						moduleList[moduleType].currentMC += parseInt(savedMod.Credit);
 						uiList[j].remove();
 					}
 				}
-				$("#" + moduleType + " .sem-mcs").html("MC: " + moduleList[moduleType].currentMC);
+				$("#" + moduleType + " .sem-mcs").html("MC: " + moduleList[moduleType].currentMC + "/" + moduleList[moduleType].totalMC);
 			}
 		}
 		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);

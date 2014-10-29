@@ -48,13 +48,15 @@ var initializeSortable = function(){
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC -= parseInt(module.Credit);
 				userSavedModules[identifier].mcs = currentMC;
+				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 			} else {
 				//
 				var currentMC = moduleList[identifier].currentMC;
-				currentMC -= parseInt(module.Credit);
+				currentMC += parseInt(module.Credit);
 				moduleList[identifier].currentMC = currentMC;
+				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC + "/" + moduleList[identifier].totalMC);
 			}
-			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+
 		},
 		receive: function(event,ui) {
 			var moduleloc = findModule(ui.item.html());
@@ -65,13 +67,14 @@ var initializeSortable = function(){
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC += parseInt(module.Credit);
 				userSavedModules[identifier].mcs = currentMC;
+				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 			} else {
 				//
 				var currentMC = moduleList[identifier].currentMC;
-				currentMC += parseInt(module.Credit);
+				currentMC -= parseInt(module.Credit);
 				moduleList[identifier].currentMC = currentMC;
+				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC + "/" + moduleList[identifier].totalMC);
 			}
-			$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 		},
 		update: function() {
 			storage.put(userSavedModules);

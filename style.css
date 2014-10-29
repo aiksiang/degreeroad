@@ -54,9 +54,11 @@ body {
 }
 .moduleinput {
 	width: 330px;
-	float: left;
+	float: right;
 	margin-top: 8px;
-	margin-left: 10px;
+	margin-right: 20px;
+	position: relative;
+	display: block;
 }
 .moduleinput .dropdown-menu {
 	width: 330px;
@@ -67,9 +69,6 @@ body {
 	border: solid;
 	border-color: #ECF0F1;
 	border-width: 1px;
-}
-.module-drop {
-	margin-left: 188px;
 }
 .module-drop li {
 	width: 1000px;
@@ -347,9 +346,13 @@ li {
 	background: #7f8c8d;
 	cursor: default;
 }
+.requirement-title-bar {
+	background: #7f8c8d;
+}
 .requirement-title {
 	background: #7f8c8d;
-	text-align: center;
+	padding-left: 20px;
+	float: left;
 	color: black;
 	font-size: 36px;
 	padding-top: 5px;
@@ -362,8 +365,49 @@ li {
 	user-select: none;
 	cursor: default;
 }
+.specialization {
+	background: #7f8c8d;
+	text-align: center;
+	font-size: 36px;
+	width: 45%;
+	margin-left: auto;
+	margin-right: auto;
+	float: none !important;
+}
+.specialization a {
+	color: white;
+}
+.specialization a:hover,
+.specialization a:focus {
+	color: black;
+	text-decoration: none;
+}
+.specialization .glyphicon-chevron-down {
+	top: -2px;
+	left: -2px;
+}
+.specialization-list {
+	float: none;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 18px;
+}
+.specialization-list:hover,
+.specialization-list:focus {
+	color: black;
+	cursor: pointer;
+}
+.spec-drop {
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	width: 50%;
+}
 .requirement-container {
 	height: 402px;
+	clear: left;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
