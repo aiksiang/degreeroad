@@ -15,6 +15,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'getRequirements') {
 	echo json_encode(db_get_requirements());
 }
 
+if (isset($_GET['action']) && $_GET['action'] == 'getRequirementModules') {
+	echo json_encode(db_get_requirement_modules());
+}
+
 if (isset($_GET['action']) && $_GET['action'] == 'getAllModuleList') {
 	echo json_encode(db_get_all_modules());
 }
@@ -33,12 +37,33 @@ function db_get_requirements() {
 	} else {
 		$degreeCode = NULL;
 	}
+	if (isset($_GET['academicYear'])) {
+		$academicYear = $_GET['academicYear'];
+	} else {
+		$academicYear = NULL;
+	}
 	global $mysqli;
-	// $query = "SELECT *
-	// 			FROM `Module`,`Degrees`,`DegreeModuleLink`
-	// 			WHERE `Degrees`.`degreeName` =  '".$degreeName."'
-	// 			AND `Degrees`.`degreeName` = `DegreeModuleLink`.`degreeName`
-	// 			AND `Module`.`Code` = `DegreeModuleLink`.`moduleCode`";
+	$query = "SELECT *
+			FROM `Requirements`
+			WHERE `Requirements`.`degreeCourseCode` = '".$degreeCode."'
+			AND `Requirements`.`academicYear` = '".$academicYear."'
+			AND `Requirements`.`specialization` = 'None'";
+	$result = array();
+	if ($queryResult = $mysqli->query($query)) {
+		while ($entry = $queryResult->fetch_assoc()) {
+			array_push($result, $entry);
+		}
+	}
+	return $result;
+}
+
+function db_get_requirement_modules() {
+	if (isset($_GET['degreeCode'])) {
+		$degreeCode = $_GET['degreeCode'];
+	} else {
+		$degreeCode = NULL;
+	}
+	global $mysqli;
 	$query = "SELECT `Code`,`Credit`,`Description`,`Examdate`,`Name`,`Preclude`,`Prereq`,`coursecode` AS `CourseCode`,`fulfil` AS `ModuleType`
 					FROM `unicoursereq`,`Module`
 					WHERE `unicoursereq`.`coursecode` = '".$degreeCode."'

@@ -22,17 +22,17 @@ function selectSpecialization(i) {
   getSpecializationModules(specializationList[i].specialization, function(data){
     specializationMods = data;
     $(".requirement-container").html("");
-    moduleList.Breadth.modules = [];
-    moduleList.Breadth.currentMC = 0;
-    moduleList.Breadth.totalMC = 12;
-    moduleList.Depth.modules = [];
-    moduleList.Depth.currentMC = 0;
-    moduleList.Depth.totalMC = 12;
+    requirementModules.Breadth.modules = [];
+    requirementModules.Breadth.currentMC = 0;
+    requirementModules.Breadth.totalMC = 12;
+    requirementModules.Depth.modules = [];
+    requirementModules.Depth.currentMC = 0;
+    requirementModules.Depth.totalMC = 12;
     for (var i in specializationMods) {
       if (specializationMods[i].ModuleType == "breadth") {
-        moduleList.Breadth.modules.push(specializationMods[i]);
+        requirementModules.Breadth.modules.push(specializationMods[i]);
       } else if (specializationMods[i].ModuleType == "depth") {
-        moduleList.Depth.modules.push(specializationMods[i]);
+        requirementModules.Depth.modules.push(specializationMods[i]);
       }
     }
     loadModules();
