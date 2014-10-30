@@ -67,14 +67,32 @@ var initializeSortable = function(){
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC += parseInt(module.Credit);
 				userSavedModules[identifier].mcs = currentMC;
+				ui.item.addClass("module").removeClass("module-small").css("height","48px");
 				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 			} else {
 				//
 				var currentMC = requirementModules[identifier].currentMC;
 				currentMC -= parseInt(module.Credit);
 				requirementModules[identifier].currentMC = currentMC;
+				ui.item.addClass("module-small").removeClass("module").css("height","24px");
 				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC + "/" + requirementModules[identifier].totalMC);
 			}
+			$(".module").mouseover(function() {
+				$(this).css("color","white");
+				$(this).css("height","48px");
+			});
+			$(".module").mouseout(function() {
+				$(this).css("color","#1abc9c");
+				$(this).css("height","48px");
+			});
+			$(".module-small").mouseover(function() {
+				$(this).css("color","white");
+				$(this).css("height","48px");
+			});
+			$(".module-small").mouseout(function() {
+				$(this).css("color","#1abc9c");
+				$(this).css("height","24px");
+			});			
 		},
 		update: function() {
 			storage.put(userSavedModules);

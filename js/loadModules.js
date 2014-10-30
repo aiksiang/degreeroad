@@ -38,25 +38,28 @@ function parseModules(data) {
 }
 
 function loadModules() {
-	for (var identifier in requirementModules) {console.log(identifier)
+	$(".requirement-container").html("");
+	for (var identifier in requirementModules) {
 		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + requirementModules[identifier].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div></div>');
 		var totalMC = 0;
 		for (var i in requirementModules[identifier].modules) {
-			extensionLength = (Math.ceil(requirementModules[identifier].modules.length / 6)) * 200;
-			extensionPercentage = (Math.floor((requirementModules[identifier].modules.length - 1) / 6)) * 11 + 12.5;
+			//extensionLength = (Math.ceil(requirementModules[identifier].modules.length / 6)) * 200;
+			//extensionPercentage = (Math.floor((requirementModules[identifier].modules.length - 1) / 6)) * 11 + 12.5;
 			totalMC += parseInt(requirementModules[identifier].modules[i].Credit);
 			requirementModules[identifier].currentMC = requirementModules[identifier].currentMC;
-			$("#" + identifier).parent().css("width", extensionPercentage + "%");
-			$("#" + identifier).css("min-width", extensionLength);
-			$("#" + identifier + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+			//$("#" + identifier).parent().css("width", extensionPercentage + "%");
+			//$("#" + identifier).css("min-width", extensionLength);
+			$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 			$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
 		}
 	}
-	$(".module").mouseover(function() {
+	$(".module-small").mouseover(function() {
 		$(this).css("color","white");
+		$(this).css("height","48px");
 	});
-	$(".module").mouseout(function() {
+	$(".module-small").mouseout(function() {
 		$(this).css("color","#1abc9c");
+		$(this).css("height","24px");
 	});
 	initializeSortable();
 	loadUserSavedModules();
@@ -95,6 +98,15 @@ function loadUserSavedModules() {
 		}
 		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
 	}
+
+	$(".module").mouseover(function() {
+		$(this).css("color","white");
+		$(this).css("height","48px");
+	});
+	$(".module").mouseout(function() {
+		$(this).css("color","#1abc9c");
+		$(this).css("height","48px");
+	});
 }
 
 function clean() {
@@ -113,4 +125,9 @@ function clean() {
 	};
 	storage.clear();
 	storage.save();
+}
+
+function clearStorage() {
+	$("#myModalLabel").html("<div>Are you sure you want to clear all saved modules?</div>");
+	$("#myModalBody").html('<button onClick="clean();loadModules();" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Yes</button>  <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">No</button>');
 }
