@@ -5,6 +5,7 @@ var specializationMods;
   var degreeCode = "CEG";
   getSpecializations(degreeCode, function(data){
     specializationList = data;
+    specializationList.push({coursecode: degreeCode, specialization: "None"});
   });
 })();
 
@@ -51,5 +52,15 @@ function selectSpecialization(specialization) {
     userSavedModules.specialization = specialization;
     storage.put(userSavedModules);
     storage.save();
+  } else {
+    $(".specialization a").html("Specialization" + ' <span class="glyphicon glyphicon-chevron-down"></span>');
+    for (var moduleType in requirementModules) {
+      if (moduleType == "Breadth" || moduleType == "Depth") {
+        for (var j in requirementModules[moduleType].modules) {
+          requirementModules[moduleType].modules[j].highlighted = false;
+        }
+      }
+    }
+    displayModules();
   }
 }
