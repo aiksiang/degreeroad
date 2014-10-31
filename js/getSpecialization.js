@@ -35,6 +35,6 @@ function selectSpecialization(i) {
         requirementModules.Depth.modules.push(specializationMods[i]);
       }
     }
-    loadModules();
+    displayModules();
   });
 }

@@ -44,19 +44,15 @@ var initializeSortable = function(){
 				}
 				if (index != -1){
 					userSavedModules[identifier].modules.splice(index,1);
+					requirementModules[moduleloc.moduleType].modules[moduleloc.i].Selected = false;
 				}
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC -= parseInt(module.Credit);
 				userSavedModules[identifier].mcs = currentMC;
 				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 			} else {
-				//
-				var currentMC = requirementModules[identifier].currentMC;
-				currentMC += parseInt(module.Credit);
-				requirementModules[identifier].currentMC = currentMC;
-				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC + "/" + requirementModules[identifier].totalMC);
+				
 			}
-
 		},
 		receive: function(event,ui) {
 			var moduleloc = findModule(ui.item.html());
@@ -64,18 +60,14 @@ var initializeSortable = function(){
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) {
 				userSavedModules[identifier].modules.push(module);
+				requirementModules[moduleloc.moduleType].modules[moduleloc.i].Selected = true;
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC += parseInt(module.Credit);
 				userSavedModules[identifier].mcs = currentMC;
 				ui.item.addClass("module").removeClass("module-small").css("height","48px");
 				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
 			} else {
-				//
-				var currentMC = requirementModules[identifier].currentMC;
-				currentMC -= parseInt(module.Credit);
-				requirementModules[identifier].currentMC = currentMC;
 				ui.item.addClass("module-small").removeClass("module").css("height","24px");
-				$("#" + identifier + " .sem-mcs").html("MC: " + currentMC + "/" + requirementModules[identifier].totalMC);
 			}
 			$(".module").mouseover(function() {
 				$(this).css("color","white");
@@ -95,6 +87,7 @@ var initializeSortable = function(){
 			});			
 		},
 		update: function() {
+			displayModules();
 			storage.put(userSavedModules);
 			storage.save();
 		}
