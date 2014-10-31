@@ -1,6 +1,6 @@
 var requirementModules = {};
 
-(function initializeRequirementModules() {
+function initializeRequirementModules() {
 	var degreeName = "Computer Engineering";
 	var degreeCode = "CEG"
 	var academicYear = "13/14"
@@ -10,9 +10,11 @@ var requirementModules = {};
 	    parseModules(data);
 	    loadUserSavedModules();
 	    displayModules();
+	    selectSpecialization(userSavedModules.specialization);
   		});
 	});
-})();
+};
+initializeRequirementModules();
 
 function parseRequirements(data) {
 	for (var i in data) {
@@ -65,7 +67,12 @@ function displayModules() {
 		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + requirementModules[identifier].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div></div>');
 		for (var i in requirementModules[identifier].modules) {
 			if (!requirementModules[identifier].modules[i].Selected) {
-				$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+				if (requirementModules[identifier].modules[i].highlighted) {
+					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+				} else {
+					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+				}
+				
 			}
 		}
 		$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
@@ -115,5 +122,5 @@ function clean() {
 
 function clearStorage() {
 	$("#myModalLabel").html("<div>Are you sure you want to clear all saved modules?</div>");
-	$("#myModalBody").html('<button onClick="clean();displayModules();" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Yes</button>  <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">No</button>');
+	$("#myModalBody").html('<button onClick="clean();initializeRequirementModules();" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Yes</button>  <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">No</button>');
 }
