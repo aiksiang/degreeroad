@@ -17,6 +17,7 @@ function initializeRequirementModules() {
 initializeRequirementModules();
 
 function parseRequirements(data) {
+	requirementModules = {};
 	for (var i in data) {
 		var moduleType = data[i].moduleType;
 		var identifier = moduleType.replace(/\s/g, '');
@@ -28,6 +29,7 @@ function parseRequirements(data) {
 			requirementModules[identifier].name = moduleType;
 			requirementModules[identifier].currentMC = 0;
 			requirementModules[identifier].totalMC = data[i].modularCredit;
+			requirementModules[identifier].number = i;
 		}
 	}
 }
@@ -100,22 +102,16 @@ function loadUserSavedModules() {
 	storage = new Storage();
 	storage.load();
 	userSavedModules = storage.get();
+	for (var identifier in userSavedModules.chosenModules) {
+		for (var i in userSavedModules.chosenModules[identifier]) {
+			currentMod = userSavedModules.chosenModules[identifier][i];
+			requirementModules[identifier].modules.push(currentMod);
+		}
+	}
 }
 
 function clean() {
 	storage = new Storage();
-	userSavedModules = {
-			sem1: {modules: [], mcs: 0},
-			sem2: {modules: [], mcs: 0},
-			sem3: {modules: [], mcs: 0},
-			sem4: {modules: [], mcs: 0},
-			sem5: {modules: [], mcs: 0},
-			sem6: {modules: [], mcs: 0},
-			sem7: {modules: [], mcs: 0},
-			sem8: {modules: [], mcs: 0},
-			course: "CEG",
-			specialization: "None"
-	};
 	storage.clear();
 	storage.save();
 }

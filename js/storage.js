@@ -10,7 +10,8 @@ function Storage() {
 		sem7: {modules: [], mcs: 0},
 		sem8: {modules: [], mcs: 0},
 		course: "CEG",
-		specialization: "None"
+		specialization: "None",
+		chosenModules: {}
 	};
 	this.load();
 }
@@ -46,15 +47,16 @@ Storage.prototype.put = function(value) {
 
 Storage.prototype.clear = function() {
 	this.data = {
-			sem1: {modules: [], mcs: 0},
-			sem2: {modules: [], mcs: 0},
-			sem3: {modules: [], mcs: 0},
-			sem4: {modules: [], mcs: 0},
-			sem5: {modules: [], mcs: 0},
-			sem6: {modules: [], mcs: 0},
-			sem7: {modules: [], mcs: 0},
-			sem8: {modules: [], mcs: 0},
-			course: "CEG",
-			specialization: "None"
+		sem1: {modules: [], mcs: 0},
+		sem2: {modules: [], mcs: 0},
+		sem3: {modules: [], mcs: 0},
+		sem4: {modules: [], mcs: 0},
+		sem5: {modules: [], mcs: 0},
+		sem6: {modules: [], mcs: 0},
+		sem7: {modules: [], mcs: 0},
+		sem8: {modules: [], mcs: 0},
+		course: "CEG",
+		specialization: "None",
+		chosenModules: {}
 	};
 }

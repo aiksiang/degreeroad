@@ -1,15 +1,16 @@
 var noOfSems = 8;
 var userSavedModules = {
-		sem1: {modules: [], mcs: 0},
-		sem2: {modules: [], mcs: 0},
-		sem3: {modules: [], mcs: 0},
-		sem4: {modules: [], mcs: 0},
-		sem5: {modules: [], mcs: 0},
-		sem6: {modules: [], mcs: 0},
-		sem7: {modules: [], mcs: 0},
-		sem8: {modules: [], mcs: 0},
-		course: "CEG",
-		specialization: "None"
+	sem1: {modules: [], mcs: 0},
+	sem2: {modules: [], mcs: 0},
+	sem3: {modules: [], mcs: 0},
+	sem4: {modules: [], mcs: 0},
+	sem5: {modules: [], mcs: 0},
+	sem6: {modules: [], mcs: 0},
+	sem7: {modules: [], mcs: 0},
+	sem8: {modules: [], mcs: 0},
+	course: "CEG",
+	specialization: "None",
+	chosenModules: {}
 };
 var storage;
 

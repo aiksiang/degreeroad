@@ -47,7 +47,8 @@ function db_get_requirements() {
 			FROM `Requirements`
 			WHERE `Requirements`.`degreeCourseCode` = '".$degreeCode."'
 			AND `Requirements`.`academicYear` = '".$academicYear."'
-			AND `Requirements`.`specialization` = 'None'";
+			AND `Requirements`.`specialization` = 'None'
+			ORDER BY `Requirements`.`modularCredit` DESC";
 	$result = array();
 	if ($queryResult = $mysqli->query($query)) {
 		while ($entry = $queryResult->fetch_assoc()) {
