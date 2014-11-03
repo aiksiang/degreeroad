@@ -13,7 +13,7 @@ $('.moduleinput').on('show.bs.dropdown', function () {
     for (var i = 0; i < allModuleList.length; i++){
       var moduleName;
       moduleName = allModuleList[i].Code + " " + allModuleList[i].Name;
-      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '])"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
+      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '],' + "'fromAllModuleList'" + ')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
     }
   }
 });
@@ -29,7 +29,7 @@ $('.moduleinput').on('input', function() {
     var moduleName;
     moduleName = allModuleList[i].Code + " " + allModuleList[i].Name;
     if (moduleName.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
-      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '])"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
+      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '],' + "'fromAllModuleList'" + ')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
       mod_count++;
     }
   }
@@ -44,17 +44,28 @@ $('.moduleinput').on('input', function() {
   }
 });
 
-function updateModuleData(mod) {
+function updateModuleData(mod,source) {
   currentMod = mod;
   $("#myModalLabel").html(mod.Name);
-  $("#myModalBody").html("<div><span class='modBodyKey'>" + "Module Code: " + "</span>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Modular Credits: " + "</span>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Exam Date: " + "</span>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Preclusion: " + "</span>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Prerequisite: " + "</span>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
-  "<div><span class='modBodyKey'>" + "Description: " + "</span>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" +
-  "<div class='dropdown' style='display: inline-block;'><button class='moduleType btn btn-default btn-sm' data-toggle='dropdown' >Module Type <span class='caret'></span></button><ul class='moduleTypeUl dropdown-menu' role='menu' aria-labelledby='dLabel'></ul></div>" +
-  '  <span class = addToList><button onClick="addToList();" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Add To List</button></span>');
+  if (source == "fromAllModuleList") {
+    $("#myModalBody").html("<div><span class='modBodyKey'>" + "Module Code: " + "</span>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Modular Credits: " + "</span>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Exam Date: " + "</span>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Preclusion: " + "</span>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Prerequisite: " + "</span>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Description: " + "</span>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" +
+    "<div class='dropdown' style='display: inline-block;'><button class='moduleType btn btn-default btn-sm' data-toggle='dropdown' >Module Type <span class='caret'></span></button><ul class='moduleTypeUl dropdown-menu' role='menu' aria-labelledby='dLabel'></ul></div>" +
+    '  <span class = addToList><button disabled="disabled" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Add To List</button></span>');
+  } else {
+    $("#myModalBody").html("<div><span class='modBodyKey'>" + "Module Code: " + "</span>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Modular Credits: " + "</span>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Exam Date: " + "</span>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Preclusion: " + "</span>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Prerequisite: " + "</span>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
+    "<div><span class='modBodyKey'>" + "Description: " + "</span>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" + 
+    '<div style="height:25px"><span class="remove-module glyphicon glyphicon glyphicon-trash" onClick="removeModule();" data-dismiss="modal"></span></div>');
+  }
+  
   for (var moduleType in requirementModules) {
     $(".moduleTypeUl").append("<li onClick='updateDestination(" + '"' +  requirementModules[moduleType].name + '"' + ");'>" + requirementModules[moduleType].name + "</li>");
   }
@@ -71,6 +82,8 @@ function addToList(moduleType) {
   if (!userSavedModules.chosenModules.hasOwnProperty(identifier)) {
     userSavedModules.chosenModules[identifier] = [];
     userSavedModules.chosenModules[identifier].push(currentMod);
+  } else {
+    userSavedModules.chosenModules[identifier].push(currentMod);
   }
   storage = new Storage();
   storage.put(userSavedModules);
@@ -78,3 +91,24 @@ function addToList(moduleType) {
   displayModules();
 }
 
+function removeModule() {
+  for (var identifier in requirementModules) {
+    var index = requirementModules[identifier].modules.indexOf(currentMod);
+    if (index >= 0) {
+      requirementModules[identifier].modules.splice(index,1);
+    }
+  }
+  for (var identifier in userSavedModules.chosenModules) {
+    var index = userSavedModules.chosenModules[identifier].indexOf(currentMod);
+    if (index >= 0) {
+      userSavedModules.chosenModules[identifier].splice(index,1);
+      if (userSavedModules.chosenModules[identifier].length == 0) {
+        delete userSavedModules.chosenModules[identifier];
+      }
+    }
+  }
+  storage = new Storage();
+  storage.put(userSavedModules);
+  storage.save();
+  displayModules();
+}

@@ -29,7 +29,6 @@ function parseRequirements(data) {
 			requirementModules[identifier].name = moduleType;
 			requirementModules[identifier].currentMC = 0;
 			requirementModules[identifier].totalMC = data[i].modularCredit;
-			requirementModules[identifier].number = i;
 		}
 	}
 }
@@ -58,7 +57,7 @@ function displayModules() {
 		for (var i in userSavedModules[sem].modules) {
 			savedMod = userSavedModules[sem].modules[i];
 			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
-			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + ']);" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
+			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
 			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].Selected = true;
 			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
 		}
@@ -70,9 +69,9 @@ function displayModules() {
 		for (var i in requirementModules[identifier].modules) {
 			if (!requirementModules[identifier].modules[i].Selected) {
 				if (requirementModules[identifier].modules[i].highlighted) {
-					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 				} else {
-					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +']);" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 				}
 				
 			}
