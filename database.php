@@ -68,7 +68,8 @@ function db_get_requirement_modules() {
 	$query = "SELECT `Code`,`Credit`,`Description`,`Examdate`,`Name`,`Preclude`,`Prereq`,`coursecode` AS `CourseCode`,`fulfil` AS `ModuleType`
 					FROM `unicoursereq`,`Module`
 					WHERE `unicoursereq`.`coursecode` = '".$degreeCode."'
-					AND `unicoursereq`.`modulecode` = `Module`.`Code`";
+					AND `unicoursereq`.`modulecode` = `Module`.`Code`
+					ORDER BY `Module`.`Code`";
 	$result = array();
 	if ($queryResult = $mysqli->query($query)) {
 		while ($entry = $queryResult->fetch_assoc()) {
