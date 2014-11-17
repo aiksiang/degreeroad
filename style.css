@@ -20,7 +20,7 @@ http://paletton.com/#uid=72+0u0kmqtWDrdgssnlfdFo53VU
 
 body {
 	color: #1abc9c;
-	background: #2ecc71;
+	background: #1EC573;
 	font-family: century gothic;
 }
 /* Cover Page*/
@@ -259,7 +259,6 @@ body {
 .roadmap {
 	width: 100%;
 	height: 430px;
-	background: #2ECC71;
 	cursor: default;
 }
 .roadmap-interior {
