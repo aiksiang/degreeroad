@@ -1,5 +1,5 @@
 var noOfSems = 8;
-var userSavedModules = {
+var defaultUserSavedModules = {
 	sem1: {modules: [], mcs: 0},
 	sem2: {modules: [], mcs: 0},
 	sem3: {modules: [], mcs: 0},
@@ -12,14 +12,8 @@ var userSavedModules = {
 	specialization: "None",
 	chosenModules: {}
 };
+var userSavedModules = defaultUserSavedModules;
 var storage;
-
-function course_selected() {
-	$(".coverpage").fadeOut(400,function(){
-		$(".main").removeClass("hidden");
-	});
-}
-
 
 var initializeSortable = function(){
 	$(".module-set").sortable({
@@ -45,7 +39,7 @@ var initializeSortable = function(){
 				}
 				if (index != -1){
 					userSavedModules[identifier].modules.splice(index,1);
-					requirementModules[moduleloc.moduleType].modules[moduleloc.i].Selected = false;
+					requirementModules[moduleloc.moduleType].modules[moduleloc.i].selected = false;
 				}
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC -= parseInt(module.Credit);
@@ -61,7 +55,7 @@ var initializeSortable = function(){
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) {
 				userSavedModules[identifier].modules.push(module);
-				requirementModules[moduleloc.moduleType].modules[moduleloc.i].Selected = true;
+				requirementModules[moduleloc.moduleType].modules[moduleloc.i].selected = true;
 				var currentMC = userSavedModules[identifier].mcs;
 				currentMC += parseInt(module.Credit);
 				userSavedModules[identifier].mcs = currentMC;

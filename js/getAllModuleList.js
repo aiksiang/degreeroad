@@ -1,5 +1,6 @@
 var allModuleList;
 var currentMod;
+storage = new Storage();
 
 (function initializeModuleList() {
   getAllModuleList(function(data){
@@ -7,6 +8,7 @@ var currentMod;
   });
 })();
 
+//Loads module input box with all modules
 $('.moduleinput').on('show.bs.dropdown', function () {
   if ($('.moduleinput .form-control').val() == "") {
     $(".module-drop").empty();
@@ -17,7 +19,7 @@ $('.moduleinput').on('show.bs.dropdown', function () {
     }
   }
 });
-
+//Searches module input box
 $('.moduleinput').on('input', function() {
   if (!$('.moduleinput').hasClass("open")){
     $(".module-drop").dropdown('toggle');
@@ -43,7 +45,7 @@ $('.moduleinput').on('input', function() {
     $(".moduleinput .dropdown-menu").css('height',245);
   }
 });
-
+//Loads modal with module data
 function updateModuleData(mod,source) {
   currentMod = mod;
   $("#myModalLabel").html(mod.Name);
@@ -85,7 +87,6 @@ function addToList(moduleType) {
   } else {
     userSavedModules.chosenModules[identifier].push(currentMod);
   }
-  storage = new Storage();
   storage.put(userSavedModules);
   storage.save();
   displayModules();
@@ -107,7 +108,6 @@ function removeModule() {
       }
     }
   }
-  storage = new Storage();
   storage.put(userSavedModules);
   storage.save();
   displayModules();

@@ -61,6 +61,9 @@ function selectSpecialization(specialization) {
         }
       }
     }
+    userSavedModules.specialization = specialization;
+    storage.put(userSavedModules);
+    storage.save();
     displayModules();
   }
 }

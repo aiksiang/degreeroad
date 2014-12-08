@@ -1,4 +1,5 @@
 var requirementModules = {};
+storage = new Storage();
 
 function initializeRequirementModules() {
 	var degreeName = "Computer Engineering";
@@ -7,10 +8,10 @@ function initializeRequirementModules() {
 	getRequirements(degreeCode, academicYear, function(data) {
 		parseRequirements(data);
 		getRequirementModules(degreeCode, function(data) {
-	    parseModules(data);
-	    loadUserSavedModules();
-	    displayModules();
-	    selectSpecialization(userSavedModules.specialization);
+		    parseModules(data);
+		    loadUserSavedModules();
+		    displayModules();
+		    selectSpecialization(userSavedModules.specialization);
   		});
 	});
 };
@@ -22,8 +23,6 @@ function parseRequirements(data) {
 		var moduleType = data[i].moduleType;
 		var identifier = moduleType.replace(/\s/g, '');
 		if (!requirementModules.hasOwnProperty(identifier)) {
-		if (identifier == "breadth") {identifier = "Breadth"}
-		if (identifier == "depth") {identifier = "Depth"}
 			requirementModules[identifier] = {};
 			requirementModules[identifier].modules = [];
 			requirementModules[identifier].name = moduleType;
@@ -37,7 +36,7 @@ function parseModules(data) {
 	for (var i in data) {
 		var ModuleType = data[i].ModuleType;
 		var identifier = ModuleType.replace(/\s/g, '');
-		data[i].Selected = false;
+		data[i].selected = false;
 		requirementModules[identifier].modules.push(data[i]);
 	}
 }
@@ -58,7 +57,7 @@ function displayModules() {
 			savedMod = userSavedModules[sem].modules[i];
 			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
 			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
-			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].Selected = true;
+			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].selected = true;
 			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
 		}
 		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
@@ -67,7 +66,7 @@ function displayModules() {
 	for (var identifier in requirementModules) {
 		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + requirementModules[identifier].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div></div>');
 		for (var i in requirementModules[identifier].modules) {
-			if (!requirementModules[identifier].modules[i].Selected) {
+			if (!requirementModules[identifier].modules[i].selected) {
 				if (requirementModules[identifier].modules[i].highlighted) {
 					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 				} else {
@@ -98,7 +97,6 @@ function displayModules() {
 }
 
 function loadUserSavedModules() {
-	storage = new Storage();
 	storage.load();
 	userSavedModules = storage.get();
 	for (var identifier in userSavedModules.chosenModules) {
@@ -110,7 +108,6 @@ function loadUserSavedModules() {
 }
 
 function clean() {
-	storage = new Storage();
 	storage.clear();
 	storage.save();
 }

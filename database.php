@@ -3,7 +3,8 @@
 $host = "localhost";
 $db = "degreeroad";
 $user = "root";
-$pw = "a0082903";
+$pw = "root";
+$port = 8889;
 
 $mysqli = new mysqli($host, $user, $pw, $db);
 
