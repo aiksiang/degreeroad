@@ -278,20 +278,30 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	width: 200px;
-	height: 382px;
-	min-height: 300px;
+	max-height: 396px;
 	border-radius: 5px;
 	background: #2c3e50;
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
 }
+.sem-expanded {
+	height: 396px;
+}
 .sem-title {
 	font-size: 17px;
 	margin-left: 10px;
-	padding-top: 3px;
+	margin-top: 3px;
 	margin-bottom: 3px;
 	color: white;
+}
+.req-title {
+	font-size: 17px;
+	margin-left: 10px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	color: white;
+	cursor: pointer;
 }
 .sem-mcs {
 	font-size: 16px;
@@ -341,8 +351,16 @@ body {
 }
 .module-set {
 	padding: 0px;
-	min-height: 84%;
-	max-height: 84%;
+	min-height: 336px;
+	max-height: 336px;
+	overflow-x: hidden;
+	margin-bottom: 0px;
+}
+.module-set-collapsed {
+	padding: 0px;
+	height: 0px;
+	min-height: 0px;
+	max-height: 336px;
 	overflow-x: hidden;
 	margin-bottom: 0px;
 }

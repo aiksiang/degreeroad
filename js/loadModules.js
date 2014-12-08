@@ -51,6 +51,7 @@ function displayModules() {
 		requirementModules[moduleType].currentMC = 0;
 	}
 
+	//Loads Semester Modules
 	var savedMod;
 	for (var sem in userSavedModules) {
 		for (var i in userSavedModules[sem].modules) {
@@ -63,9 +64,13 @@ function displayModules() {
 		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
 	}
 
+	//Loads Requirement Modules
 	for (var identifier in requirementModules) {
-		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="sem-title">' + requirementModules[identifier].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div></div>');
+		$(".requirement-container").append('<div class="mod-container"><div id = "' + identifier + '" class="sem"><div class="req-title" onClick="toggleExpansion(' + "'" + identifier + "'" + ');">' + requirementModules[identifier].name + '</div><ul class="module-set-collapsed"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div></div>');
 		for (var i in requirementModules[identifier].modules) {
+			$("#" + identifier + " ul").removeClass("module-set-collapsed");
+			$("#" + identifier + " ul").addClass("module-set");
+			$("#" + identifier).addClass("sem-expanded");
 			if (!requirementModules[identifier].modules[i].selected) {
 				if (requirementModules[identifier].modules[i].highlighted) {
 					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
@@ -77,6 +82,7 @@ function displayModules() {
 		}
 		$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
 	}
+
 	$(".module-small").mouseover(function() {
 		$(this).css("color","white");
 		$(this).css("height","48px");
@@ -94,6 +100,18 @@ function displayModules() {
 		$(this).css("height","48px");
 	});
 	initializeSortable();
+}
+
+function toggleExpansion(moduleType) {
+	if ($(".mod-container #" + moduleType).hasClass("sem-expanded")) {
+		$(".mod-container #" + moduleType).removeClass("sem-expanded");
+		$(".mod-container #" + moduleType + " ul").addClass("module-set-collapsed");
+		$(".mod-container #" + moduleType + " ul").removeClass("module-set");
+	} else {
+		$(".mod-container #" + moduleType + " ul").removeClass("module-set-collapsed");
+		$(".mod-container #" + moduleType + " ul").addClass("module-set");
+		$(".mod-container #" + moduleType).addClass("sem-expanded");
+	}
 }
 
 function loadUserSavedModules() {
