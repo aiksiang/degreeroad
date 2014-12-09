@@ -87,6 +87,16 @@ var initializeSortable = function(){
 			storage.save();
 		}
 	})
+$(".requirement-container").sortable({
+		connectWith: ".requirement-container",
+		dropOnEmpty: true,
+		forcePlaceholderSize: true,
+		scroll: false,
+		helper: "clone",
+		appendTo: "body",
+		cursor: "-webkit-grabbing",
+		delay: 100
+	})
 };
 initializeSortable();
 
