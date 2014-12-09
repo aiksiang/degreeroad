@@ -81,29 +81,15 @@ function displayModules() {
 				} else {
 					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 				}
-				
+			} else {
+				$("#" + identifier + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 			}
 		}
 		var requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
 		$(".requirement-container").css("width", requirementContainerWidth + "px");
 		$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
 	}
-	$(".module-small").mouseover(function() {
-		$(this).css("color","white");
-		$(this).css("height","48px");
-	});
-	$(".module-small").mouseout(function() {
-		$(this).css("color","#1abc9c");
-		$(this).css("height","24px");
-	});
-	$(".module").mouseover(function() {
-		$(this).css("color","white");
-		$(this).css("height","48px");
-	});
-	$(".module").mouseout(function() {
-		$(this).css("color","#1abc9c");
-		$(this).css("height","48px");
-	});
+	mouseoverEffects();
 	initializeSortable();
 }
 
@@ -162,4 +148,31 @@ function clean() {
 function clearStorage() {
 	$("#myModalLabel").html("<div>Are you sure you want to clear all saved modules?</div>");
 	$("#myModalBody").html('<button onClick="clean();initializeRequirementModules();" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Yes</button>  <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">No</button>');
+}
+
+function mouseoverEffects() {
+	$(".module-small").mouseover(function() {
+		$(this).css("color","white");
+		$(this).css("height","48px");
+	});
+	$(".module-small").mouseout(function() {
+		$(this).css("color","#1abc9c");
+		$(this).css("height","24px");
+	});
+	$(".module").mouseover(function() {
+		$(this).css("color","white");
+		$(this).css("height","48px");
+	});
+	$(".module").mouseout(function() {
+		$(this).css("color","#1abc9c");
+		$(this).css("height","48px");
+	});
+	$(".selected").mouseover(function() {
+		$(this).css("color","rgb(15,15,15)");
+		$(this).css("height","48px");
+	});
+	$(".selected").mouseout(function() {
+		$(this).css("color","rgb(235,235,235)");
+		$(this).css("height","24px");
+	});
 }

@@ -59,6 +59,24 @@ function db_get_requirements() {
 	return $result;
 }
 
+function mod_sort($a,$b) {
+	$numbera = preg_replace('/[^0-9]/', '', $a['Code']);
+	$numberb = preg_replace('/[^0-9]/', '', $b['Code']);
+	$lettera = preg_replace('/[0-9]/', '', $a['Code']);
+	$letterb = preg_replace('/[0-9]/', '', $b['Code']);
+	$levela = substr($numbera, 0, 1);
+	$levelb = substr($numberb, 0, 1);
+	if ($levela == $levelb) {
+		if ($lettera == $letterb) {
+			return strcasecmp($numbera,$numberb);
+		} else {
+			return strcasecmp($lettera,$letterb);
+		}
+	} else {
+		return strcasecmp($levela, $levelb);
+	}
+}
+
 function db_get_requirement_modules() {
 	if (isset($_GET['degreeCode'])) {
 		$degreeCode = $_GET['degreeCode'];
@@ -77,6 +95,7 @@ function db_get_requirement_modules() {
 			array_push($result, $entry);
 		}
 	}
+	usort($result,"mod_sort");
 	return $result;
 }
 

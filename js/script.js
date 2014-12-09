@@ -18,6 +18,7 @@ var storage;
 var initializeSortable = function(){
 	$(".module-set").sortable({
 		connectWith: ".module-set",
+		items: ".module, .module-small:not(.selected)",
 		dropOnEmpty: true,
 		forcePlaceholderSize: true,
 		placeholder: "module-placeholder",
@@ -64,22 +65,7 @@ var initializeSortable = function(){
 			} else {
 				ui.item.addClass("module-small").removeClass("module").css("height","24px");
 			}
-			$(".module").mouseover(function() {
-				$(this).css("color","white");
-				$(this).css("height","48px");
-			});
-			$(".module").mouseout(function() {
-				$(this).css("color","#1abc9c");
-				$(this).css("height","48px");
-			});
-			$(".module-small").mouseover(function() {
-				$(this).css("color","white");
-				$(this).css("height","48px");
-			});
-			$(".module-small").mouseout(function() {
-				$(this).css("color","#1abc9c");
-				$(this).css("height","24px");
-			});			
+			mouseoverEffects();		
 		},
 		update: function() {
 			displayModules();
@@ -89,13 +75,14 @@ var initializeSortable = function(){
 	})
 $(".requirement-container").sortable({
 		connectWith: ".requirement-container",
+		handle: ".req-title",
 		dropOnEmpty: true,
 		forcePlaceholderSize: true,
 		scroll: false,
 		helper: "clone",
 		appendTo: "body",
 		cursor: "-webkit-grabbing",
-		delay: 100
+		delay: 150
 	})
 };
 initializeSortable();

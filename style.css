@@ -347,6 +347,11 @@ body {
 .highlighted {
 	background: #597898;
 }
+.selected {
+	background: #1EC573;
+	color: rgb(235,235,235);
+	cursor: default !important;
+}
 .module-set {
 	padding: 0px;
 	min-height: 336px;
