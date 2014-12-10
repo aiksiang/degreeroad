@@ -1,5 +1,6 @@
 var requirementModules = {};
 var noOfExpandedLists = 0;
+var listOrder = [];
 storage = new Storage();
 
 function initializeRequirementModules() {
@@ -66,7 +67,13 @@ function displayModules() {
 	}
 
 	//Loads Requirement Modules
-	for (var identifier in requirementModules) {
+	if (listOrder.length == 0) {
+		for (var identifier in requirementModules) {
+			listOrder.push(identifier);
+		}
+	}
+	for (var i in listOrder) {
+		var identifier = listOrder[i];
 		$(".requirement-container").append('<div id = "' + identifier + '" class="sem"><div class="req-title" onClick="toggleExpansion(' + "'" + identifier + "'" + ');">' + requirementModules[identifier].name + '</div><ul class="module-set-collapsed"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div>');
 		for (var i in requirementModules[identifier].modules) {
 			if (i == 0){
@@ -124,9 +131,17 @@ function toggleExpansion(moduleType) {
 			$("#" + moduleType).css("height","396px");
 		}
 		noOfExpandedLists++;
+		initializeSortable();
+		mouseoverEffects();
 	}
 	var requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
 	$(".requirement-container").css("width", requirementContainerWidth + "px");
+	var i = 0;
+	listOrder = [];
+	for (var identifier in requirementModules) {
+		listOrder.push($(".requirement-container .sem").get(i).id);
+		i++
+	}
 }
 
 function loadUserSavedModules() {
