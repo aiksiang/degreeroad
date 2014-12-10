@@ -66,26 +66,17 @@ function displayModules() {
 			}
 			if (!requirementModules[identifier].modules[i].selected) {
 				if (requirementModules[identifier].modules[i].highlighted) {
-					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[identifier].modules[i].Credit + '</span>' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 				} else {
-					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[identifier].modules[i].Credit + '</span>' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 				}
 			} else {
-				$("#" + identifier + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+				$("#" + identifier + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[identifier].modules[i].Credit + '</span>' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
 			}
 		}
 		var requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
 		$(".requirement-container").css("width", requirementContainerWidth + "px");
 		$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
-		// if (requirementModules[identifier].currentMC >= requirementModules[identifier].totalMC) {
-			// $("#" + identifier + " ul").removeClass("module-set-collapsed");
-			// $("#" + identifier + " ul").addClass("module-set");
-			// $("#" + identifier).addClass("sem-expanded");
-			// noOfExpandedLists++;
-		// 	requirementModules[identifier].collapsed = true;
-		// } else {
-		// 	requirementModules[identifier].collapsed = false;
-		// }
 	}
 	mouseoverEffects();
 	initializeSortable();
@@ -155,7 +146,7 @@ function loadUserSavedModules() {
 		for (var i in userSavedModules[sem].modules) {
 			savedMod = userSavedModules[sem].modules[i];
 			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
-			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
+			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + savedMod.Credit + '</span>' + savedMod.Code + " " + savedMod.Name + '</li>');
 			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].selected = true;
 			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
 		}

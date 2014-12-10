@@ -23,6 +23,13 @@ body {
 	background: #1EC573;
 	font-family: century gothic;
 }
+::-webkit-scrollbar {
+	width: 4px;
+	background: grey;
+}
+::-webkit-scrollbar-thumb {
+    background: #ecf0f1;
+}
 /* Cover Page*/
 .coverpage {
 	height: 100vh;
@@ -321,6 +328,12 @@ body {
 	border-color: #2c3e50;
 	overflow: hidden;
 }
+.modMC {
+	float: right;
+	font-size: 9px;
+	padding-right: 2px;
+	color: rgb(228, 203, 0);
+}
 .module-placeholder {
 	font-size: 15px;
 	padding-left: 5px;
@@ -337,7 +350,7 @@ body {
 	padding-left: 5px;
 	padding-top: 0px;
 	height: 24px;
-	width: 200px;
+	width: 196px;
 	border-width: 1px;
 	border-style: solid;
 	background: #34495e;

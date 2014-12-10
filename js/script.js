@@ -27,7 +27,7 @@ var initializeSortable = function(){
 		appendTo: "body",
 		cursor: "-webkit-grabbing",
 		remove: function(event,ui) {
-			var moduleloc = findModule(ui.item.html());
+			var moduleloc = findModule(ui.item.contents().last().text());
 			var module = requirementModules[moduleloc.moduleType].modules[moduleloc.i];
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) { // mod removed from sem
@@ -51,7 +51,7 @@ var initializeSortable = function(){
 			}
 		},
 		receive: function(event,ui) {
-			var moduleloc = findModule(ui.item.html());
+			var moduleloc = findModule(ui.item.contents().last().text());
 			var module = requirementModules[moduleloc.moduleType].modules[moduleloc.i];
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) { // sem receives a mod
