@@ -42,30 +42,12 @@ function parseModules(data) {
 	}
 }
 
+
 function displayModules() {
-	for (var sem in userSavedModules) {
-		$("#" + sem + " .module-set").html("");
-	}
 	$(".requirement-container").html("");
 
-	for (var moduleType in requirementModules) {
-		requirementModules[moduleType].currentMC = 0;
-	}
 	noOfExpandedLists = 0;
-
-	//Loads Semester Modules
-	var savedMod;
-	for (var sem in userSavedModules) {
-		for (var i in userSavedModules[sem].modules) {
-			savedMod = userSavedModules[sem].modules[i];
-			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
-			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
-			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].selected = true;
-			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
-		}
-		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
-	}
-
+	
 	//Loads Requirement Modules
 	if (listOrder.length == 0) {
 		for (var identifier in requirementModules) {
@@ -76,7 +58,7 @@ function displayModules() {
 		var identifier = listOrder[i];
 		$(".requirement-container").append('<div id = "' + identifier + '" class="sem"><div class="req-title" onClick="toggleExpansion(' + "'" + identifier + "'" + ');">' + requirementModules[identifier].name + '</div><ul class="module-set-collapsed"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div>');
 		for (var i in requirementModules[identifier].modules) {
-			if (i == 0){
+			if (i == 0) {
 				$("#" + identifier + " ul").removeClass("module-set-collapsed");
 				$("#" + identifier + " ul").addClass("module-set");
 				$("#" + identifier).addClass("sem-expanded");
@@ -95,6 +77,15 @@ function displayModules() {
 		var requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
 		$(".requirement-container").css("width", requirementContainerWidth + "px");
 		$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
+		// if (requirementModules[identifier].currentMC >= requirementModules[identifier].totalMC) {
+			// $("#" + identifier + " ul").removeClass("module-set-collapsed");
+			// $("#" + identifier + " ul").addClass("module-set");
+			// $("#" + identifier).addClass("sem-expanded");
+			// noOfExpandedLists++;
+		// 	requirementModules[identifier].collapsed = true;
+		// } else {
+		// 	requirementModules[identifier].collapsed = false;
+		// }
 	}
 	mouseoverEffects();
 	initializeSortable();
@@ -116,6 +107,7 @@ function toggleExpansion(moduleType) {
 		if (moduleType.length >  13) {
 			$("#" + moduleType).css("height","50px");
 		}
+		requirementModules[moduleType].collapsed = true;
 	} else {
 		var temp = $("#" + moduleType);
 		$("#" + moduleType).remove();
@@ -130,6 +122,8 @@ function toggleExpansion(moduleType) {
 		if (moduleType.length >  13) {
 			$("#" + moduleType).css("height","396px");
 		}
+		requirementModules[moduleType].collapsed = false;
+
 		noOfExpandedLists++;
 		initializeSortable();
 		mouseoverEffects();
@@ -153,9 +147,26 @@ function loadUserSavedModules() {
 			requirementModules[identifier].modules.push(currentMod);
 		}
 	}
+	for (var moduleType in requirementModules) {
+		requirementModules[moduleType].currentMC = 0;
+	}
+	var savedMod;
+	for (var sem in userSavedModules) {
+		for (var i in userSavedModules[sem].modules) {
+			savedMod = userSavedModules[sem].modules[i];
+			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
+			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal">' + savedMod.Code + " " + savedMod.Name + '</li>');
+			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].selected = true;
+			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
+		}
+		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
+	}
 }
 
 function clean() {
+	for (var sem in userSavedModules) {
+		$("#" + sem + " .module-set").html("");
+	}
 	storage.clear();
 	storage.save();
 }
