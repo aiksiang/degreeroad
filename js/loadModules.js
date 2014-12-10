@@ -47,30 +47,52 @@ function displayModules() {
 	$(".requirement-container").html("");
 
 	if (listOrder.length == 0) {
-		for (var identifier in requirementModules) {
-			listOrder.push(identifier);
+		for (var moduleType in requirementModules) {
+			listOrder.push(moduleType);
+		}
+		for (var i in listOrder) {
+			var moduleType = listOrder[i];
+			if (requirementModules[moduleType].currentMC >= requirementModules[moduleType].totalMC) {
+				requirementModules[moduleType].collapsed = true;
+			} else {
+				requirementModules[moduleType].collapsed = false;
+			}
 		}
 	}
 	noOfExpandedLists = listOrder.length;
 
 	for (var i in listOrder) {
-		var identifier = listOrder[i];
-		$(".requirement-container").append('<div id = "' + identifier + '" class="sem sem-expanded"><div class="req-title" onClick="toggleExpansion(' + "'" + identifier + "'" + ');">' + requirementModules[identifier].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[identifier].totalMC + '</div></div>');
-		for (var i in requirementModules[identifier].modules) {
-			if (!requirementModules[identifier].modules[i].selected) {
-				if (requirementModules[identifier].modules[i].highlighted) {
-					$("#" + identifier + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[identifier].modules[i].Credit + '</span>' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+		var moduleType = listOrder[i];
+		$(".requirement-container").append('<div id = "' + moduleType + '" class="sem sem-expanded"><div class="req-title" onClick="toggleExpansion(' + "'" + moduleType + "'" + ');">' + requirementModules[moduleType].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[moduleType].totalMC + '</div></div>');
+		for (var i in requirementModules[moduleType].modules) {
+			if (!requirementModules[moduleType].modules[i].selected) {
+				if (requirementModules[moduleType].modules[i].highlighted) {
+					$("#" + moduleType + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ moduleType +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				} else {
-					$("#" + identifier + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[identifier].modules[i].Credit + '</span>' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+					$("#" + moduleType + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ moduleType +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				}
 			} else {
-				$("#" + identifier + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(requirementModules.'+ identifier +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[identifier].modules[i].Credit + '</span>' + requirementModules[identifier].modules[i].Code + " " + requirementModules[identifier].modules[i].Name + '</li>');
+				$("#" + moduleType + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(requirementModules.'+ moduleType +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 			}
 		}
-		var requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
+		var requirementContainerWidth;
+		if (noOfExpandedLists == listOrder.length) {
+			requirementContainerWidth = (noOfExpandedLists) * 230 + 40;
+		} else {
+			requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
+		}
 		$(".requirement-container").css("width", requirementContainerWidth + "px");
-		$("#" + identifier + " .sem-mcs").html("MC: " + requirementModules[identifier].currentMC + "/" + requirementModules[identifier].totalMC);
+		$("#" + moduleType + " .sem-mcs").html("MC: " + requirementModules[moduleType].currentMC + "/" + requirementModules[moduleType].totalMC);
 	}
+	for (var i in listOrder) {
+		var moduleType = listOrder[i];
+		if (requirementModules[moduleType].collapsed == true) {
+			contractList(moduleType);
+			updateContainerSize();
+		}
+	}
+	updateListOrder();
+
 	mouseoverEffects();
 	initializeSortable();
 }
@@ -125,14 +147,19 @@ function contractList(moduleType) {
 }
 
 function updateContainerSize() {
-	var requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
+	var requirementContainerWidth;
+	if (noOfExpandedLists == listOrder.length) {
+		requirementContainerWidth = (noOfExpandedLists) * 230 + 40;
+	} else {
+		requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
+	}
 	$(".requirement-container").css("width", requirementContainerWidth + "px");
 }
 
 function updateListOrder() {
 	var i = 0;
 	listOrder = [];
-	for (var identifier in requirementModules) {
+	for (var moduleType in requirementModules) {
 		listOrder.push($(".requirement-container .sem").get(i).id);
 		i++;
 	}
@@ -141,10 +168,10 @@ function updateListOrder() {
 function loadUserSavedModules() {
 	storage.load();
 	userSavedModules = storage.get();
-	for (var identifier in userSavedModules.chosenModules) {
-		for (var i in userSavedModules.chosenModules[identifier]) {
-			currentMod = userSavedModules.chosenModules[identifier][i];
-			requirementModules[identifier].modules.push(currentMod);
+	for (var moduleType in userSavedModules.chosenModules) {
+		for (var i in userSavedModules.chosenModules[moduleType]) {
+			currentMod = userSavedModules.chosenModules[moduleType][i];
+			requirementModules[moduleType].modules.push(currentMod);
 		}
 	}
 	for (var moduleType in requirementModules) {
@@ -166,6 +193,10 @@ function loadUserSavedModules() {
 function clean() {
 	for (var sem in userSavedModules) {
 		$("#" + sem + " .module-set").html("");
+	}
+	listOrder = [];
+	for (var moduleType in requirementModules) {
+		listOrder.push(moduleType);
 	}
 	storage.clear();
 	storage.save();

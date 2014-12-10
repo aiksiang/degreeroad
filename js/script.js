@@ -22,7 +22,7 @@ var initializeSortable = function(){
 		dropOnEmpty: true,
 		forcePlaceholderSize: true,
 		placeholder: "module-placeholder",
-		scroll: false,
+		scroll: true,
 		helper: "clone",
 		appendTo: "body",
 		cursor: "-webkit-grabbing",
@@ -89,7 +89,10 @@ $(".requirement-container").sortable({
 		helper: "clone",
 		appendTo: "body",
 		cursor: "-webkit-grabbing",
-		delay: 150
+		delay: 150,
+		update: function() {
+			updateListOrder();
+		}
 	})
 };
 initializeSortable();
