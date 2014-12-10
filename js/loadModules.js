@@ -215,6 +215,7 @@ function clearStorage() {
 
 function mouseoverEffects() {
 	var hoverMod;
+	var leaveMod;
 	$(".module-small").mouseover(function() {
 		var currentModule = $(this);
 		hoverMod = setTimeout(function(){
@@ -222,8 +223,11 @@ function mouseoverEffects() {
 		},20);
 	});
 	$(".module-small").mouseout(function (){
+		var currentModule = $(this);
 		clearTimeout(hoverMod);
-		$(this).removeClass("module-big-highlighted",130);
+		leaveMod = setTimeout(function(){
+			currentModule.removeClass("module-big-highlighted",130);
+		},20);
 	});
 	$(".module").mouseover(function() {
 		$(this).addClass("module-big-highlighted",80);
