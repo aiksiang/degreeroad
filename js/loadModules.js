@@ -43,7 +43,7 @@ function parseModules(data) {
 }
 
 
-function displayModules() {
+function displayRequirements() {
 	$(".requirement-container").html("");
 
 	if (listOrder.length == 0) {
@@ -83,11 +83,15 @@ function displayModules() {
 		}
 		$(".requirement-container").css("width", requirementContainerWidth + "px");
 		$("#" + moduleType + " .sem-mcs").html("MC: " + requirementModules[moduleType].currentMC + "/" + requirementModules[moduleType].totalMC);
+		if (requirementModules[moduleType].currentMC >= requirementModules[moduleType].totalMC) {
+			$(".requirement #" + moduleType).css("background","#1EC573");
+			$(".requirement #" + moduleType + " .sem-mcs").css("color","white");
+		}
 	}
 	for (var i in listOrder) {
 		var moduleType = listOrder[i];
 		if (requirementModules[moduleType].collapsed == true) {
-			contractList(moduleType);
+			contractList(moduleType,false);
 			updateContainerSize();
 		}
 	}
@@ -99,7 +103,7 @@ function displayModules() {
 
 function toggleExpansion(moduleType) {
 	if ($("#" + moduleType).hasClass("sem-expanded")) {
-		contractList(moduleType);
+		contractList(moduleType,true);
 	} else {
 		expandList(moduleType);
 	}
@@ -115,8 +119,7 @@ function expandList(moduleType) {
 	} else {
 		temp.prependTo(".requirement-container");
 	}
-	$("#" + moduleType + " ul").removeClass("module-set-collapsed");
-	$("#" + moduleType + " ul").addClass("module-set");
+	$("#" + moduleType + " ul").switchClass("module-set-collapsed","module-set", 100, function(){initializeSortable();});
 	$("#" + moduleType).addClass("sem-expanded");
 	if (moduleType.length >  13) {
 		$("#" + moduleType).css("height","396px");
@@ -124,11 +127,11 @@ function expandList(moduleType) {
 	requirementModules[moduleType].collapsed = false;
 
 	noOfExpandedLists++;
-	initializeSortable();
+	
 	mouseoverEffects();
 }
 
-function contractList(moduleType) {
+function contractList(moduleType, animation) {
 	noOfExpandedLists--;
 	var temp = $("#" + moduleType);
 	$("#" + moduleType).remove();
@@ -138,8 +141,11 @@ function contractList(moduleType) {
 		temp.prependTo(".requirement-container");
 	}
 	$("#" + moduleType).removeClass("sem-expanded");
-	$("#" + moduleType + " ul").addClass("module-set-collapsed");
-	$("#" + moduleType + " ul").removeClass("module-set");
+	if (animation == false) {
+		$("#" + moduleType + " ul").switchClass("module-set","module-set-collapsed",0);
+	} else {
+		$("#" + moduleType + " ul").switchClass("module-set","module-set-collapsed", 100);
+	}
 	if (moduleType.length >  13) {
 		$("#" + moduleType).css("height","50px");
 	}
@@ -208,28 +214,29 @@ function clearStorage() {
 }
 
 function mouseoverEffects() {
+	var hoverMod;
 	$(".module-small").mouseover(function() {
-		$(this).css("color","white");
-		$(this).css("height","48px");
+		var currentModule = $(this);
+		hoverMod = setTimeout(function(){
+			currentModule.addClass("module-big-highlighted",130);
+		},20);
 	});
-	$(".module-small").mouseout(function() {
-		$(this).css("color","#1abc9c");
-		$(this).css("height","24px");
+	$(".module-small").mouseout(function (){
+		clearTimeout(hoverMod);
+		$(this).removeClass("module-big-highlighted",130);
 	});
 	$(".module").mouseover(function() {
-		$(this).css("color","white");
-		$(this).css("height","48px");
+		$(this).addClass("module-big-highlighted",80);
 	});
 	$(".module").mouseout(function() {
-		$(this).css("color","#1abc9c");
-		$(this).css("height","48px");
+		$(this).removeClass("module-big-highlighted",80);
 	});
-	$(".selected").mouseover(function() {
-		$(this).css("color","rgb(15,15,15)");
-		$(this).css("height","48px");
-	});
-	$(".selected").mouseout(function() {
-		$(this).css("color","rgb(235,235,235)");
-		$(this).css("height","24px");
-	});
+	// $(".selected").mouseover(function() {
+	// 	$(this).css("color","rgb(15,15,15)");
+	// 	$(this).css("height","48px");
+	// });
+	// $(".selected").mouseout(function() {
+	// 	$(this).css("color","rgb(235,235,235)");
+	// 	$(this).css("height","24px");
+	// });
 }

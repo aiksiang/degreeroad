@@ -29,8 +29,6 @@ function selectSpecialization(specialization) {
     getSpecializationModules(specializationList[i].specialization, function(data){
       specializationMods = data;
       $(".requirement-container").html("");
-      requirementModules.Breadth.currentMC = 0;
-      requirementModules.Depth.currentMC = 0;
       for (var moduleType in requirementModules) {
         if (moduleType == "Breadth" || moduleType == "Depth") {
           for (var j in requirementModules[moduleType].modules) {
@@ -47,7 +45,7 @@ function selectSpecialization(specialization) {
           continue;
         }
       }
-      displayModules();
+      displayRequirements();
     });
     userSavedModules.specialization = specialization;
     storage.put(userSavedModules);
@@ -64,6 +62,6 @@ function selectSpecialization(specialization) {
     userSavedModules.specialization = specialization;
     storage.put(userSavedModules);
     storage.save();
-    displayModules();
+    displayRequirements();
   }
 }

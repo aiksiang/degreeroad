@@ -75,7 +75,7 @@ var initializeSortable = function(){
 			mouseoverEffects();		
 		},
 		update: function() {
-			displayModules();
+			displayRequirements();
 			storage.put(userSavedModules);
 			storage.save();
 		}

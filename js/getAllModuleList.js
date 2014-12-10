@@ -89,7 +89,7 @@ function addToList(moduleType) {
   }
   storage.put(userSavedModules);
   storage.save();
-  displayModules();
+  displayRequirements();
 }
 
 function removeModule() {
@@ -110,5 +110,5 @@ function removeModule() {
   }
   storage.put(userSavedModules);
   storage.save();
-  displayModules();
+  displayRequirements();
 }
