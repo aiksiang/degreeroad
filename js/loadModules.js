@@ -42,6 +42,35 @@ function parseModules(data) {
 	}
 }
 
+function loadUserSavedModules() {
+	storage.load();
+	userSavedModules = storage.get();
+	for (var moduleType in userSavedModules.chosenModules) {
+		for (var i in userSavedModules.chosenModules[moduleType]) {
+			var currentModule = userSavedModules.chosenModules[moduleType][i];
+			prevModLoc = findModule(currentModule.Code + " " + currentModule.Name);
+			requirementModules[moduleType].modules.push(currentModule);
+			if (prevModLoc != undefined){
+				requirementModules[prevModLoc.moduleType].modules.splice(prevModLoc.i,1);
+			}
+		}
+	}
+	for (var moduleType in requirementModules) {
+		requirementModules[moduleType].currentMC = 0;
+	}
+	var savedMod;
+	for (var sem in userSavedModules) {
+		$("#" + sem + " .module-set").html("");
+		for (var i in userSavedModules[sem].modules) {
+			savedMod = userSavedModules[sem].modules[i];
+			var savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
+			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(' + "'" + savedMod.Code + " " + savedMod.Name + "'" + ',' + "'" + "fromSem" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + savedMod.Credit + '</span>' + savedMod.Code + " " + savedMod.Name + '</li>');
+			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].selected = true;
+			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
+		}
+		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
+	}
+}
 
 function displayRequirements() {
 	$(".requirement-container").html("");
@@ -65,14 +94,15 @@ function displayRequirements() {
 		var moduleType = listOrder[i];
 		$(".requirement-container").append('<div id = "' + moduleType + '" class="sem sem-expanded"><div class="req-title" onClick="toggleExpansion(' + "'" + moduleType + "'" + ');">' + requirementModules[moduleType].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[moduleType].totalMC + '</div></div>');
 		for (var i in requirementModules[moduleType].modules) {
-			if (!requirementModules[moduleType].modules[i].selected) {
-				if (requirementModules[moduleType].modules[i].highlighted) {
-					$("#" + moduleType + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(requirementModules.'+ moduleType +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
+			var module = requirementModules[moduleType].modules[i];
+			if (!module.selected) {
+				if (module.highlighted) {
+					$("#" + moduleType + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				} else {
-					$("#" + moduleType + " .module-set").append('<li class="module-small" onClick = "updateModuleData(requirementModules.'+ moduleType +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
+					$("#" + moduleType + " .module-set").append('<li class="module-small" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				}
 			} else {
-				$("#" + moduleType + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(requirementModules.'+ moduleType +'.modules['+ i +'],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
+				$("#" + moduleType + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 			}
 		}
 		var requirementContainerWidth;
@@ -168,31 +198,6 @@ function updateListOrder() {
 	for (var moduleType in requirementModules) {
 		listOrder.push($(".requirement-container .sem").get(i).id);
 		i++;
-	}
-}
-
-function loadUserSavedModules() {
-	storage.load();
-	userSavedModules = storage.get();
-	for (var moduleType in userSavedModules.chosenModules) {
-		for (var i in userSavedModules.chosenModules[moduleType]) {
-			currentMod = userSavedModules.chosenModules[moduleType][i];
-			requirementModules[moduleType].modules.push(currentMod);
-		}
-	}
-	for (var moduleType in requirementModules) {
-		requirementModules[moduleType].currentMC = 0;
-	}
-	var savedMod;
-	for (var sem in userSavedModules) {
-		for (var i in userSavedModules[sem].modules) {
-			savedMod = userSavedModules[sem].modules[i];
-			savedModLoc = findModule(savedMod.Code + " " + savedMod.Name);
-			$("#" + sem + " .module-set").append('<li class="module" onClick = "updateModuleData(requirementModules.' + savedModLoc.moduleType + '.modules[' + savedModLoc.i + '],' + "'fromMod'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + savedMod.Credit + '</span>' + savedMod.Code + " " + savedMod.Name + '</li>');
-			requirementModules[savedModLoc.moduleType].modules[savedModLoc.i].selected = true;
-			requirementModules[savedModLoc.moduleType].currentMC += parseInt(savedMod.Credit);
-		}
-		$("#" + sem + " .sem-mcs").html("MC: " + userSavedModules[sem].mcs);
 	}
 }
 

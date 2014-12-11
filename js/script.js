@@ -22,6 +22,7 @@ var initializeSortable = function(){
 		dropOnEmpty: true,
 		forcePlaceholderSize: true,
 		placeholder: "module-placeholder",
+		revert: 200,
 		scroll: true,
 		helper: "clone",
 		appendTo: "body",
@@ -98,16 +99,16 @@ $(".requirement-container").sortable({
 initializeSortable();
 
 function findModule(moduleName) {
-  for (moduleType in requirementModules) {
-    for (i in requirementModules[moduleType].modules) {
-      	var target = requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name;
-				target = target.replace(/&amp;/g, '&');
-				var source = moduleName.replace(/&amp;/g, '&');
-      if (target == source) {
-        return {moduleType: moduleType, i: i};
-      }
-    }
-  }
+	for (moduleType in requirementModules) {
+		for (i in requirementModules[moduleType].modules) {
+			var target = requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name;
+			target = target.replace(/&amp;/g, '&');
+			var source = moduleName.replace(/&amp;/g, '&');
+			if (target == source) {
+				return {moduleType: moduleType, i: i};
+			}
+		}
+	}
 }
 
 

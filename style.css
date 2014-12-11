@@ -103,6 +103,20 @@ body {
 .modBodyValue {
 	color: black;
 }
+.line-spacing {
+	border-bottom: 1px solid #e5e5e5;
+	width: 100%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.module-declaration {
+	margin-bottom: 10px;
+	font-size: 15px;
+}
+.caret {
+	margin-left: 7px;
+	margin-top: -1px;
+}
 .form-control {
 	display:inline;
 }
@@ -412,18 +426,15 @@ li {
 	cursor: pointer;
 }
 .remove-module {
-	font-size: 20px;
-	color: black;
-	float: right;
+	font-size: 13px;
+	color: #e5e5e5;
 	margin-right: 5px;
 	padding: 5px;
-	border-radius: 3px;
 	cursor: pointer;
 }
 .remove-module:hover,
 .remove-module:focus {
-	background: #2c3e50;
-	color: white;
+	color: black;
 }
 .clear-modules:hover,
 .clear-modules:focus {
@@ -554,7 +565,25 @@ li {
 	min-width: 200px;
 }
 .moduleType {
-	width: 200px;
+	cursor: pointer;
+}
+.confirmAdd {
+	font-size: 13px;
+	color: #e5e5e5;
+	margin-right: 5px;
+	padding: 5px;
+	cursor: pointer;
+}
+.confirmAdd:hover,
+.confirmAdd:focus {
+	cursor: pointer;
+	color: black;
+}
+.mod-to-mod {
+	font-size: 8px;
+	top: -1px;
+	margin-left: 2px;
+	margin-right: 3px;
 }
 
 
