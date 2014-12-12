@@ -15,7 +15,7 @@ $('.moduleinput').on('show.bs.dropdown', function () {
     for (var i = 0; i < allModuleList.length; i++){
       var moduleName;
       moduleName = allModuleList[i].Code + " " + allModuleList[i].Name;
-      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '],' + "'-'" + ')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
+      $(".module-drop").append('<li id="allModuleList' + i + '" onClick="updateModuleData(allModuleList[' + i + '],' + "'-'" + ')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
     }
   }
 });
@@ -31,7 +31,7 @@ $('.moduleinput').on('input', function() {
     var moduleName;
     moduleName = allModuleList[i].Code + " " + allModuleList[i].Name;
     if (moduleName.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
-      $(".module-drop").append('<li onClick="updateModuleData(allModuleList[' + i + '],' + "'-'" + ')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
+      $(".module-drop").append('<li id="allModuleList' + i + '" onClick="updateModuleData(allModuleList[' + i + '],' + "'-'" + ')"; data-toggle="modal" data-target="#moduleModal">' + moduleName + '</li>');
       mod_count++;
     }
   }

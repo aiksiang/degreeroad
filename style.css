@@ -585,6 +585,11 @@ li {
 	margin-left: 2px;
 	margin-right: 3px;
 }
+.module-list-helper {
+	height: 48px !important;
+	width: 196px !important;
+	margin-left:400px;
+}
 
 
 .footer {

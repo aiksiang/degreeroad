@@ -53,7 +53,12 @@ var initializeSortable = function(){
 		},
 		receive: function(event,ui) {
 			var moduleloc = findModule(ui.item.contents().last().text());
-			var module = requirementModules[moduleloc.moduleType].modules[moduleloc.i];
+			var module;
+			if (moduleloc != undefined) {
+				module = requirementModules[moduleloc.moduleType].modules[moduleloc.i];
+			} else {
+				module = currentMod;
+			}
 			var identifier = $(this)[0].parentNode.id;
 			if (identifier.indexOf("sem") >= 0) { // sem receives a mod
 				userSavedModules[identifier].modules.push(module);
@@ -71,9 +76,13 @@ var initializeSortable = function(){
 				ui.item.addClass("module-small").removeClass("module").css("height","24px");
 				if (ui.sender.parent()[0].id.indexOf("sem") >= 0) {// req receives from sem
 					requirementModules[moduleloc.moduleType].currentMC -= parseInt(module.Credit);
-				} else { // req receives from req
+				} else { // req receives from req or list
 					currentMod = module;
-					confirmUpdate(moduleloc.moduleType, identifier);
+					if (moduleloc != undefined) {
+						confirmUpdate(moduleloc.moduleType, identifier);
+					} else { // req receives from list
+						confirmUpdate("-", identifier);
+					}
 				}
 			}
 			mouseoverEffects();		
@@ -99,6 +108,30 @@ $(".requirement-container").sortable({
 		}
 	})
 };
+$(".module-drop").sortable({
+	connectWith: ".requirement .module-set",
+	dropOnEmpty: true,
+	forcePlaceholderSize: true,
+	placeholder: "module-placeholder",
+	scroll: false,
+	helper: "clone",
+	appendTo: "body",
+	cursor: "-webkit-grabbing",
+	delay: 150,
+	cursorAt: { left: 500 },
+	activate: function(event,ui) {
+		allModuleListId = ui.item[0].id.match(/\d+/)[0];
+		chosenMod = allModuleList[allModuleListId];
+		currentMod = chosenMod;
+		$(ui.item)[0].setAttribute('onclick', "updateModuleData('" + chosenMod.Code + " " + chosenMod.Name + "','fromList');");
+		$(ui.helper)[0].setAttribute('onclick', "updateModuleData('" + chosenMod.Code + " " + chosenMod.Name + "','fromList');");
+		$(ui.helper)[0].setAttribute('class', "module-small module-big-highlighted ui-sortable-helper module-list-helper");
+		$(ui.helper).prepend("<span class='modMC'>" + chosenMod.Credit + "</span>");
+	},
+	update: function(event,ui) {
+		$(ui.item)[0].setAttribute('class', "module-small");
+	}
+});
 initializeSortable();
 
 function findModule(moduleName) {
