@@ -60,6 +60,15 @@ body {
 	width: 300px;
 	float: left;
 }
+.specialization-check {
+	position: absolute;
+	right: 85px;
+	top: 3px;
+	font-size: 18px;
+	color: white;
+	display: inline-block;
+	text-align: left;
+}
 .moduleinput {
 	width: 330px;
 	float: right;

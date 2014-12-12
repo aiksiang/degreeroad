@@ -1,17 +1,14 @@
 var noOfSems = 8;
-var defaultUserSavedModules = {
-	sem1: {modules: [], mcs: 0},
-	sem2: {modules: [], mcs: 0},
-	sem3: {modules: [], mcs: 0},
-	sem4: {modules: [], mcs: 0},
-	sem5: {modules: [], mcs: 0},
-	sem6: {modules: [], mcs: 0},
-	sem7: {modules: [], mcs: 0},
-	sem8: {modules: [], mcs: 0},
-	course: "CEG",
-	specialization: "None",
-	chosenModules: {}
-};
+var defaultUserSavedModules = {};
+for (var i = 1; i <= noOfSems; i++) {
+	defaultUserSavedModules["sem" + i] = {};
+	defaultUserSavedModules["sem" + i].modules = [];
+	defaultUserSavedModules["sem" + i].mcs = 0;
+}
+defaultUserSavedModules.course = "CEG";
+defaultUserSavedModules.specialization = "None";
+defaultUserSavedModules.chosenModules = {};
+
 var userSavedModules = defaultUserSavedModules;
 var storage;
 
