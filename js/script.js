@@ -69,8 +69,11 @@ var initializeSortable = function(){
 				}
 			} else { // reqs receives a mod
 				ui.item.addClass("module-small").removeClass("module").css("height","24px");
-				if (ui.sender.parent()[0].id.indexOf("sem") >= 0) {// if it is from sem
+				if (ui.sender.parent()[0].id.indexOf("sem") >= 0) {// req receives from sem
 					requirementModules[moduleloc.moduleType].currentMC -= parseInt(module.Credit);
+				} else { // req receives from req
+					currentMod = module;
+					confirmUpdate(moduleloc.moduleType, identifier);
 				}
 			}
 			mouseoverEffects();		
