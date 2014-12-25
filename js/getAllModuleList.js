@@ -47,7 +47,8 @@ $('.moduleinput').on('input', function() {
 });
 //Loads modal with module data
 function updateModuleData(mod,originalDeclaration) {
-  if (originalDeclaration == "fromSem" || originalDeclaration == "fromReq") {
+  var fromSemOrReq = (originalDeclaration == "fromSem" || originalDeclaration == "fromReq");
+  if (fromSemOrReq) {
     var modLoc = findModule(mod);
     mod = requirementModules[modLoc.moduleType].modules[modLoc.i];
     originalDeclaration = requirementModules[modLoc.moduleType].name;
@@ -64,14 +65,24 @@ function updateModuleData(mod,originalDeclaration) {
     "<div class='module-declaration'><span>Module Declaration: </span>" +
     "<div class='dropdown modBodyValue' style='display: inline-block;'><div class='moduleType' data-toggle='dropdown'>" + originalDeclaration + " <span class='caret'></span></div><ul class='moduleTypeUl dropdown-menu' role='menu' aria-labelledby='dLabel'></ul></div>" + "  " +
     "<span class='tickCross'></span></div>");
-  
+
   for (var moduleType in requirementModules) { //TODO check available declarations
-    $(".moduleTypeUl").append("<li onClick='updateDeclaration(" + '"' +  originalDeclaration + '","' +  requirementModules[moduleType].name + '"' + ");'>" + requirementModules[moduleType].name + "</li>");
+    if (moduleType == originalDeclaration.replace(/\s/g, '')) {
+      continue;
+    } else {
+      $(".moduleTypeUl").append("<li onClick='updateDeclaration(" + '"' +  originalDeclaration + '","' +  requirementModules[moduleType].name + '"' + ");'>" + requirementModules[moduleType].name + "</li>");
+    }
+  }
+
+  if (!fromSemOrReq) {
+    if (findModule(mod.Code + " " + mod.Name) != undefined) {
+      $(".module-declaration").html("");
+    }
   }
 
   var moduleLoc = findModule(mod.Code + " " + mod.Name);
   if (moduleLoc != undefined) {
-    if (moduleLoc.moduleType != 'ProgramRequirement' && moduleLoc.moduleType != 'Breadth' && moduleLoc.moduleType != 'Depth') {
+    if (mod.ModuleType != 'ProgramRequirement' && mod.ModuleType != 'Breadth' && mod.ModuleType != 'Depth') {
       $(".moduleTypeUl").append("<li onClick='updateDeclaration(" + '"' +  originalDeclaration + '","removeModule"' + ");'>" + "Remove Module" + "</li>");
     }
   }

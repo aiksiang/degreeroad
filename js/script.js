@@ -120,13 +120,9 @@ $(".module-drop").sortable({
 		allModuleListId = ui.item[0].id.match(/\d+/)[0];
 		chosenMod = allModuleList[allModuleListId];
 		currentMod = chosenMod;
-		$(ui.item)[0].setAttribute('onclick', "updateModuleData('" + chosenMod.Code + " " + chosenMod.Name + "','fromList');");
 		$(ui.helper)[0].setAttribute('onclick', "updateModuleData('" + chosenMod.Code + " " + chosenMod.Name + "','fromList');");
 		$(ui.helper)[0].setAttribute('class', "module-small module-big-highlighted ui-sortable-helper module-list-helper");
 		$(ui.helper).prepend("<span class='modMC'>" + chosenMod.Credit + "</span>");
-	},
-	update: function(event,ui) {
-		$(ui.item)[0].setAttribute('class', "module-small");
 	}
 });
 initializeSortable();
