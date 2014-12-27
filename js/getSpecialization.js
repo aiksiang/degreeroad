@@ -73,19 +73,15 @@ function selectSpecialization(specialization) {
       specializationMods = data;
       $(".requirement-container").html("");
       for (var moduleType in requirementModules) {
-        if (moduleType == "Breadth" || moduleType == "Depth") {
-          for (var j in requirementModules[moduleType].modules) {
-            requirementModules[moduleType].modules[j].highlighted = false;
-          }
-          for (var j in requirementModules[moduleType].modules) {
-            for (var i in specializationMods) {
-              if (requirementModules[moduleType].modules[j].Code == specializationMods[i].Code) {
-                requirementModules[moduleType].modules[j].highlighted = true;
-              }
+        for (var j in requirementModules[moduleType].modules) {
+          requirementModules[moduleType].modules[j].highlighted = false;
+        }
+        for (var j in requirementModules[moduleType].modules) {
+          for (var i in specializationMods) {
+            if (requirementModules[moduleType].modules[j].Code == specializationMods[i].Code) {
+              requirementModules[moduleType].modules[j].highlighted = true;
             }
           }
-        } else {
-          continue;
         }
       }
 

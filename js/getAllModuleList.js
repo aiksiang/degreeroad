@@ -19,6 +19,11 @@ $('.moduleinput').on('show.bs.dropdown', function () {
     }
   }
 });
+
+$('.moduleinput').on('click', function() {
+  $('.moduleinput .form-control').select();
+});
+
 //Searches module input box
 $('.moduleinput').on('input', function() {
   if (!$('.moduleinput').hasClass("open")){

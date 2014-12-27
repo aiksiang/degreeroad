@@ -82,7 +82,9 @@ function displayRequirements() {
 		for (var i in listOrder) {
 			var moduleType = listOrder[i];
 			if (requirementModules[moduleType].currentMC >= requirementModules[moduleType].totalMC) {
-				requirementModules[moduleType].collapsed = true;
+				if (!(moduleType == "Program Requirement" || moduleType == "Depth" || moduleType == "Breadth")) {
+					requirementModules[moduleType].collapsed = true;
+				}
 			} else {
 				requirementModules[moduleType].collapsed = false;
 			}
@@ -97,13 +99,13 @@ function displayRequirements() {
 			var module = requirementModules[moduleType].modules[i];
 			if (!module.selected) {
 				if (module.highlighted) {
-					$("#" + moduleType + " .module-set").append('<li class="module-small highlighted" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
+					$("#" + moduleType + " .module-set").prepend('<li class="module-small highlighted" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				} else {
 					$("#" + moduleType + " .module-set").append('<li class="module-small" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				}
 			} else {
 				if (module.highlighted) {
-					$("#" + moduleType + " .module-set").append('<li class="module-small selected highlighted" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
+					$("#" + moduleType + " .module-set").prepend('<li class="module-small selected highlighted" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				} else {
 					$("#" + moduleType + " .module-set").append('<li class="module-small selected" onClick = "updateModuleData(' + "'" + module.Code + " " + module.Name + "'" + ',' + "'" + "fromReq" + "'" + ');" data-toggle="modal" data-target="#moduleModal"><span class="modMC">' + requirementModules[moduleType].modules[i].Credit + '</span>' + requirementModules[moduleType].modules[i].Code + " " + requirementModules[moduleType].modules[i].Name + '</li>');
 				}
@@ -132,9 +134,27 @@ function displayRequirements() {
 	updateListOrder();
 
 	checkSpecializationFulfillment();
+	calculateTotalMCs();
 
 	mouseoverEffects();
 	initializeSortable();
+}
+
+function calculateTotalMCs() {
+	var currentMC = 0;
+	var totalMCs = 0;
+	getTotalMCs(userSavedModules.course, function(data) {
+		totalMCs = data.totalMCs;
+		for (var sem in userSavedModules) {
+			if (sem.indexOf("sem") >= 0) {
+				currentMC += parseInt(userSavedModules[sem].mcs);
+			}
+		}
+		// if (1) {//(currentMC >= totalMCs) {
+		// 	$(".total-sem-mcs").css("background", "white");
+		// }
+		$(".total-sem-mcs").html("Total MCs: " + currentMC + "/" + totalMCs);
+	});
 }
 
 function toggleExpansion(moduleType) {

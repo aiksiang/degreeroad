@@ -32,6 +32,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'getSpecializationModules') {
 	echo json_encode(db_get_specialization_modules());
 }
 
+if (isset($_GET['action']) && $_GET['action'] == 'getTotalMCs') {
+	echo json_encode(db_get_total_mcs());
+}
+
 function db_get_requirements() {
 	if (isset($_GET['degreeCode'])) {
 		$degreeCode = $_GET['degreeCode'];
@@ -146,6 +150,25 @@ function db_get_specialization_modules() {
 	if ($queryResult = $mysqli->query($query)) {
 		while ($entry = $queryResult->fetch_assoc()) {
 			array_push($result, $entry);
+		}
+	}
+	return $result;
+}
+
+function db_get_total_mcs() {
+	if (isset($_GET['degreeCode'])) {
+		$degreeCode = $_GET['degreeCode'];
+	} else {
+		$degreeCode = NULL;
+	}
+	global $mysqli;
+	$query = "SELECT `totalMCs`
+				FROM `degrees`
+				WHERE `degrees`.`degreeCode` = '".$degreeCode."'";
+	
+	if ($queryResult = $mysqli->query($query)) {
+		while ($entry = $queryResult->fetch_assoc()) {
+			$result = $entry;
 		}
 	}
 	return $result;

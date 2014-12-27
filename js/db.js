@@ -36,3 +36,11 @@ function getSpecializationModules(specialization, callback) {
 		console.log("API error", ex.responseText);
 	});
 }
+
+function getTotalMCs(degreeCode, callback) {
+	$.getJSON("database.php?action=getTotalMCs&degreeCode=" + degreeCode, function(data) {
+		callback(data);
+	}).error(function(ex) {
+		console.log("API error", ex.responseText);
+	});
+}

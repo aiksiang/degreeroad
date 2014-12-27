@@ -429,6 +429,12 @@ li {
 .module-set>li:focus {
 	cursor: -webkit-grab;
 }
+.total-sem-mcs {
+	float: right;
+	color: white;
+	font-size: 19px;
+	margin-right: 35px;
+}
 .clear-modules {
 	font-size: 20px;
 	color: black;
