@@ -163,9 +163,9 @@ function db_get_total_mcs() {
 	}
 	global $mysqli;
 	$query = "SELECT `totalMCs`
-				FROM `degrees`
-				WHERE `degrees`.`degreeCode` = '".$degreeCode."'";
-	
+				FROM `Degrees`
+				WHERE `Degrees`.`degreeCode` = '".$degreeCode."'";
+
 	if ($queryResult = $mysqli->query($query)) {
 		while ($entry = $queryResult->fetch_assoc()) {
 			$result = $entry;

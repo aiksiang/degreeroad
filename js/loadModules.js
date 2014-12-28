@@ -144,6 +144,7 @@ function calculateTotalMCs() {
 	var currentMC = 0;
 	var totalMCs = 0;
 	getTotalMCs(userSavedModules.course, function(data) {
+		console.log(data);
 		totalMCs = data.totalMCs;
 		for (var sem in userSavedModules) {
 			if (sem.indexOf("sem") >= 0) {
