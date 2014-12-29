@@ -69,6 +69,27 @@ body {
 	display: inline-block;
 	text-align: left;
 }
+.add-module-field {
+	width: inherit;
+	border: 0px;
+}
+.add-module-field:focus {
+	border: 0px;
+	outline: none;
+}
+.add-new-module {
+	float: right;
+	color: black;
+	margin-right: 8px;
+	margin-top: 8px;
+	padding: 8px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.add-new-module:hover,
+.add-new-module:focus {
+	background: white;
+}
 .moduleinput {
 	width: 330px;
 	float: right;
@@ -598,6 +619,22 @@ li {
 .confirmAdd:focus {
 	cursor: pointer;
 	color: black;
+}
+.confirmAddModule {
+	float: right;
+	margin-top: 4px;
+	color: rgb(142, 142, 142);
+}
+.confirmAddModule:hover,
+.confirmAddModule:focus {
+	cursor: pointer;
+	color: black;
+}
+.incomplete-module-info {
+	border: red;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
 }
 .mod-to-mod {
 	font-size: 8px;
