@@ -220,7 +220,7 @@ function confirmCreateNewModule() {
 	if (allFieldsFilled == true) {
 		$("#moduleModal").modal('hide');
 		var newModule = {
-			Code: $("#inputModuleCredit").val(),
+			Code: $("#inputModuleCode").val(),
 			CourseCode: defaultUserSavedModules.course,
 			Credit: modularCredit,
 			Description: ($("#inputDescription").val() != "-") ? $("#inputDescription").val() : "Not Available",
