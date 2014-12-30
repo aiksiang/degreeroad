@@ -90,7 +90,7 @@ var initializeSortable = function(){
 			storage.save();
 		}
 	})
-$(".requirement-container").sortable({
+	$(".requirement-container").sortable({
 		connectWith: ".requirement-container",
 		handle: ".req-title",
 		dropOnEmpty: true,
@@ -103,8 +103,15 @@ $(".requirement-container").sortable({
 		update: function() {
 			updateListOrder();
 		}
-	})
+	});
+
+	$(".req-title").hover(function() {
+		$(this).animate({'color':"#1abc9c"}, 100);
+	}, function() {
+		$(this).animate({'color':"white"}, 100);
+	});
 };
+
 $(".module-drop").sortable({
 	connectWith: ".requirement .module-set",
 	dropOnEmpty: true,
@@ -125,6 +132,7 @@ $(".module-drop").sortable({
 		$(ui.helper).prepend("<span class='modMC'>" + chosenMod.Credit + "</span>");
 	}
 });
+
 initializeSortable();
 
 function findModule(moduleName) {
@@ -148,14 +156,19 @@ function mouseoverEffects() {
 		var currentModule = $(this);
 		hoverMod = setTimeout(function(){
 			currentModule.addClass("module-big-highlighted",130);
-		},20);
+			if (currentModule[0].nextSibling == null) {
+				var distanceFromTop = currentModule.parent().scrollTop();
+				distanceFromTop += 48;
+				currentModule.parent().animate({scrollTop: distanceFromTop},131);
+			}
+		},110);
 	});
 	$(".module-small").mouseout(function (){
 		var currentModule = $(this);
 		clearTimeout(hoverMod);
 		leaveMod = setTimeout(function(){
 			currentModule.removeClass("module-big-highlighted",130);
-		},20);
+		},110);
 	});
 	$(".module").mouseover(function() {
 		$(this).addClass("module-big-highlighted",80);
@@ -163,42 +176,34 @@ function mouseoverEffects() {
 	$(".module").mouseout(function() {
 		$(this).removeClass("module-big-highlighted",80);
 	});
-	// $(".selected").mouseover(function() {
-	// 	$(this).css("color","rgb(15,15,15)");
-	// 	$(this).css("height","48px");
-	// });
-	// $(".selected").mouseout(function() {
-	// 	$(this).css("color","rgb(235,235,235)");
-	// 	$(this).css("height","24px");
-	// });
 }
 
-//drag scrolling
-//var mapclicked = false;
-//var mouseXPos, left;
-//$(".roadmap").on({
-//	'mousedown': function(e) {
-//		e.preventDefault();
-//		mapclicked = true;
-//		$(this).css("cursor","-webkit-grabbing");
-//		mouseXPos = e.pageX;
-//		left = $(".roadmap-container").scrollLeft();
-//	},
-//	'mouseup': function(e) {
-//		mapclicked = false;
-//		$(this).css("cursor","-webkit-grab");
-//	},
-//	'mousemove': function(e) {
-//		if (mapclicked) {
-//			var newX = e.pageX;
-//			$(".roadmap-container").scrollLeft(left - e.pageX + mouseXPos);
-//		}
-//	},
-//	'mouseleave': function(e) {
-//		mapclicked = false;
-//		$(this).css("cursor","default");
-//	},
-//	'mouseenter': function(e) {
-//		$(this).css("cursor","-webkit-grab");
-//	}
-//});
+// Drag Scrolling
+var reqContainerClicked = false;
+var mouseXPos, left;
+$(".requirement").on({
+	'mousedown': function(e) {
+		e.preventDefault();
+		reqContainerClicked = true;
+		$(this).css("cursor","-webkit-grabbing");
+		mouseXPos = e.pageX;
+		left = $(".requirement").scrollLeft();
+	},
+	'mouseup': function(e) {
+		reqContainerClicked = false;
+		$(this).css("cursor","-webkit-grab");
+	},
+	'mousemove': function(e) {
+		if (reqContainerClicked) {
+			var newX = e.pageX;
+			$(".requirement").scrollLeft(left - e.pageX + mouseXPos);
+		}
+	},
+	'mouseleave': function(e) {
+		reqContainerClicked = false;
+		$(this).css("cursor","default");
+	},
+	'mouseenter': function(e) {
+		$(this).css("cursor","-webkit-grab");
+	}
+});
