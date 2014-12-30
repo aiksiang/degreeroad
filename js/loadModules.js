@@ -211,7 +211,7 @@ function confirmCreateNewModule() {
 	});
 	$("#inputModuleCredit").on('input', function() {
 		$("#inputModuleCredit").removeClass("incomplete-module-info");
-		console.log($($("#inputModuleCredit").parent()[0].lastChild).remove());
+		$($("#inputModuleCredit").parent()[0].lastChild).remove();
 	});
 	$('.module-declaration .moduleType').on('input', function() {
 		$('.module-declaration .moduleType').removeClass("incomplete-module-info");
