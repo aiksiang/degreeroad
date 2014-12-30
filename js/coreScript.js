@@ -156,9 +156,13 @@ function mouseoverEffects() {
 		var currentModule = $(this);
 		hoverMod = setTimeout(function(){
 			currentModule.addClass("module-big-highlighted",130);
-			if (currentModule[0].nextSibling == null) {
+			if (currentModule.index() >= (currentModule.parent().children().length - 2)) {//currentModule[0].nextSibling == null) {
 				var distanceFromTop = currentModule.parent().scrollTop();
-				distanceFromTop += 48;
+				if (currentModule[0].nextSibling == null) {
+					distanceFromTop += 48;
+				} else {
+					distanceFromTop += 24;
+				}
 				currentModule.parent().animate({scrollTop: distanceFromTop},131);
 			}
 		},110);
