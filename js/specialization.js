@@ -9,6 +9,7 @@ var specializationMods;
 	});
 })();
 
+// Fill Specialization list with available Specializations
 $('.specialization').on('show.bs.dropdown', function () {
 	$(".spec-drop").empty();
 	for (var i = 0; i < specializationList.length; i++) {
