@@ -151,7 +151,7 @@ function findModule(moduleName) {
 //		mapclicked = true;
 //		$(this).css("cursor","-webkit-grabbing");
 //		mouseXPos = e.pageX;
-//		left = $(".roadmap-container").scrollLeft();
+//		left = $(".semester-container").scrollLeft();
 //	},
 //	'mouseup': function(e) {
 //		mapclicked = false;
@@ -160,7 +160,7 @@ function findModule(moduleName) {
 //	'mousemove': function(e) {
 //		if (mapclicked) {
 //			var newX = e.pageX;
-//			$(".roadmap-container").scrollLeft(left - e.pageX + mouseXPos);
+//			$(".semester-container").scrollLeft(left - e.pageX + mouseXPos);
 //		}
 //	},
 //	'mouseleave': function(e) {
