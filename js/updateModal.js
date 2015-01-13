@@ -23,7 +23,7 @@ function updateModuleData(mod,originalDeclaration) {
     "<span class='tickCross'></span></div>");
 
   for (var moduleType in requirementModules) { //TODO check available declarations
-    if (moduleType == originalDeclaration.replace(/\s/g, '')) {
+    if (moduleType == removeSpaces(originalDeclaration)) {
       continue;
     } else {
       $(".moduleTypeUl").append("<li onClick='updateDeclaration(" + '"' +  originalDeclaration + '","' +  requirementModules[moduleType].name + '"' + ");'>" + requirementModules[moduleType].name + "</li>");
@@ -71,7 +71,7 @@ function confirmUpdate(prevModuleType,moduleType) {
       requirementModules[prevModuleLoc.moduleType].currentMC -= requirementModules[prevModuleLoc.moduleType].modules[prevModuleLoc.i].Credit;
     }
     requirementModules[prevModuleLoc.moduleType].modules.splice(prevModuleLoc.i,1);
-    var prevType = prevModuleType.replace(/\s/g, '');
+    var prevType = removeSpaces(prevModuleType);
     for (var selectedModules in userSavedModules.chosenModules[prevType]) {
       if (userSavedModules.chosenModules[prevType][selectedModules].Code == currentMod.Code) {
         userSavedModules.chosenModules[prevType].splice(selectedModules,1);
@@ -82,7 +82,7 @@ function confirmUpdate(prevModuleType,moduleType) {
     }
   }
 
-  var identifier = moduleType.replace(/\s/g, '');
+  var identifier = removeSpaces(moduleType);
   requirementModules[identifier].modules.push(currentMod);
   if (currentMod.selected) {
     requirementModules[identifier].currentMC += parseInt(currentMod.Credit);

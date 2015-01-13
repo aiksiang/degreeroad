@@ -13,7 +13,7 @@ $('.specialization').on('show.bs.dropdown', function () {
   $(".spec-drop").empty();
   for (var i = 0; i < specializationList.length; i++) {
     var Specialization = specializationList[i].specialization;
-    $(".spec-drop").append('<li class="specialization-list" onClick="selectSpecialization(' + "'" + specializationList[i].specialization.replace(/\s/g, '') + "'" + ');">' + Specialization + '</li>');
+    $(".spec-drop").append('<li class="specialization-list" onClick="selectSpecialization(' + "'" + removeSpaces(specializationList[i].specialization) + "'" + ');">' + Specialization + '</li>');
   }
 });
 
@@ -63,7 +63,7 @@ function checkSpecializationFulfillment() {
 function selectSpecialization(specialization) {
   var i;
   for (var i = 0; i < specializationList.length; i++) {
-    if (specializationList[i].specialization.replace(/\s/g, '') == specialization) {
+    if (removeSpaces(specializationList[i].specialization) == specialization) {
       break;
     }
   }

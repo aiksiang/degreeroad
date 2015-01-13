@@ -22,7 +22,7 @@ function parseRequirements(data) {
 	requirementModules = {};
 	for (var i in data) {
 		var moduleType = data[i].moduleType;
-		var identifier = moduleType.replace(/\s/g, '');
+		var identifier = removeSpaces(moduleType);
 		if (!requirementModules.hasOwnProperty(identifier)) {
 			requirementModules[identifier] = {};
 			requirementModules[identifier].modules = [];
@@ -36,7 +36,7 @@ function parseRequirements(data) {
 function parseModules(data) {
 	for (var i in data) {
 		var ModuleType = data[i].ModuleType;
-		var identifier = ModuleType.replace(/\s/g, '');
+		var identifier = removeSpaces(ModuleType);
 		data[i].selected = false;
 		requirementModules[identifier].modules.push(data[i]);
 	}
@@ -232,7 +232,7 @@ function confirmCreateNewModule() {
 			selected: false,
 			highlighted: false
 		}
-		var moduleType = $('.module-declaration .moduleType').text().replace(/\s/g, '');
+		var moduleType = removeSpaces($('.module-declaration .moduleType').text());
 		requirementModules[moduleType].modules.push(newModule);
 		if (!userSavedModules.chosenModules.hasOwnProperty(moduleType)) {
 			userSavedModules.chosenModules[moduleType] = [];

@@ -12,6 +12,14 @@ defaultUserSavedModules.chosenModules = {};
 var userSavedModules = defaultUserSavedModules;
 var storage;
 
+var year = 0;
+var semestersInAYear = 2;
+for (var i = 1; i <= noOfSems; i++) {
+	year = Math.floor((i-1) / semestersInAYear) + 1;
+	var semester = ((i-1) % semestersInAYear) + 1;
+	$(".roadmap-interior").append('<div id="sem' + i + '" class="sem sem-expanded"><div class="sem-title">Year ' + year + ' Semester ' + semester + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div>');
+}
+
 var initializeSortable = function(){
 	$(".module-set").sortable({
 		connectWith: ".module-set",
@@ -90,6 +98,7 @@ var initializeSortable = function(){
 			storage.save();
 		}
 	})
+
 	$(".requirement-container").sortable({
 		connectWith: ".requirement-container",
 		handle: ".req-title",
@@ -156,7 +165,7 @@ function mouseoverEffects() {
 		var currentModule = $(this);
 		hoverMod = setTimeout(function(){
 			currentModule.addClass("module-big-highlighted",130);
-			if (currentModule.index() >= (currentModule.parent().children().length - 2)) {//currentModule[0].nextSibling == null) {
+			if (currentModule.index() >= (currentModule.parent().children().length - 2)) {
 				var distanceFromTop = currentModule.parent().scrollTop();
 				if (currentModule[0].nextSibling == null) {
 					distanceFromTop += 48;
@@ -180,6 +189,10 @@ function mouseoverEffects() {
 	$(".module").mouseout(function() {
 		$(this).removeClass("module-big-highlighted",80);
 	});
+}
+
+function removeSpaces(text) {
+	return text.replace(/\s/g, '');
 }
 
 // Drag Scrolling
