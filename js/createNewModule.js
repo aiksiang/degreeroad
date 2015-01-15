@@ -66,7 +66,7 @@ function confirmCreateNewModule() {
 			Credit: modularCredit,
 			Description: ($("#inputDescription").val() != "-") ? $("#inputDescription").val() : "Not Available",
 			Examdate: ($("#inputExamDate").val() != "-") ? $("#inputExamDate").val() : "Not Available",
-			ModuleType: $('.module-declaration .moduleType').text(),
+			ModuleType: $.trim($('.module-declaration .moduleType').text()),
 			Name: $("#myModalLabel input").val(),
 			Preclude: ($("#inputPreclusion").val() != "-") ? $("#inputPreclusion").val() : "Not Available",
 			Prereq: ($("#inputPrerequisite").val() != "-") ? $("#inputPrerequisite").val() : "Not Available",
@@ -79,6 +79,8 @@ function confirmCreateNewModule() {
 			userSavedModules.chosenModules[moduleType] = [];
 		}
 		userSavedModules.chosenModules[moduleType].push(newModule);
+		storage.put(userSavedModules);
+		storage.save();
 		displayRequirements();
 	}
 }

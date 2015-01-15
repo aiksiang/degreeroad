@@ -9,6 +9,7 @@
         <!-- Bootstrap -->
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="style.css" rel="stylesheet" type="text/css">
+        <link href="list-view-style.css" rel="stylesheet" type="text/css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -54,10 +55,10 @@
                         <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">Currently only NUS</ul>-->
                     </li>
                     <li class="view-type">
-                        <a class="view-glyph" href="#list"><span class="glyphicon glyphicon-th-list"></span></a>
+                        <a class="view-glyph list-view-icon" onClick="listView();"><span class="glyphicon glyphicon-th-list"></span></a>
                     </li>
                     <li class="view-type active">
-                        <a class="view-glyph" href="#map"><span class="glyphicon glyphicon-th-large"></span></a>
+                        <a class="view-glyph sortable-view-icon" onClick="sortableView();"><span class="glyphicon glyphicon-th-large"></span></a>
                     </li>
                     <li class="course dropdown">
                         <a data-toggle="dropdown" href="#">B.Eng in Computer Engineering</a>
@@ -90,11 +91,20 @@
         <div class="main">
             <!-- Semester Container -->
             <div class="semester-container">
-                <div class="roadmap">
-                    <div class="roadmap-interior">
+                
+                <div class="top-half">
+                    <!-- Sortable View -->
+                    <div class="sortable-view-semester">
                         <!-- Semester Modules Inserted Here -->
                     </div>
+                    <!-- List View -->
+                    <div class="list-view-semester">
+                        <table class="table table-condensed">
+                            <!-- Table of Modules Inserted Here -->
+                        </table>
+                    </div>
                 </div>
+                
             </div>
 
             <span class="clear-modules glyphicon glyphicon glyphicon-trash" onClick="clearStorage();" data-toggle="modal" data-target="#moduleModal"></span>
@@ -124,7 +134,7 @@
             <!-- Requirement Container -->
             <div class="requirement">
                 <div class="requirement-container">
-                    <!-- Requirement Modules Inserted here-->
+                    <!-- Requirement Modules Inserted Here -->
                 </div>
             </div>
 
@@ -148,6 +158,7 @@
     <script src="js/getAllModuleList.js"></script>
     <script src="js/updateModal.js"></script>
     <script src="js/specialization.js"></script>
+    <script src="js/listView.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>

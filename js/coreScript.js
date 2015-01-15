@@ -17,7 +17,7 @@ var semestersInAYear = 2;
 for (var i = 1; i <= noOfSems; i++) {
 	year = Math.floor((i-1) / semestersInAYear) + 1;
 	var semester = ((i-1) % semestersInAYear) + 1;
-	$(".roadmap-interior").append('<div id="sem' + i + '" class="sem sem-expanded"><div class="sem-title">Year ' + year + ' Semester ' + semester + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div>');
+	$(".sortable-view-semester").append('<div id="sem' + i + '" class="sem sem-expanded"><div class="sem-title">Year ' + year + ' Semester ' + semester + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div>');
 }
 
 var initializeSortable = function(){
@@ -224,3 +224,4 @@ $(".requirement").on({
 		$(this).css("cursor","-webkit-grab");
 	}
 });
+

@@ -1,0 +1,13 @@
+.list-view-semester table thead {
+	width: 100%;
+	color: white;
+	font-size: 20px;
+}
+.list-view-semester table thead td {
+	padding-left: 7px;
+}
+
+.list-view-semester tbody {
+	background: #2c3e50;
+	color: #20C876;
+}

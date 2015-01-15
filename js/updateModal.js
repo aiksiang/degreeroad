@@ -83,9 +83,17 @@ function confirmUpdate(prevModuleType,moduleType) {
 	}
 
 	var identifier = removeSpaces(moduleType);
+	currentMod.ModuleType = moduleType;
 	requirementModules[identifier].modules.push(currentMod);
 	if (currentMod.selected) {
 		requirementModules[identifier].currentMC += parseInt(currentMod.Credit);
+		for (var semNo = 1; semNo <= noOfSems; semNo++) {
+			for (var semIndex in userSavedModules["sem" + semNo].modules) {
+				if (userSavedModules["sem" + semNo].modules[semIndex].Code == currentMod.Code) {
+					userSavedModules["sem" + semNo].modules[semIndex].ModuleType = moduleType;
+				}
+			}
+		}
 	}
 
 	if (!userSavedModules.chosenModules.hasOwnProperty(identifier)) {
