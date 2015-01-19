@@ -13,7 +13,6 @@ function initializeRequirementModules() {
 		    parseModules(data);
 		    loadUserSavedModules();
 		    selectSpecialization(userSavedModules.specialization);
-			listView();
   		});
 	});
 };

@@ -99,8 +99,8 @@ var initializeSortable = function(){
 		}
 	})
 
-	$(".requirement-container").sortable({
-		connectWith: ".requirement-container",
+	$(".sortable-view-requirement").sortable({
+		connectWith: ".sortable-view-requirement",
 		handle: ".req-title",
 		dropOnEmpty: true,
 		forcePlaceholderSize: true,

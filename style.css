@@ -552,7 +552,7 @@ li {
 	text-align: center;
 	width: 50%;
 }
-.requirement-container {
+.sortable-view-requirement {
 	height: 402px;
 	clear: left;
 	-webkit-touch-callout: none;

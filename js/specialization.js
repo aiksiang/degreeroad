@@ -72,7 +72,7 @@ function selectSpecialization(specialization) {
 		$("#specialization-name").html(specializationList[i].specialization + " " + '<span class="glyphicon glyphicon-chevron-down"></span>');
 		getSpecializationModules(specializationList[i].specialization, function(data){
 			specializationMods = data;
-			$(".requirement-container").html("");
+			$(".sortable-view-requirement").html("");
 			for (var moduleType in requirementModules) {
 				for (var j in requirementModules[moduleType].modules) {
 					requirementModules[moduleType].modules[j].highlighted = false;

@@ -1,5 +1,5 @@
 function displayRequirements() {
-	$(".requirement-container").html("");
+	$(".sortable-view-requirement").html("");
 
 	if (listOrder.length == 0) {
 		for (var moduleType in requirementModules) {
@@ -20,7 +20,7 @@ function displayRequirements() {
 
 	for (var i in listOrder) {
 		var moduleType = listOrder[i];
-		$(".requirement-container").append('<div id = "' + moduleType + '" class="sem sem-expanded"><div class="req-title" onClick="toggleExpansion(' + "'" + moduleType + "'" + ');">' + requirementModules[moduleType].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[moduleType].totalMC + '</div></div>');
+		$(".sortable-view-requirement").append('<div id = "' + moduleType + '" class="sem sem-expanded"><div class="req-title" onClick="toggleExpansion(' + "'" + moduleType + "'" + ');">' + requirementModules[moduleType].name + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0' + '/' + requirementModules[moduleType].totalMC + '</div></div>');
 		for (var i in requirementModules[moduleType].modules) {
 			var module = requirementModules[moduleType].modules[i];
 			if (!module.selected) {
@@ -43,7 +43,7 @@ function displayRequirements() {
 		} else {
 			requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
 		}
-		$(".requirement-container").css("width", requirementContainerWidth + "px");
+		$(".sortable-view-requirement").css("width", requirementContainerWidth + "px");
 		$("#" + moduleType + " .sem-mcs").html("MC: " + requirementModules[moduleType].currentMC + "/" + requirementModules[moduleType].totalMC);
 		if (requirementModules[moduleType].currentMC >= requirementModules[moduleType].totalMC) {
 			$(".requirement #" + moduleType).css("background","#1EC573");
@@ -97,9 +97,9 @@ function expandList(moduleType) {
 	var temp = $("#" + moduleType);
 	$("#" + moduleType).remove();
 	if (noOfExpandedLists != 0) {
-		temp.insertAfter("#" + $(".requirement-container .sem").get(noOfExpandedLists-1).id);
+		temp.insertAfter("#" + $(".sortable-view-requirement .sem").get(noOfExpandedLists-1).id);
 	} else {
-		temp.prependTo(".requirement-container");
+		temp.prependTo(".sortable-view-requirement");
 	}
 	$("#" + moduleType + " ul").switchClass("module-set-collapsed","module-set", 100, function(){initializeSortable();});
 	$("#" + moduleType).addClass("sem-expanded");
@@ -118,9 +118,9 @@ function contractList(moduleType, animation) {
 	var temp = $("#" + moduleType);
 	$("#" + moduleType).remove();
 	if (noOfExpandedLists != 0) {
-		temp.insertAfter("#" + $(".requirement-container .sem").get(noOfExpandedLists-1).id);
+		temp.insertAfter("#" + $(".sortable-view-requirement .sem").get(noOfExpandedLists-1).id);
 	} else {
-		temp.prependTo(".requirement-container");
+		temp.prependTo(".sortable-view-requirement");
 	}
 	$("#" + moduleType).removeClass("sem-expanded");
 	if (animation == false) {
@@ -141,14 +141,14 @@ function updateContainerSize() {
 	} else {
 		requirementContainerWidth = (noOfExpandedLists + 1) * 230 + 40;
 	}
-	$(".requirement-container").css("width", requirementContainerWidth + "px");
+	$(".sortable-view-requirement").css("width", requirementContainerWidth + "px");
 }
 
 function updateListOrder() {
 	var i = 0;
 	listOrder = [];
 	for (var moduleType in requirementModules) {
-		listOrder.push($(".requirement-container .sem").get(i).id);
+		listOrder.push($(".sortable-view-requirement .sem").get(i).id);
 		i++;
 	}
 }

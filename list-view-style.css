@@ -1,4 +1,5 @@
-.list-view-semester table thead {
+.list-view-semester table thead,
+.list-view-requirement table thead {
 	width: 100%;
 	color: white;
 	font-size: 20px;
@@ -7,7 +8,27 @@
 	padding-left: 7px;
 }
 
-.list-view-semester tbody {
+.list-view-semester tbody,
+.list-view-requirement tbody {
 	background: #2c3e50;
 	color: #20C876;
+}
+
+.list-view-requirement {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.list-view-requirement tbody {
+}
+
+.list-view-table-selected {
+	background: #20C876;
+	color: black; 
+}
+
+.list-view-table-highlighted {
+	border-left: 2px;
+	border-left-style: solid;
+	border-left-color: rgb(0, 237, 255);
 }
