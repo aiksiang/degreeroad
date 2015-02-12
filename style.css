@@ -339,6 +339,7 @@ body {
 	margin-top: 2px;
 	margin-bottom: 2px;
 	width: 200px;
+	height: 396px;
 	max-height: 396px;
 	border-radius: 5px;
 	background: #2c3e50;
@@ -346,7 +347,7 @@ body {
 	float: left;
 }
 .sem-expanded {
-	height: 396px;
+	width: 400px;
 }
 .sem-title {
 	font-size: 17px;
@@ -511,6 +512,13 @@ li {
 	-ms-user-select: none;
 	user-select: none;
 	cursor: default;
+}
+#requirementList {
+	color: black;
+}
+#requirementList div:hover {
+	color: white;
+	cursor: pointer;
 }
 .specialization {
 	background: #7f8c8d;

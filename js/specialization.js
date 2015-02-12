@@ -10,56 +10,56 @@ var specializationMods;
 })();
 
 // Fill Specialization list with available Specializations
-$('.specialization').on('show.bs.dropdown', function () {
-	$(".spec-drop").empty();
-	for (var i = 0; i < specializationList.length; i++) {
-		var Specialization = specializationList[i].specialization;
-		$(".spec-drop").append('<li class="specialization-list" onClick="selectSpecialization(' + "'" + removeSpaces(specializationList[i].specialization) + "'" + ');">' + Specialization + '</li>');
-	}
-});
+// $('.specialization').on('show.bs.dropdown', function () {
+// 	$(".spec-drop").empty();
+// 	for (var i = 0; i < specializationList.length; i++) {
+// 		var Specialization = specializationList[i].specialization;
+// 		$(".spec-drop").append('<li class="specialization-list" onClick="selectSpecialization(' + "'" + removeSpaces(specializationList[i].specialization) + "'" + ');">' + Specialization + '</li>');
+// 	}
+// });
 
-function checkSpecializationFulfillment() {
-	if (userSavedModules.specialization != "None") {
-		var breadthfulfiled = 0;
-		var depthfulfilled = 0;
-		for (var moduleType in requirementModules) {
-			if (moduleType == "Breadth" || moduleType == "Depth") {
-				for (var j in requirementModules[moduleType].modules) {
-					for (var i in specializationMods) {
-						if (requirementModules[moduleType].modules[j].Code == specializationMods[i].Code) {
-							if (specializationMods[i].ModuleType == "breadth" && requirementModules[moduleType].modules[j].selected) {
-								breadthfulfiled += parseInt(specializationMods[i].Credit);
-							} else if (specializationMods[i].ModuleType == "depth" && requirementModules[moduleType].modules[j].selected) {
-								depthfulfilled += parseInt(specializationMods[i].Credit);
-							}
-						}
-					}
-				}
-			}
-		}
-		$("#specialization-breadth").html("Breadth: " + breadthfulfiled + "/" + requirementModules.Breadth.totalMC);
-		$("#specialization-depth").html("Depth: " + depthfulfilled + "/" + requirementModules.Depth.totalMC);
-		if (breadthfulfiled >= requirementModules.Breadth.totalMC) {
-			$("#specialization-breadth").css("color", "rgb(0, 237, 255)");
-		} else {
-			$("#specialization-breadth").css("color", "white");
-		}
-		if (depthfulfilled >= requirementModules.Depth.totalMC) {
-			$("#specialization-depth").css("color", "rgb(0, 237, 255)");
-		} else {
-			$("#specialization-depth").css("color", "white");
-		}
-		if (breadthfulfiled >= requirementModules.Breadth.totalMC &&
-			depthfulfilled >= requirementModules.Depth.totalMC) {
-			$(".specialization a").css("color", "rgb(43, 234, 140)");
-		} else {
-			$(".specialization a").css("color", "white");
-		}
-	} else {
-		$("#specialization-breadth").html("");
-		$("#specialization-depth").html("");
-	}
-}
+// function checkSpecializationFulfillment() {
+// 	if (userSavedModules.specialization != "None") {
+// 		var breadthfulfiled = 0;
+// 		var depthfulfilled = 0;
+// 		for (var moduleType in requirementModules) {
+// 			if (moduleType == "Breadth" || moduleType == "Depth") {
+// 				for (var j in requirementModules[moduleType].modules) {
+// 					for (var i in specializationMods) {
+// 						if (requirementModules[moduleType].modules[j].Code == specializationMods[i].Code) {
+// 							if (specializationMods[i].ModuleType == "breadth" && requirementModules[moduleType].modules[j].selected) {
+// 								breadthfulfiled += parseInt(specializationMods[i].Credit);
+// 							} else if (specializationMods[i].ModuleType == "depth" && requirementModules[moduleType].modules[j].selected) {
+// 								depthfulfilled += parseInt(specializationMods[i].Credit);
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 		$("#specialization-breadth").html("Breadth: " + breadthfulfiled + "/" + requirementModules.Breadth.totalMC);
+// 		$("#specialization-depth").html("Depth: " + depthfulfilled + "/" + requirementModules.Depth.totalMC);
+// 		if (breadthfulfiled >= requirementModules.Breadth.totalMC) {
+// 			$("#specialization-breadth").css("color", "rgb(0, 237, 255)");
+// 		} else {
+// 			$("#specialization-breadth").css("color", "white");
+// 		}
+// 		if (depthfulfilled >= requirementModules.Depth.totalMC) {
+// 			$("#specialization-depth").css("color", "rgb(0, 237, 255)");
+// 		} else {
+// 			$("#specialization-depth").css("color", "white");
+// 		}
+// 		if (breadthfulfiled >= requirementModules.Breadth.totalMC &&
+// 			depthfulfilled >= requirementModules.Depth.totalMC) {
+// 			$(".specialization a").css("color", "rgb(43, 234, 140)");
+// 		} else {
+// 			$(".specialization a").css("color", "white");
+// 		}
+// 	} else {
+// 		$("#specialization-breadth").html("");
+// 		$("#specialization-depth").html("");
+// 	}
+// }
 
 function selectSpecialization(specialization) {
 	var i;

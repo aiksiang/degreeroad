@@ -12,10 +12,18 @@ if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL";
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'getRequirements') {
-	echo json_encode(db_get_requirements());
+// if (isset($_GET['action']) && $_GET['action'] == 'getRequirementsOld') {
+// 	echo json_encode(db_get_requirements());
+// }
+if (isset($_GET['action']) && $_GET['action'] == 'retrieveDegreeRequirements') {
+	echo json_encode(db_retrieve_requirements());
 }
-
+if (isset($_GET['action']) && $_GET['action'] == 'retrieveRules') {
+	echo json_encode(db_retrieve_rules());
+}
+if (isset($_GET['action']) && $_GET['action'] == 'retrieveList') {
+	echo json_encode(db_retrieve_list());
+}
 if (isset($_GET['action']) && $_GET['action'] == 'getRequirementModules') {
 	echo json_encode(db_get_requirement_modules());
 }
@@ -36,24 +44,22 @@ if (isset($_GET['action']) && $_GET['action'] == 'getTotalMCs') {
 	echo json_encode(db_get_total_mcs());
 }
 
-function db_get_requirements() {
-	if (isset($_GET['degreeCode'])) {
-		$degreeCode = $_GET['degreeCode'];
-	} else {
-		$degreeCode = NULL;
-	}
-	if (isset($_GET['academicYear'])) {
-		$academicYear = $_GET['academicYear'];
-	} else {
-		$academicYear = NULL;
-	}
+// function db_get_requirements() {
+// 	$degreeCode = $_GET['degreeCode'];
+// 	$academicYear = $_GET['academicYear'];
+
+// 	$query = "SELECT *
+// 			FROM `Requirements`
+// 			WHERE `Requirements`.`degreeCourseCode` = '".$degreeCode."'
+// 			AND `Requirements`.`academicYear` = '".$academicYear."'
+// 			AND `Requirements`.`specialization` = 'None'
+// 			ORDER BY `Requirements`.`modularCredit` DESC";
+
+// 	return getResultingArray($query);
+// }
+
+function getResultingArray($query) {
 	global $mysqli;
-	$query = "SELECT *
-			FROM `Requirements`
-			WHERE `Requirements`.`degreeCourseCode` = '".$degreeCode."'
-			AND `Requirements`.`academicYear` = '".$academicYear."'
-			AND `Requirements`.`specialization` = 'None'
-			ORDER BY `Requirements`.`modularCredit` DESC";
 	$result = array();
 	if ($queryResult = $mysqli->query($query)) {
 		while ($entry = $queryResult->fetch_assoc()) {
@@ -61,6 +67,67 @@ function db_get_requirements() {
 		}
 	}
 	return $result;
+}
+
+function getResultingArrayWithoutHead($query) {
+	global $mysqli;
+	$result = array();
+	if ($queryResult = $mysqli->query($query)) {
+		while ($entry = $queryResult->fetch_row()) {
+			array_push($result, $entry);
+		}
+	}
+	return $result;
+}
+
+function getResult($query) {
+	global $mysqli;
+	return $mysqli->query($query)->fetch_assoc();
+}
+
+function db_retrieve_requirements() {
+	$academicYear = $_GET['academicYear'];
+	$degreeCode = $_GET['degreeCode'];
+	$specialProgramme = $_GET['specialProgramme'];
+	if ($specialProgramme == "None") {
+		$query = "SELECT *
+			FROM `degree_requirements`
+			WHERE `degree_requirements`.`academicYear` = ".$academicYear."
+			AND `degree_requirements`.`degreeCode` = '".$degreeCode."'";
+	} else {	
+		$query = "SELECT *
+				FROM `degree_requirements`
+				WHERE `degree_requirements`.`academicYear` = ".$academicYear."
+				AND `degree_requirements`.`degreeCode` = '".$degreeCode."'
+				AND `degree_requirements`.`specialProgramme` = ".$specialProgramme."";
+	}
+
+	return getResult($query);
+}
+
+function db_retrieve_rules() {
+	$requirementIds = $_GET['requirementIds'];
+	$requirementIdArray = explode(",", $requirementIds);
+	$result = Array();
+	foreach($requirementIdArray as $requirementId) {
+		$query = "SELECT *
+				FROM `major_requirement`,`rules`
+				WHERE `major_requirement`.`requirementId` = ".$requirementId."
+				AND `major_requirement`.`ruleId` = `rules`.`ruleId`";
+		
+		array_push($result,getResult($query));
+	}
+	return $result;
+}
+
+function db_retrieve_list() {
+	$listName = $_GET['listName'];
+
+	$query = "SELECT `module`,`alternativeModule`,`alternativeModule2`,`alternativeModule3`
+			FROM `list`
+			WHERE `list`.`listName` = '".$listName."'";
+
+	return getResultingArrayWithoutHead($query);
 }
 
 function mod_sort($a,$b) {
@@ -87,92 +154,55 @@ function db_get_requirement_modules() {
 	} else {
 		$degreeCode = NULL;
 	}
-	global $mysqli;
+	
 	$query = "SELECT `Code`,`Credit`,`Description`,`Examdate`,`Name`,`Preclude`,`Prereq`,`coursecode` AS `CourseCode`,`fulfil` AS `ModuleType`
-					FROM `unicoursereq`,`Module`
-					WHERE `unicoursereq`.`coursecode` = '".$degreeCode."'
-					AND `unicoursereq`.`modulecode` = `Module`.`Code`
-					ORDER BY `Module`.`Code`";
-	$result = array();
-	if ($queryResult = $mysqli->query($query)) {
-		while ($entry = $queryResult->fetch_assoc()) {
-			array_push($result, $entry);
-		}
-	}
+			FROM `unicoursereq`,`Module`
+			WHERE `unicoursereq`.`coursecode` = '".$degreeCode."'
+			AND `unicoursereq`.`modulecode` = `Module`.`Code`
+			ORDER BY `Module`.`Code`";
+
+	$result = getResultingArray($query);
 	usort($result,"mod_sort");
 	return $result;
 }
 
 function db_get_all_modules() {
-	global $mysqli;
+	
 	$query = "SELECT *
-				FROM `Module`";
-	$result = array();
-	if ($queryResult = $mysqli->query($query)) {
-		while ($entry = $queryResult->fetch_assoc()) {
-			array_push($result, $entry);
-		}
-	}
-	return $result;
+			FROM `Module`";
+
+	return getResultingArray($query);
 }
 
 function db_get_specializations() {
-	if (isset($_GET['degreeCode'])) {
-		$degreeCode = $_GET['degreeCode'];
-	} else {
-		$degreeCode = NULL;
-	}
-	global $mysqli;
+	$degreeCode = $_GET['degreeCode'];
+	
 	$query = "SELECT *
-				FROM `Course_Specialization_List`
-				WHERE `coursecode` = '".$degreeCode."'";
-	$result = array();
-	if ($queryResult = $mysqli->query($query)) {
-		while ($entry = $queryResult->fetch_assoc()) {
-			array_push($result, $entry);
-		}
-	}
-	return $result;
+			FROM `Course_Specialization_List`
+			WHERE `coursecode` = '".$degreeCode."'";
+	
+	return getResultingArray($query);
 }
 
 function db_get_specialization_modules() {
-	if (isset($_GET['specialization'])) {
-		$specialization = $_GET['specialization'];
-	} else {
-		$specialization = NULL;
-	}
-	global $mysqli;
+	$specialization = $_GET['specialization'];
+	
 	$query = "SELECT `Code`,`Credit`,`Description`,`Examdate`,`Name`,`Preclude`,`Prereq`,`specialization` AS `Specialization`,`fufil` AS `ModuleType`
 				FROM `cegspecialization`, `Module`
 				WHERE `cegspecialization`.`specialization` LIKE '%".$specialization."%'
 				AND `cegspecialization`.`modulecode` = `Module`.`Code`";
-	$result = array();
-	if ($queryResult = $mysqli->query($query)) {
-		while ($entry = $queryResult->fetch_assoc()) {
-			array_push($result, $entry);
-		}
-	}
-	return $result;
+	
+	return getResultingArray($query);
 }
 
 function db_get_total_mcs() {
-	if (isset($_GET['degreeCode'])) {
-		$degreeCode = $_GET['degreeCode'];
-	} else {
-		$degreeCode = NULL;
-	}
-	global $mysqli;
+	$degreeCode = $_GET['degreeCode'];
+
 	$query = "SELECT `totalMCs`
 				FROM `Degrees`
 				WHERE `Degrees`.`degreeCode` = '".$degreeCode."'";
 
-	if ($queryResult = $mysqli->query($query)) {
-		while ($entry = $queryResult->fetch_assoc()) {
-			$result = $entry;
-		}
-	}
-	return $result;
+	return getResultingArray($query);
 }
-
 
 ?>

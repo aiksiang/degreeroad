@@ -17,7 +17,7 @@ var semestersInAYear = 2;
 for (var i = 1; i <= noOfSems; i++) {
 	year = Math.floor((i-1) / semestersInAYear) + 1;
 	var semester = ((i-1) % semestersInAYear) + 1;
-	$(".sortable-view-semester").append('<div id="sem' + i + '" class="sem sem-expanded"><div class="sem-title">Year ' + year + ' Semester ' + semester + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div>');
+	$(".sortable-view-semester").append('<div id="sem' + i + '" class="sem"><div class="sem-title">Year ' + year + ' Semester ' + semester + '</div><ul class="module-set"></ul><div class="sem-mcs">MC: 0</div></div>');
 }
 
 var initializeSortable = function(){
@@ -196,32 +196,32 @@ function removeSpaces(text) {
 }
 
 // Drag Scrolling
-var reqContainerClicked = false;
-var mouseXPos, left;
-$(".requirement").on({
-	'mousedown': function(e) {
-		e.preventDefault();
-		reqContainerClicked = true;
-		$(this).css("cursor","-webkit-grabbing");
-		mouseXPos = e.pageX;
-		left = $(".requirement").scrollLeft();
-	},
-	'mouseup': function(e) {
-		reqContainerClicked = false;
-		$(this).css("cursor","-webkit-grab");
-	},
-	'mousemove': function(e) {
-		if (reqContainerClicked) {
-			var newX = e.pageX;
-			$(".requirement").scrollLeft(left - e.pageX + mouseXPos);
-		}
-	},
-	'mouseleave': function(e) {
-		reqContainerClicked = false;
-		$(this).css("cursor","default");
-	},
-	'mouseenter': function(e) {
-		$(this).css("cursor","-webkit-grab");
-	}
-});
+// var reqContainerClicked = false;
+// var mouseXPos, left;
+// $(".requirement").on({
+// 	'mousedown': function(e) {
+// 		e.preventDefault();
+// 		reqContainerClicked = true;
+// 		$(this).css("cursor","-webkit-grabbing");
+// 		mouseXPos = e.pageX;
+// 		left = $(".requirement").scrollLeft();
+// 	},
+// 	'mouseup': function(e) {
+// 		reqContainerClicked = false;
+// 		$(this).css("cursor","-webkit-grab");
+// 	},
+// 	'mousemove': function(e) {
+// 		if (reqContainerClicked) {
+// 			var newX = e.pageX;
+// 			$(".requirement").scrollLeft(left - e.pageX + mouseXPos);
+// 		}
+// 	},
+// 	'mouseleave': function(e) {
+// 		reqContainerClicked = false;
+// 		$(this).css("cursor","default");
+// 	},
+// 	'mouseenter': function(e) {
+// 		$(this).css("cursor","-webkit-grab");
+// 	}
+// });
 
