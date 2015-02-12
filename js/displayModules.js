@@ -6,7 +6,8 @@ function displayRequirements() {
 
 
 	for (var i in requirements) {
-		$("#requirementList").append('<div onClick="getModules(' + i + ');">'+ requirements[i].ruleName + '</div>');
+		$("#requirementList").append('<div onClick="getModules(' + i + ');">'+ requirements[i].ruleName + '(' + ((requirements[i].inequality=="ALL")?requirements[i].inequality:(requirements[i].inequality + " " + requirements[i].number + " " + requirements[i].quantifier) + "s") + " from " + requirements[i].includeType + ')</div>');
+
 		if (requirements[i].hasOwnProperty("children")) {
 			for (var j in requirements[i].children) {
 				$("#requirementList").append('<div>&nbsp&nbsp&nbsp&nbsp'+ requirements[i].children[j].ruleName + '</div>');

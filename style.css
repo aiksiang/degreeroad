@@ -515,6 +515,7 @@ li {
 }
 #requirementList {
 	color: black;
+	font-size: 17px;
 }
 #requirementList div:hover {
 	color: white;
