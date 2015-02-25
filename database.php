@@ -122,12 +122,18 @@ function db_retrieve_rules() {
 
 function db_retrieve_list() {
 	$listName = $_GET['listName'];
+	$list_type = explode("_",$listName);
+	if ($list_type[0] == "CEG") {
+		$list_type[0] = "MDP";
+	}
+	$list = "list_" . $list_type[0];
 
-	$query = "SELECT `module`,`alternativeModule`,`alternativeModule2`,`alternativeModule3`
-			FROM `list`
-			WHERE `list`.`listName` = '".$listName."'";
 
-	return getResultingArrayWithoutHead($query);
+	$query = "SELECT `module`
+			FROM `".$list."`
+			WHERE `".$list."`.`listName` = '".$listName."'";
+	
+	return getResultingArray($query);
 }
 
 function mod_sort($a,$b) {

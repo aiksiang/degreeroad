@@ -84,9 +84,7 @@ function displayRequirements() {
 function getModules(number) {
 	$(".sortable-view-requirement .module-set").html("");
 	for (var i in requirements[number].list) {
-		if (requirements[number].list[i][3] == null && requirements[number].list[i][2] == null && requirements[number].list[i][1] == null) {
-			$(".sortable-view-requirement .module-set").append('<li class="module-small">' + requirements[number].list[i][0] + '</li>');
-		}
+		$(".sortable-view-requirement .module-set").append('<li class="module-small">' + requirements[number].list[i].module + '</li>');
 	}
 }
 

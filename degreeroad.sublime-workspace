@@ -1,0 +1,949 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"new",
+				"newPuzzle"
+			],
+			[
+				"dra",
+				"DrawGrid"
+			],
+			[
+				"ob",
+				"obstacles"
+			],
+			[
+				"lan",
+				"landmark"
+			],
+			[
+				"puzzl",
+				"puzzle_name"
+			],
+			[
+				"puzz",
+				"puzzle_id"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"sem",
+				"sem-expanded"
+			],
+			[
+				"requi",
+				"requirements"
+			],
+			[
+				"pars",
+				"parseList"
+			],
+			[
+				"cu",
+				"currentNode"
+			],
+			[
+				"call",
+				"callFunction"
+			],
+			[
+				"con",
+				"concurrency"
+			],
+			[
+				"fetch_fie",
+				"mysql_fetch_field"
+			],
+			[
+				"deg",
+				"degreeInfo"
+			],
+			[
+				"speci",
+				"specialProgramme"
+			],
+			[
+				"degre",
+				"degree_requirements"
+			],
+			[
+				"special",
+				"specialProgramme"
+			],
+			[
+				"get",
+				"GetSquareContent"
+			],
+			[
+				"dr",
+				"DrawPuzzle"
+			],
+			[
+				"draw",
+				"DrawLibrary"
+			],
+			[
+				"line",
+				"lineWidth"
+			],
+			[
+				"Draw",
+				"DrawCircle"
+			],
+			[
+				"stro",
+				"strokeStyle"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"repeat",
+				"repeat-x"
+			],
+			[
+				"next",
+				"nextDestination"
+			],
+			[
+				"mo",
+				"modules"
+			],
+			[
+				"module",
+				"moduleType"
+			],
+			[
+				"list-view",
+				"list-view-requirement"
+			],
+			[
+				"Se",
+				"semNo"
+			],
+			[
+				"mod",
+				"modules"
+			],
+			[
+				"semes",
+				"semestersInAYear"
+			],
+			[
+				"se",
+				"semestersInAYear"
+			],
+			[
+				"storage",
+				"Storage"
+			],
+			[
+				"cur",
+				"currentModule"
+			],
+			[
+				"scr",
+				"scrollTop"
+			],
+			[
+				"dis",
+				"distanceFromTop"
+			],
+			[
+				"requirement",
+				"requirement-container"
+			],
+			[
+				"display",
+				"displayRequirements"
+			],
+			[
+				"all",
+				"allModuleList"
+			],
+			[
+				"modul",
+				"module-declaration"
+			],
+			[
+				"degr",
+				"degreeCode"
+			],
+			[
+				"specia",
+				"specialization"
+			],
+			[
+				"orig",
+				"originalDeclaration"
+			],
+			[
+				"dep",
+				"depthfulfilled"
+			],
+			[
+				"modu",
+				"ModuleType"
+			],
+			[
+				"spe",
+				"specializationMods"
+			],
+			[
+				"bre",
+				"breadthfulfiled"
+			],
+			[
+				"index",
+				"indexOf"
+			],
+			[
+				"i",
+				"i"
+			],
+			[
+				"sp",
+				"specializationList"
+			],
+			[
+				"specili",
+				"specialization"
+			],
+			[
+				"savedMo",
+				"savedModLoc"
+			],
+			[
+				"max-",
+				"max-height"
+			],
+			[
+				"lo",
+				"lostChildHome"
+			],
+			[
+				"lostChi",
+				"lostChildHome"
+			],
+			[
+				"lost",
+				"lostChild"
+			],
+			[
+				"list",
+				"listFrom"
+			],
+			[
+				"listFrom",
+				"listFromWithSpace"
+			],
+			[
+				"extension",
+				"extensionPercentage"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"ex",
+				"extlist"
+			],
+			[
+				"fo",
+				"focus"
+			],
+			[
+				"padding",
+				"padding-left"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 8305,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "style.css",
+			"settings":
+			{
+				"buffer_size": 11959,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "list-view-style.css",
+			"settings":
+			{
+				"buffer_size": 569,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/displayModules.js",
+			"settings":
+			{
+				"buffer_size": 8071,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Icyfer/Desktop/bufmgr.c",
+			"settings":
+			{
+				"buffer_size": 97468,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/loadModules.js",
+			"settings":
+			{
+				"buffer_size": 5498,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/db.js",
+			"settings":
+			{
+				"buffer_size": 2399,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "database.php",
+			"settings":
+			{
+				"buffer_size": 5822,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 146.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/dev/www/cp3101b/css/style.css",
+		"/C/dev/www/cp3101b/js/cat-canvas.js",
+		"/C/dev/www/cp3101b/index.php",
+		"/C/dev/www/cp3101b/puzzle.php",
+		"/C/dev/www/cp3101b/js/script.js",
+		"/C/dev/www/degreeroad/index.html",
+		"/C/dev/www/degreeroad/database.php",
+		"/C/dev/www/degreeroad/js/db.js",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab4/index.html",
+		"/C/dev/www/degreeroad/js/getAllModuleList.js",
+		"/C/dev/www/degreeroad/js/requirementCheckFunctions.js",
+		"/C/dev/www/degreeroad/js/createNewModule.js",
+		"/C/dev/www/degreeroad/js/coreScript.js",
+		"/C/dev/www/degreeroad/js/updateModal.js",
+		"/C/dev/www/degreeroad/js/storage.js",
+		"/C/dev/www/degreeroad/js/specialization.js",
+		"/C/dev/www/degreeroad/js/displayModules.js",
+		"/C/dev/www/degreeroad/js/loadModules.js",
+		"/C/dev/www/degreeroad/js/listView.js",
+		"/C/dev/www/degreeroad/style.css",
+		"/C/Users/Icyfer/Desktop/deg/degreeroad_list.sql",
+		"/C/Users/Icyfer/Desktop/deg/degreeroad_course_specialization_list.sql",
+		"/C/Users/Icyfer/Desktop/deg/degreeroad_rules.sql",
+		"/C/Users/Icyfer/Desktop/deg/degreeroad_unicoursereq.sql",
+		"/C/Users/Icyfer/Desktop/deg/degreeroad_cegspecialization.sql",
+		"/C/Users/Icyfer/Desktop/schema.sql",
+		"/C/Users/Icyfer/Desktop/degree_requirements.sql",
+		"/C/dev/www/degreeroad/js/jquery.mousewheel.js",
+		"/C/Users/Icyfer/Desktop/list.sql",
+		"/C/Users/Icyfer/Downloads/sendmail.php",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab3/css/style.css",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab3/index.html",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab3/js/cat-canvas.js",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab3/js/script.js",
+		"/C/Users/Icyfer/Desktop/CV/cv.css",
+		"/C/Users/Icyfer/Desktop/CV/index.html",
+		"/C/Users/Icyfer/Desktop/index.html",
+		"/C/Users/Icyfer/Desktop/cv.css",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab2/index.html",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab2/script.js",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab2/style.css",
+		"/C/Users/Icyfer/Desktop/script.js",
+		"/C/Users/Icyfer/Desktop/CP3101B/lab1/index.html",
+		"/C/Users/Icyfer/Desktop/style.css",
+		"/C/Users/Icyfer/Application Data/SSH/temp/index.html",
+		"/C/dev/www/degreeroad/list-view-style.css",
+		"/C/dev/www/degreeroad/js/getSpecialization.js",
+		"/C/dev/www/degreeroad/js/script.js",
+		"/C/Users/Icyfer/AppData/Local/Temp/Rar$DIa0.774/Keys.ini",
+		"/C/Users/Icyfer/Downloads/degreeroad.sql",
+		"/A/Games/Far Cry 4/bin/orbit_api.ini",
+		"/A/Games/GRID 2/steam_api.ini",
+		"/A/Games/Far Cry 4/bin/steam_api.ini",
+		"/A/Games/Game of Thrones/codex.ini",
+		"/A/Games/Game of Thrones/steam_api.cdx",
+		"/C/Users/Icyfer/Downloads/Game.of.Thrones.Episode.1-CODEX/codex.nfo",
+		"/F/Games/The.Walking.Dead.Season.2.Episode.1-RELOADED + Patch to Episode 5/reloaded.nfo",
+		"/G/CODEX/codex.ini",
+		"/A/Games/Assassin's Creed Liberation HD/Skidrow.ini",
+		"/G/SKIDROW/Skidrow.ini",
+		"/D/Assassins Creed IV Black Flag/steam_api.ini",
+		"/A/Games/Final Fantasy XIII/steam_api.ini",
+		"/F/Games/`The Walking Dead Season Two/ALI213.ini",
+		"/F/Games/`The Walking Dead Season Two/크랙/3dm-ep5/3DMGAME.ini",
+		"/F/Games/`The Walking Dead Season Two/reg.ini",
+		"/C/dev/www/degreeroad/js/getModuleList.js",
+		"/C/Games/The Walking Dead Season 2/Pack/WD2_pc_Menu_Patch_EP3_all.ttarch2",
+		"/C/Games/The Walking Dead Season 2/Pack/_resdesc_50_PC_Menu_Patch_EP5.lenc",
+		"/C/Games/The Walking Dead Season 2/Pack/_resdesc_50_PC_Menu_Patch_EP3.lenc",
+		"/C/Games/The Walking Dead Season 2/Pack/_resdesc_50_Menu.lenc",
+		"/C/Games/Assassin's Creed Unity/streaminginstall.ini",
+		"/C/Games/Far Cry 4/bin/steam_api.ini",
+		"/C/Games/The Walking Dead Season 2/steam_api.ini",
+		"/C/Users/Icyfer/workspace/cs4223/WEATHER1.PRG",
+		"/C/Users/Icyfer/workspace/cs4223/FFT1.prg",
+		"/C/Users/Icyfer/workspace/cs4223/FFT2.prg",
+		"/C/Users/Icyfer/workspace/cs4223/src/FFT2.prg",
+		"/C/dev/www/index.php",
+		"/C/Users/Icyfer/workspace/cs4223/1FFT1.prg",
+		"/C/Users/Icyfer/workspace/cs4223/src/FFT1.prg",
+		"/C/Users/Icyfer/workspace/cs4223/src/Test files description.txt",
+		"/C/Users/Icyfer/Downloads/AirServer 4.5.2 (PC & Mac) - Cracked/AirServer 4.5.2 (PC & Mac) - Cracked.nfo",
+		"/C/Users/Icyfer/Downloads/Module.sql",
+		"/C/Users/Icyfer/Downloads/Course_Specialization_List.sql",
+		"/C/Users/Icyfer/Downloads/cegspecialization.sql",
+		"/C/Users/Icyfer/Downloads/Requirements (1).sql",
+		"/C/Users/Icyfer/Downloads/Requirements.sql",
+		"/C/Users/Icyfer/Downloads/cegspecialization (1).sql",
+		"/C/Users/Icyfer/Downloads/unicoursereq.sql",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/js/app.js",
+		"/F/Games/`Assassins.Creed.IV.Black.Flag-RELOADED/reloaded.nfo",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/js/client.storage.js",
+		"/F/Computer Engineering/Year 4 Sem 1/CS4223/Assignment 1/16,1024 78140258",
+		"/F/Computer Engineering/Year 4 Sem 1/CS4223/Assignment 1/32,512 73512877",
+		"/F/Computer Engineering/Year 4 Sem 1/CS4223/Assignment 1/64,256 72220603",
+		"/F/Computer Engineering/Year 4 Sem 1/CS4223/Assignment 1/int alu 3",
+		"/C/Users/Icyfer/Downloads/degreeroad (1).sql",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/js/client.db.js",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/test-collections.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/showfbalbums.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/onealbum.php",
+		"/F/Programs/PC/PowerISO 4.8+Keys[h33t][eSpNs]/ReadME.txt",
+		"/C/Users/Icyfer/AppData/Local/Temp/Rar$DIa0.618/README.txt",
+		"/F/Computer Engineering/Year 2 Sem 2/CS3241/Lab/lab5/SampleExeReadMe.txt",
+		"/C/Users/Icyfer/Downloads/Modules.sql",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/database.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/main.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/config.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/facebookhelper.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/oauth.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/mute.php",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Final Project/2013-final-project-5/src/js/stats.js",
+		"/F/Computer Engineering/Year 3 Sem 2 SEP/Database/SQLite/CSE-A1200_productdb2-tables.sql.sql",
+		"/F/Computer Engineering/Year 3 Sem 2 SEP/Database/SQLite/CSE-A1200_productdb-tables.sql.sql",
+		"/F/Computer Engineering/Year 3 Sem 2 SEP/Database/SQLite/product.db",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/purl.js",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/script.js",
+		"/F/Computer Engineering/Year 3 Sem 1/CS3216/Assignment 1/2013-fb-group-1-master/src/setItemsSize.js",
+		"/C/Users/Icyfer/Desktop/ps3 student package/Sample-ans.txt",
+		"/C/Users/Icyfer/Desktop/ps3 student package/Sample.txt",
+		"/F/Computer Engineering/Year 4 Sem 1/CS2010/Examples/graph_undirected.txt",
+		"/F/Programs/PC/dBpowerAMP Music Converter 13.1/Readme.txt",
+		"/C/Users/Icyfer/Downloads/out.out",
+		"/C/Users/Icyfer/Downloads/out.txt",
+		"/C/Users/Icyfer/Desktop/ps2 student package/Sample-ans.txt",
+		"/C/Users/Icyfer/Desktop/ps2 student package/Sample.txt",
+		"/C/Program Files (x86)/Ten by Ten/Songsheet Generator/NewSong.txt",
+		"/C/Users/Icyfer/Downloads/TC16.out"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"C:\\dev\\www\\degreeroad",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"end",
+			"drawgr",
+			"istory",
+			"history",
+			"\"y\"",
+			"x",
+			"history",
+			"\">\n",
+			"<li class=\"specialization dropdown\">\n                    <a id=\"specialization-name\" data-toggle=\"dropdown\" href=\"#\">\n                        Specialization\n                        <span class=\"glyphicon glyphicon-chevron-down\"></span>\n                    </a>\n                    <div class=\"specialization-check\">\n                        <div id=\"specialization-breadth\"></div>\n                        <div id=\"specialization-depth\"></div>\n                    </div>\n                    <ul class=\"spec-drop dropdown-menu\" role=\"menu\" aria-labelledby=\"dLabel\"></ul>\n                </li>",
+			"requirementList",
+			"here",
+			"requirementModules",
+			"hasown",
+			"API error",
+			"getRequirements",
+			".sem",
+			"sem-expanded",
+			"console.log",
+			"--------------------------",
+			"----------------------------",
+			"----------------------------------",
+			"desc",
+			"description",
+			"project-description",
+			"skill",
+			"\"G\"",
+			"\"L\"",
+			"\"R\"",
+			"\"H\"",
+			"\"cC\"",
+			"font-fa",
+			"story",
+			"listview()",
+			"highlighted",
+			"requirement-container",
+			"list-view",
+			"sortable-view-semester",
+			"roadmap-interior",
+			"roadmap",
+			"toggleExpansion",
+			"findModule",
+			"replace(/\\s/g, '')",
+			"findModule",
+			"roadmap-container",
+			"slot1",
+			"storage.put",
+			"clear-modules",
+			"saveslot",
+			"clear",
+			"this.data",
+			"Storage",
+			"add-new",
+			"mapclicked",
+			"chosen",
+			"modal",
+			"input",
+			"todo",
+			"find(",
+			"identifier",
+			"find(",
+			"specialization-name",
+			"#1EC573",
+			"background",
+			";\n",
+			"checkSpecializationFulfillment",
+			"moduleType",
+			"00000040",
+			"0 00000040",
+			"userSavedModules",
+			"user",
+			"module-set",
+			"modal",
+			"drop",
+			"spec",
+			"console",
+			"con",
+			"loadModules",
+			"totalMC",
+			"84%",
+			".module",
+			"requirement",
+			"initializeModules",
+			"moduleList",
+			"storage",
+			"0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n0 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 d80d0200\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000\n3 00000000",
+			"roadmap",
+			"\"));\n",
+			"moduleType",
+			"superman",
+			"id",
+			"moduleList[moduleType]",
+			"module",
+			"console",
+			"title",
+			"sem-title",
+			"\n		console.log(data[i].moduleCode);",
+			"	[])",
+			".`",
+			"where",
+			"mod-container",
+			"sem-container",
+			"sem1",
+			"out",
+			"seminfo",
+			"41px",
+			"grab",
+			"module"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\"r\"",
+			"c",
+			"API error:",
+			"getRequirementsOld",
+			"-----------------",
+			"--------------------------",
+			"----------------------------",
+			"description",
+			"contact",
+			"'<img id=\"cat\" src=\"garden.png\">'",
+			"'<img id=\"cat\" src=\"library.png\">'",
+			"'<img id=\"cat\" src=\"river.png\">'",
+			"'<img id=\"cat\" src=\"home.png\">'",
+			"'<img id=\"cat\" src=\"cc.png\">'",
+			"sortable-view-requirement",
+			"sortable-view-semester",
+			"semester-container",
+			"reqContainerClicked",
+			"#20C876",
+			"displayModules",
+			"requirementModules",
+			"identifier",
+			"lostModule",
+			"sem-mod-container",
+			"mod-container",
+			"sem8",
+			"sem7",
+			"sem6",
+			"sem5",
+			"sem4",
+			"sem3",
+			"sem2",
+			"activate",
+			"semInfo"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 8305,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "style.css",
+					"settings":
+					{
+						"buffer_size": 11959,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								171,
+								171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "list-view-style.css",
+					"settings":
+					{
+						"buffer_size": 569,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/displayModules.js",
+					"settings":
+					{
+						"buffer_size": 8071,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5079,
+								5079
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1026.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/Icyfer/Desktop/bufmgr.c",
+					"settings":
+					{
+						"buffer_size": 97468,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/loadModules.js",
+					"settings":
+					{
+						"buffer_size": 5498,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1031,
+								1031
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "js/db.js",
+					"settings":
+					{
+						"buffer_size": 2399,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1091,
+								1091
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "database.php",
+					"settings":
+					{
+						"buffer_size": 5822,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3750,
+								3750
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1620.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"32/512"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 158.0,
+	"status_bar_visible": true
+}
