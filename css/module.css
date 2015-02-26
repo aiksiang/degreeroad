@@ -1,0 +1,42 @@
+.ui.top.attached.label:first-child + :not(.attached) {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	margin-left: 1px !important;
+	margin-right: 1px !important;
+}
+
+.ui.list {
+	padding-top: 2.1rem !important;
+	padding-bottom: 2.1rem !important;
+	font-size: 1rem;
+	overflow: auto;
+}
+
+.ui.selection.list .list > .item, .ui.selection.list > .item {
+	border-radius: 0 !important;
+}
+
+.ui.selection.list .list > .item, .ui.selection.list > .item {
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.module-list {
+	height: 99%;
+	padding-top: 1px;
+}
+
+.module {
+	height:42px !important;
+	list-style: none !important;
+	color: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.03);
+	padding: 0.5em;
+	overflow: hidden;
+	line-height: 1.2;
+}
+
+.module-placeholder {
+	background: rgba(0, 0, 0, 0.03) !important;
+	color: rgba(0, 0, 0, 0.8) !important;
+	line-height: 1.2;
+}
