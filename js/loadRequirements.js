@@ -83,9 +83,9 @@ function parseList(rule) {
 			});
 		}
 	} else if (rule.includeType.indexOf("LIST") >= 0) {
-		console.log("Multiple with list: " + rule.includeItem);
+		//console.log("Multiple with list: " + rule.includeItem);
 	} else {
-		console.log("No Lists: " + rule.includeItem);
+		//console.log("No Lists: " + rule.includeItem);
 	}
 }
 

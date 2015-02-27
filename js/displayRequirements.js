@@ -49,20 +49,27 @@ function populateRequirementModulesList(rule) {
 
 	var moduleList = $("#requirementModules .module-list");
 	var listItems = 0;
-	moduleList.html("");
-	if (rule.hasOwnProperty("list")) {
-		for (var i in rule.list) {
-			var id = lookupModule(rule.list[i].module);
-			if (id != undefined)
-				moduleList.append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
-			else
-				moduleList.append(listItem("requirementModule", rule.list[i].module, "item module", rule.list[i].module));
-			listItems++;
-		}
-	} else {
 
-	}
-	$("#requirementModules .ui.bottom.right.attached.label").html("0/" + listItems);
+	moduleList.transition({
+		animation: 'slide down',
+		onComplete: function() {
+			moduleList.html("");
+			if (rule.hasOwnProperty("list")) {
+				for (var i in rule.list) {
+					var id = lookupModule(rule.list[i].module);
+					if (id != undefined)
+						moduleList.append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
+					else
+						moduleList.append(listItem("notFound", rule.list[i].module, "item module", rule.list[i].module));
+					listItems++;
+				}
+			} else {
+				// Not a list
+			}
+			$("#requirementModules .ui.bottom.right.attached.label").html("0/" + listItems);
+		}
+	});
+	moduleList.transition('slide down');
 }
 
 function lookupModule(moduleCode) {

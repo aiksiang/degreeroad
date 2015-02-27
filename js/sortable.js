@@ -11,66 +11,59 @@ var initializeSortable = function(){
 		appendTo: "body",
 		cursor: "-webkit-grabbing",
 		remove: function(event,ui) {
-			// var moduleloc = findModule(ui.item.contents().last().text());
-			// var module = requirementModules[moduleloc.moduleType].modules[moduleloc.i];
-			// var identifier = $(this)[0].parentNode.id;
-			// if (identifier.indexOf("sem") >= 0) { // mod removed from sem
-			// 	var index = -1;
-			// 	for (var i in userSavedModules[identifier].modules) {
-			// 		if (userSavedModules[identifier].modules[i].Code == module.Code) {
-			// 			index = i;
-			// 			break;
-			// 		}
-			// 	}
-			// 	if (index != -1){
-			// 		userSavedModules[identifier].modules.splice(index,1);
-			// 		requirementModules[moduleloc.moduleType].modules[moduleloc.i].selected = false;
-			// 	}
-			// 	var currentMC = userSavedModules[identifier].mcs;
-			// 	currentMC -= parseInt(module.Credit);
-			// 	userSavedModules[identifier].mcs = currentMC;
-			// 	$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
-			// } else { // mod removed from req
+			var removedFrom = $($(this)[0].parentNode).parent().attr('id');
+			var itemLocation;
 
-			// }
+			if (ui.item.attr('id').indexOf("requirementModule") >= 0) {
+				itemLocation = ui.item.attr('id').substring(17);
+			} else {
+				console.log("Module is not found in database");
+			}
+
+			if (removedFrom != undefined) {
+				if (removedFrom.indexOf("semester") >= 0) { //semester removes a mod
+					var index = userSavedModules[removedFrom].modules.indexOf(allModuleList[itemLocation]);
+					if (index >= 0) {
+						userSavedModules[removedFrom].modules.splice(index, 1);
+						userSavedModules[removedFrom].mcs -= parseInt(allModuleList[itemLocation].Credit);
+						updateMC(removedFrom, userSavedModules[removedFrom].mcs);
+						//TODO Unselect module in requirements
+					} else {
+						console.log("Unable to remove module, module not found");
+					}
+				} else { //something else removes a mod
+
+				}
+			} else {
+				console.log("Module does not exist in list");
+			}
 		},
 		receive: function(event,ui) {
-			// var moduleloc = findModule(ui.item.contents().last().text());
-			// var module;
-			// if (moduleloc != undefined) {
-			// 	module = requirementModules[moduleloc.moduleType].modules[moduleloc.i];
-			// } else {
-			// 	module = currentMod;
-			// }
-			// var identifier = $(this)[0].parentNode.id;
-			// if (identifier.indexOf("sem") >= 0) { // sem receives a mod
-			// 	userSavedModules[identifier].modules.push(module);
-			// 	requirementModules[moduleloc.moduleType].modules[moduleloc.i].selected = true;
-			// 	var currentMC = userSavedModules[identifier].mcs;
-			// 	currentMC += parseInt(module.Credit);
-			// 	userSavedModules[identifier].mcs = currentMC;
-			// 	ui.item.addClass("module").removeClass("module-small").css("height","48px");
-			// 	$("#" + identifier + " .sem-mcs").html("MC: " + currentMC);
+			var receivedBy = $($(this)[0].parentNode).parent().attr('id');
+			var itemLocation;
 
-			// 	if (!(ui.sender.parent()[0].id.indexOf("sem") >= 0)) { //sem receives from req
-			// 		requirementModules[ui.sender.parent()[0].id].currentMC += parseInt(module.Credit);
-			// 	}
-			// } else { // reqs receives a mod
-			// 	ui.item.addClass("module-small").removeClass("module").css("height","24px");
-			// 	if (ui.sender.parent()[0].id.indexOf("sem") >= 0) {// req receives from sem
-			// 		requirementModules[moduleloc.moduleType].currentMC -= parseInt(module.Credit);
-			// 	} else { // req receives from req or list
-			// 		currentMod = module;
-			// 		if (moduleloc != undefined) {
-			// 			confirmUpdate(moduleloc.moduleType, identifier);
-			// 		} else { // req receives from list
-			// 			confirmUpdate("-", identifier);
-			// 		}
-			// 	}
-			// }
-			// mouseoverEffects();		
+			if (ui.item.attr('id').indexOf("requirementModule") >= 0) {
+				itemLocation = ui.item.attr('id').substring(17);
+			} else {
+				console.log("Module is not found in database");
+			}
+			
+			if (receivedBy != undefined) {
+				if (receivedBy.indexOf("semester") >= 0) { //semester receives a mod
+					userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
+					userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
+					updateMC(receivedBy, userSavedModules[receivedBy].mcs);
+					//TODO Select module in requirements
+				} else { //something else receives a mod
+
+				}
+			} else {
+				console.log("module does not exist in list");
+			}
 		},
-		update: function() {
+		update: function(event, ui) {
+			showAll();
+			//console.log($(ui.sender).parent());
 			// displayRequirements();
 			// storage.put(userSavedModules);
 			// storage.save();
@@ -79,3 +72,19 @@ var initializeSortable = function(){
 }
 
 initializeSortable();
+
+function updateMC(identifier, mc) {
+	$("#" + identifier + " .ui.bottom.right.attached.label").html("MCs: " + mc);
+}
+
+//for debugging
+function showAll() {
+	for (var i in userSavedModules) {
+		if (i.indexOf("semester") >= 0) {console.log(i);
+			for (var j in userSavedModules[i].modules) {
+				console.log(userSavedModules[i].modules[j]);
+			}
+			console.log("MCs: " + userSavedModules[i].mcs)
+		}
+	}
+}

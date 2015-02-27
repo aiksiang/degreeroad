@@ -66,11 +66,7 @@ for (var i = 1; i <= noOfSems; i++) {
 				<div class="ui top attached label">\
 					Year ' + year + ' Semester ' + semesterNo + '\
 				</div>\
-				<ul class="ui selection list module-list">\
-					<a class="item module">CS1234 The Most Important Module Ever In The History of NUS</a>\
-					<a class="item module">Selection</a>\
-					<a class="item module">Selection</a>\
-				</ul>\
+				<ul class="ui selection list module-list"></ul>\
 				<div class="ui bottom right attached label">MCs: 0</div>\
 			</div>\
 		</div>');
