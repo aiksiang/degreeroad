@@ -26,7 +26,8 @@ initializeRequirementModules();
 function parseRules(rules) {
 	var i = 0;
 	while (i < rules.length) {
-		if (rules[i].parent == null) {	
+		if (rules[i].parent == null) {
+			rules[i].level = 0;
 			requirements.push(rules[i]);
 			rules.splice(i,1);
 			i--;
@@ -35,25 +36,27 @@ function parseRules(rules) {
 	}
 	while (rules.length != 0) {
 		for (var i in rules) {
-			findParent(rules[i],requirements);
+			var level = 0;
+			findParent(rules[i],requirements,level);
 			rules.splice(i,1);
 		}
 	}
 }
 
-function findParent(rule,node) {
+function findParent(rule,node,level) {
 	var targetParent = rule.parent;
 	var innerNode;
+	level++;
 	for (var i in node) {
 		innerNode = node[i];
 		if (innerNode.hasOwnProperty("children")) {
-			findParent(rule,innerNode.children);
+			findParent(rule,innerNode.children,level);
 		}
 		if (innerNode.ruleId == targetParent) {
 			if (innerNode.children == null) {
 				innerNode.children = [];
 			}
-			
+			rule.level = level;
 			innerNode.children.push(rule);
 		}
 	}
@@ -91,10 +94,10 @@ function traverseRequirements(fn) {
 	callFunction(currentNode,fn);
 	function callFunction(currentNode,fn) {
 		for (var i in currentNode) {
+			fn(currentNode[i]);
 			if (currentNode[i].hasOwnProperty("children")) {
 				callFunction(currentNode[i].children,fn);
 			}
-			fn(currentNode[i]);
 		}
 	}
 }

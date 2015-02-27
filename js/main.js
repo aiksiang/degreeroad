@@ -12,7 +12,27 @@ $(document).ready(function(){
 	$('.standard.modal').modal('attach events', '.standard.demo.button');
 	$('.basic.modal').modal('attach events', '.minimal.demo.button');
 	$('.fullscreen.modal').modal('attach events', '.fullscreen.demo.button');
+
+	//Initialize active class
+    InitializeActiveClass();
+    
 });
+function InitializeActiveClass() {
+	$('.menu a.item').on('click', function() {
+    	if(!$(this).hasClass('dropdown')) {
+          $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
+        }
+	});
+}
+
+function InitializeSearchContent() {
+	$('.ui.search').search({
+		searchFields: ["title"],
+    	source: allModuleListSearch,
+    	searchDelay: 100,
+    	transition: "slide down"
+    });
+}
 
 var noOfSems = 8;
 
@@ -58,28 +78,53 @@ for (var i = 1; i <= noOfSems; i++) {
 }
 
 
-var bottomIds = ["requirement", "requirement-specification", "selection"];
-
-for (var id in bottomIds) {
-	var title = {"requirement": "Requirement Modules",
-		"requirement-specification": "Requirements",
-		"selection": "Selection"
-	}
-	requirementContainer.append(
-	'<div id="'+ bottomIds[id] +'" class="semester">\
+//Insert Requirement Module List
+requirementContainer.append(
+	'<div id="requirementModules" class="semester">\
 		<div class="ui segment">\
 			<div class="ui top attached label">\
-				'+title[bottomIds[id]]+'\
+				Requirement Modules\
+			</div>\
+			<ul class="ui selection list module-list"></ul>\
+			<div class="ui bottom right attached label">0/0</div>\
+		</div>\
+	</div>');
+
+//Insert Requirement Specifications
+requirementContainer.append(
+	'<div id="requirement-specification" class="semester">\
+		<div class="ui segment">\
+			<div class="ui top attached label">\
+				Requirements\
+			</div>\
+			<ul class="ui secondary pointing vertical menu module-list"></ul>\
+			<div class="ui bottom right attached label">0/0</div>\
+		</div>\
+	</div>');
+
+
+//Insert Selection
+requirementContainer.append(
+	'<div id="selection" class="semester">\
+		<div class="ui segment">\
+			<div class="ui top attached label">\
+				Selection\
+				<div class="ui search">\
+				<div class="ui icon input">\
+					<input class="prompt" type="text" placeholder="Search Modules">\
+					<i class="search icon"></i>\
+				</div>\
+				<div class="results"></div>\
+				</div>\
 			</div>\
 			<ul class="ui selection list module-list">\
 				<a class="item module">CS1234 The Most Important Module Ever In The History of NUS</a>\
 				<a class="item module">Selection</a>\
 				<a class="item module">Selection</a>\
 			</ul>\
-			<div class="ui bottom right attached label">0/10</div>\
+			<div class="ui bottom right attached label">MCs:0</div>\
 		</div>\
 	</div>');
-}
 
 //Drag Scrolling
 var reqContainerClicked = false;

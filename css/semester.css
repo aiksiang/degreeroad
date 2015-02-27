@@ -22,15 +22,17 @@
 	display: flex;
 }
 
-#requirement {
+#requirementModules {
 	flex: 1;
 }
 
 #selection {
 	flex: 1;
 	float:right;
+	min-width: 303px;
 }
 
 #requirement-specification {
 	flex: 3;
 }
+

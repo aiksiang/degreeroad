@@ -21,6 +21,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'retrieveRules') {
 if (isset($_GET['action']) && $_GET['action'] == 'retrieveList') {
 	echo json_encode(db_retrieve_list());
 }
+if (isset($_GET['action']) && $_GET['action'] == 'getAllModuleList') {
+	echo json_encode(db_get_all_modules());
+}
 
 function getResultingArray($query) {
 	global $mysqli;
@@ -97,6 +100,14 @@ function db_retrieve_list() {
 			FROM `".$list."`
 			WHERE `".$list."`.`listName` = '".$listName."'";
 	
+	return getResultingArray($query);
+}
+
+function db_get_all_modules() {
+	
+	$query = "SELECT *
+			FROM `Module`";
+
 	return getResultingArray($query);
 }
 

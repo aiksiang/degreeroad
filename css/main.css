@@ -16,7 +16,7 @@ body {
 
 #top-container,
 #bottom-container {
-	height: 50%;
+	height: 45%;
 	overflow-x: auto;
 	min-height: 300px;
 }
@@ -24,9 +24,9 @@ body {
 ::-webkit-scrollbar {
 	width: 4px;
 	height: 4px;
-	background: grey;
+	background: rgba(0,0,0,0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1b1c1d;
+    background: rgba(0,0,0,0.4);
 }

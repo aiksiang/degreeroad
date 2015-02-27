@@ -5,6 +5,10 @@
 	margin-right: 1px !important;
 }
 
+.ui.top.attached.label, .ui.attached.label {
+	z-index: 1;
+}
+
 .ui.list {
 	padding-top: 2.1rem !important;
 	padding-bottom: 2.1rem !important;
@@ -17,7 +21,47 @@
 }
 
 .ui.selection.list .list > .item, .ui.selection.list > .item {
-	color: rgba(0, 0, 0, 0.6);
+	color: rgba(0, 0, 0, 0.9);
+}
+
+.ui.selection.list.list > .item:hover, .ui.selection.list > .item:hover {
+	color: rgba(0, 0, 0, 1);
+}
+
+.ui.secondary.vertical.pointing.menu > .item {
+	border-left: 3px solid transparent;
+	border-right: none;
+	margin: 0;
+}
+
+.ui.secondary.vertical.pointing.menu {
+	border-right: none;
+	overflow: auto;
+}
+
+.ui.secondary.vertical.pointing.menu > .item:hover {
+	color: rgba(0, 0, 0, 1);
+}
+
+.ui.secondary.vertical.pointing.menu > .item.active {
+	background: rgba(0, 0, 0, 0.05);
+	border-color: rgba(0, 0, 0, 1);
+}
+
+.ui.secondary.menu .link.item, .ui.secondary.menu a.item {
+	opacity: 0.9;
+}
+
+.ui.vertical.menu {
+	width: inherit;
+	padding-top: 2.1rem !important;
+	padding-bottom: 2.1rem !important;
+	padding-left:0;
+}
+
+.ui.vertical.menu .item > i.icon {
+	float: left;
+	margin: 0;
 }
 
 .module-list {
@@ -28,7 +72,7 @@
 .module {
 	height:42px !important;
 	list-style: none !important;
-	color: rgba(0, 0, 0, 0.8);
+	color: rgba(0, 0, 0, 1);
 	background: rgba(0, 0, 0, 0.03);
 	padding: 0.5em;
 	overflow: hidden;
@@ -37,6 +81,21 @@
 
 .module-placeholder {
 	background: rgba(0, 0, 0, 0.03) !important;
-	color: rgba(0, 0, 0, 0.8) !important;
+	color: rgba(0, 0, 0, 1) !important;
 	line-height: 1.2;
+}
+
+#selection input {
+	height: 21px;
+	margin: -6px;
+	font-size: 12px;
+	width: 204px;
+}
+
+#selection .icon {
+	font-size: 12px;
+}
+
+.ui.search {
+	float: right;
 }

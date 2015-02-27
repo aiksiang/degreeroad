@@ -21,3 +21,11 @@ function retrieveList(listName, callback) {
 		console.log("API error:", error.responseText);
 	});
 }
+
+function getAllModuleList(callback) {
+	$.getJSON("database.php?action=getAllModuleList", function(data) {
+		callback(data);
+	}).error(function(error) {
+		console.log("API error:", error.responseText);
+	});
+}
