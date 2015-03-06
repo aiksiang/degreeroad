@@ -20,6 +20,7 @@ function displayRequirements() {
 	});
 	InitializeActiveClass();
 	InitializeRequirementSelection();
+	
 }
 
 
@@ -59,8 +60,23 @@ function populateRequirementModulesList(rule) {
 		animation: 'slide down',
 		onComplete: function() {
 			moduleList.html("");
-			insertModulesIntoList(moduleList, rule);
+			insertModulesIntoList(rule);
 		}
 	});
 	moduleList.transition('slide down');
+}
+
+function insertModulesIntoList(rule) {
+	if (rule.hasOwnProperty("includeModuleList")) {
+		for (var i in rule.includeModuleList) {
+			var id = lookupModule(rule.includeModuleList[i].module);
+			if (id != undefined)
+				$("#requirementModules .list").append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
+			else
+				$("#requirementModules .list").append(listItem("notFound", rule.includeModuleList[i].module, "item module", rule.includeModuleList[i].module));
+		}
+		$("#requirementModules .ui.bottom.right.attached.label").html("0/" + rule.includeModuleList.length);
+	} else {
+		$("#requirementModules .ui.bottom.right.attached.label").html("0/0");
+	}
 }

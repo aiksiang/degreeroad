@@ -18,6 +18,8 @@ function initializeRequirementModules() {
 			});
 			console.log(requirements);
 			displayRequirements();
+			loadUserSavedModules();
+			checkRequirements();
 		});
 	});
 };
@@ -117,7 +119,7 @@ function findParent(rule,node,level) {
 }
 
 function parseList(rule, listName) {
-	retrieveList(listName, function(list) {console.log(rule)
+	retrieveList(listName, function(list) {
 		if (rule.hasOwnProperty("list")) {
 			rule.includeModuleList.push.apply(rule.includeModuleList,list);
 		} else {
