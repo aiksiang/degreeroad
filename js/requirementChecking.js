@@ -46,14 +46,14 @@ function checkRequirement(rule) {
 	// 			break;
 	// 	}
 	// }
-
-	if (rule.include.includeModuleList != null) {
-		for (var i in rule.include.includeModuleList) {
-			var id = lookupModule(rule.include.includeModuleList[i].module);
+	console.log(rule.includeModuleList)
+	if (rule.hasOwnProperty("includeModuleList")) {
+		for (var i in rule.includeModuleList) {
+			var id = lookupModule(rule.includeModuleList[i].module);
 			if (id != undefined)
-				listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name);
+				$("#requirementModules .list").append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
 			else
-				listItem("notFound", rule.include.includeModuleList[i].module, "item module", rule.include.includeModuleList[i].module);
+				$("#requirementModules .list").append(listItem("notFound", rule.includeModuleList[i].module, "item module", rule.includeModuleList[i].module));
 		}
 	}
 	
