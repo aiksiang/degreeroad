@@ -91,7 +91,7 @@ function db_retrieve_list() {
 	$listName = $_GET['listName'];
 	$list_type = explode("_",$listName);
 	if ($list_type[0] == "CEG") {
-		$list_type[0] = "MDP";
+		$list_type[0] = "mdp";
 	}
 	$list = "list_" . $list_type[0];
 

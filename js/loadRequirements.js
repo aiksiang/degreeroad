@@ -116,8 +116,8 @@ function findParent(rule,node,level) {
 	}
 }
 
-function parseList(rule, ruleName) {
-	retrieveList(ruleName, function(list) {
+function parseList(rule, listName) {
+	retrieveList(listName, function(list) {console.log(rule)
 		if (rule.hasOwnProperty("list")) {
 			rule.includeModuleList.push.apply(rule.includeModuleList,list);
 		} else {
