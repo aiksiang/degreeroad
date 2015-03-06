@@ -43,10 +43,15 @@ function listItem(idPrefix, idName, className, text) {
 		return "<a id='"+ idPrefix + idName +"' class='"+ className +"'>"+ text +"</a>";
 }
 
+function lookupModule(moduleCode) {
+	for (var i in allModuleList) {
+		if (allModuleList[i].Code == moduleCode) {
+			return i;
+		}
+	}
+}
+
 function populateRequirementModulesList(rule) {
-
-	console.log(rule.includeType + ": " + rule.includeItem);
-
 	var moduleList = $("#requirementModules .module-list");
 	var listItems = 0;
 
@@ -54,28 +59,8 @@ function populateRequirementModulesList(rule) {
 		animation: 'slide down',
 		onComplete: function() {
 			moduleList.html("");
-			if (rule.hasOwnProperty("list")) {
-				for (var i in rule.list) {
-					var id = lookupModule(rule.list[i].module);
-					if (id != undefined)
-						moduleList.append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
-					else
-						moduleList.append(listItem("notFound", rule.list[i].module, "item module", rule.list[i].module));
-					listItems++;
-				}
-			} else {
-				// Not a list
-			}
-			$("#requirementModules .ui.bottom.right.attached.label").html("0/" + listItems);
+			insertModulesIntoList(moduleList, rule);
 		}
 	});
 	moduleList.transition('slide down');
-}
-
-function lookupModule(moduleCode) {
-	for (var i in allModuleList) {
-		if (allModuleList[i].Code == moduleCode) {
-			return i;
-		}
-	}
 }

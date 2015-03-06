@@ -14,7 +14,7 @@ function initializeRequirementModules() {
 		retrieveRules(degreeInfo.requirementId, function(rules) {
 			parseRules(rules);
 			traverseRequirements(function(rule) {
-				parseList(rule);
+				parseIncludeExclude(rule);
 			});
 			console.log(requirements);
 			displayRequirements();
@@ -43,6 +43,60 @@ function parseRules(rules) {
 	}
 }
 
+function parseIncludeExclude(rule) {
+
+	var includeTypes = rule.includeType.split(",");
+	var includeItems; 
+
+	if (includeTypes.length > 1) { // Multiple include types
+		includeItems = rule.includeItem.match(/\(([^)]+)\)/g);
+		for (var i in includeItems)
+			includeItems[i] = includeItems[i].substring(1, includeItems[i].length - 1);
+	} else { // Only one include type
+		includeItems = [rule.includeItem];
+	}
+	var includeObject = {};
+	for (var i = 0; i < includeTypes.length; i++) {
+		switch (includeTypes[i]) {
+			case "LISTS":
+				var lists = includeItems[i].split(",");
+				includeObject[includeTypes[i]] = lists;
+				break;
+			case "TYPES":
+				var types = includeItems[i].split(",");
+				includeObject[includeTypes[i]] = types;
+				break;
+			case "MODULES":
+				var modules = includeItems[i].split(",");
+				for (var j in modules) {
+					modules[j] = modules[j].trim();
+				}
+				includeObject[includeTypes[i]] = modules;
+				break;
+			case "ANY":
+				break;
+			default:
+				includeObject[includeTypes[i]] = includeItems[i];
+				break;
+		}
+	}
+	rule.include = includeObject;
+
+	// Retrieve Lists
+	if (rule.include.hasOwnProperty("LIST")) {
+		parseList(rule, rule.include.LIST);
+	} else if (rule.include.hasOwnProperty("LISTS")) {
+		parseLists(rule);
+	}
+
+	// Retrieve Modules
+	if (rule.include.hasOwnProperty("MODULE")) {
+		parseModule(rule, rule.include.MODULE);
+	} else if (rule.include.hasOwnProperty("MODULES")) {
+		parseModules(rule);
+	}
+}
+
 function findParent(rule,node,level) {
 	var targetParent = rule.parent;
 	var innerNode;
@@ -62,30 +116,32 @@ function findParent(rule,node,level) {
 	}
 }
 
-function parseList(rule) {
-	if (rule.includeType == "LIST") {
-		retrieveList(rule.includeItem, function(list) {
-			if (rule.hasOwnProperty("list")) {
-				rule.list.push(list);
-			} else {
-				rule.list = list;
-			}
-		});
-	} else if (rule.includeType == "LISTS") {
-		var lists = rule.includeItem.split(",");
-		for (var i in lists) {
-			retrieveList(lists[i], function(list) {
-				if (rule.hasOwnProperty("list")) {
-					rule.list.push.apply(rule.list,list);
-				} else {
-					rule.list = list;
-				}
-			});
+function parseList(rule, ruleName) {
+	retrieveList(ruleName, function(list) {
+		if (rule.hasOwnProperty("list")) {
+			rule.includeModuleList.push.apply(rule.includeModuleList,list);
+		} else {
+			rule.includeModuleList = list;
 		}
-	} else if (rule.includeType.indexOf("LIST") >= 0) {
-		//console.log("Multiple with list: " + rule.includeItem);
+	});
+}
+
+function parseLists(rule) {
+	for (var i in rule.include.LISTS) {
+		parseList(rule, rule.include.LISTS[i]);
+	}
+}
+
+function parseModule(rule, mod) {
+	if (rule.hasOwnProperty("list")) {
+		rule.includeModuleList.push.apply(rule.includeModuleList,mod);
 	} else {
-		//console.log("No Lists: " + rule.includeItem);
+		rule.includeModuleList = [{module: mod}];
+	}
+}
+function parseModules(rule) {
+	for (var i in rule.include.MODULES) {
+		parseModule(rule, rule.include.MODULES[i]);
 	}
 }
 
