@@ -36,3 +36,6 @@
 	flex: 3;
 }
 
+.ruleSatisfied {
+	background: #46ae5f !important;
+}

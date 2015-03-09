@@ -17,6 +17,13 @@
 
 .ui.selection.list .list > .item, .ui.selection.list > .item {
 	border-radius: 0 !important;
+	padding-top: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
+	border-bottom-color: rgba(0,0,0,0.0);
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .ui.selection.list .list > .item, .ui.selection.list > .item {
@@ -31,6 +38,8 @@
 	border-left: 3px solid transparent;
 	border-right: none;
 	margin: 0;
+	color: rgba(0, 0, 0, 1);
+	font-weight: 500;
 }
 
 .ui.secondary.vertical.pointing.menu {
@@ -48,7 +57,7 @@
 }
 
 .ui.secondary.menu .link.item, .ui.secondary.menu a.item {
-	opacity: 0.9;
+	opacity: 0.95;
 }
 
 .ui.vertical.menu {
@@ -73,15 +82,26 @@
 	list-style: none !important;
 	color: rgba(0, 0, 0, 1);
 	background: rgba(0, 0, 0, 0.03);
-	padding: 0.5em;
 	overflow: hidden;
 	line-height: 1.2;
+	padding-top: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
+	border-bottom-color: rgba(0,0,0,0.0);
 }
 
 .module-placeholder {
 	background: rgba(0, 0, 0, 0.03) !important;
 	color: rgba(0, 0, 0, 1) !important;
 	line-height: 1.2;
+	padding-top: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
+	border-bottom-color: rgba(0,0,0,0.0);
 }
 
 .blank-placeholder {
@@ -105,4 +125,5 @@
 
 .selectedModule {
 	cursor: default !important;
+	background: #46ae5f !important;
 }

@@ -134,7 +134,7 @@ function parseLists(rule) {
 	}
 }
 
-function parseModule(rule, mod) {console.log(mod)
+function parseModule(rule, mod) {
 	if (rule.hasOwnProperty("includeModuleList")) {
 		rule.includeModuleList.push.apply(rule.includeModuleList,[{module: mod}]);
 	} else {

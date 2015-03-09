@@ -34,6 +34,7 @@ function InitializeSearchContent() {
     });
 }
 
+var qwe;
 var noOfSems = 8;
 
 //Initialize storage structure

@@ -1,42 +1,111 @@
-function checkRequirements(rule) {
-	//Parse Include Type
-	//console.log(rule.includeType + ": " + rule.includeItem);
+function checkRequirements() {
 
-	colorCode = {};
+	var colorCodes = {};
+	traverseRequirements(function(rule) {
+		colorCodes[rule.requirementId] = checkRequirement(rule);
+	});
 
-
-	// for (var i in includeTypes) {
-
-	// 	switch (includeTypes[i]) {
-	// 		case "LEVEL":
-	// 			break;
-	// 		case "LIST":
-	// 			console.log(includeItems);
-	// 			break;
-	// 		case "LISTS":
-	// 			break;
-	// 		case "MODULE":
-	// 			break;
-	// 		case "MODULES":
-	// 			break;
-	// 		case "TYPE":
-	// 			break;
-	// 		case "TYPES":
-	// 			break;
-	// 		case "ANY":
-	// 			break;
-	// 		default:
-	// 			console.log("Special Type Encountered!");
-	// 			break;
-	// 	}
-	// }
-
-	return colorCode;
+	return colorCodes;
 }
 
 function checkRequirement(rule) {
+	rule = typeof rule !== 'undefined' ? rule : currentSelectedRule;
 
-	//return colorCode;
+	var colorCode = {};
+
+	var inequality = rule.inequality;
+
+	var number = rule.number; //Can be used for MC or Number
+	var noOfModules = 0;
+	var mcOfModules = 0;
+
+	var quantifier = rule.quantifier;
+
+	if (rule.hasOwnProperty("includeModuleList")) { //LIST, LISTS, MODULE, MODULES
+		traverseSelectedModules(function(mod) {
+			for (var i in rule.includeModuleList) {
+				if (rule.includeModuleList[i].module == mod.Code) {
+					mcOfModules += parseInt(mod.Credit);
+					noOfModules++;
+					colorCode["module" + i] = "Green";
+				}
+			}
+		});
+	}
+	if (rule.include.hasOwnProperty("REGEX")) { //LEVEL, TYPE, TYPES
+
+	}
+	if (rule.include.hasOwnProperty("LEVEL")) {
+
+	}
+	if (rule.include.hasOwnProperty("REGEX")) {
+
+	}
+	if (rule.include.hasOwnProperty("ANY")) {
+
+	}
+
+	var satisfied = false;
+	switch (inequality) {
+		case "MIN":
+			if (quantifier == "MC") {
+				if (mcOfModules >= number) {
+					satisfied = true;
+				}
+			} else if (quantifier == "MODULE") {
+				if (noOfModules >= number) {
+					satisfied = true;
+				}
+			}
+			break;
+		case "MAX":
+			if (quantifier == "MC") {
+				if (mcOfModules <= number) {
+					satisfied = true;
+				}
+			} else if (quantifier == "MODULE") {
+				if (noOfModules <= number) {
+					satisfied = true;
+				}
+			}
+			break;
+		case "EQUAL":
+			if (quantifier == "MC") {
+				if (mcOfModules == number) {
+					satisfied = true;
+				}
+			} else if (quantifier == "MODULE") {
+				if (noOfModules == number) {
+					satisfied = true;
+				}
+			}
+			break;
+		case "NONE":
+			if (noOfModules == 0) {
+				satisfied = true;
+			}
+			break;
+		case "ALL":
+			if (noOfModules == rule.includeModuleList.length) { //It is definitely a list
+				satisfied = true;
+			}
+			break;
+	}
+
+	if (satisfied == true) {
+		colorCode.satisfied = true;
+	} else {
+		colorCode.satisfied = false;
+	}
+
+	if (quantifier == "MC") {
+		colorCode.percentage = mcOfModules + "/" + rule.number;
+	} else if (quantifier == "MODULE") {
+		colorCode.percentage = noOfModules + "/" + rule.number;
+	} else if (inequality == "ALL") {
+		colorCode.percentage = noOfModules + "/" + rule.includeModuleList.length;
+	}
+	return colorCode;
 }
 
 function traverseSelectedModules(fn) {
