@@ -2,6 +2,7 @@ function checkRequirements(rule) {
 	//Parse Include Type
 	//console.log(rule.includeType + ": " + rule.includeItem);
 
+	colorCode = {};
 
 
 	// for (var i in includeTypes) {
@@ -29,8 +30,13 @@ function checkRequirements(rule) {
 	// 			break;
 	// 	}
 	// }
-	
-	
+
+	return colorCode;
+}
+
+function checkRequirement(rule) {
+
+	//return colorCode;
 }
 
 function traverseSelectedModules(fn) {

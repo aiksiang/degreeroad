@@ -11,7 +11,6 @@
 
 .ui.list {
 	padding-top: 2.1rem !important;
-	padding-bottom: 2.1rem !important;
 	font-size: 1rem;
 	overflow: auto;
 }
@@ -85,6 +84,10 @@
 	line-height: 1.2;
 }
 
+.blank-placeholder {
+	height: 0px;
+}
+
 #selection input {
 	height: 21px;
 	margin: -6px;
@@ -98,4 +101,8 @@
 
 .ui.search {
 	float: right;
+}
+
+.selectedModule {
+	cursor: default !important;
 }

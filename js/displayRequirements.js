@@ -1,4 +1,5 @@
 var requirementSpecification = $("#requirement-specification .module-list");
+var currentSelectedRule;
 
 function displayRequirements() {
 	requirementSpecification.html("");
@@ -20,20 +21,19 @@ function displayRequirements() {
 	});
 	InitializeActiveClass();
 	InitializeRequirementSelection();
-	
+
 }
 
 
 function InitializeRequirementSelection() {
 	$('#requirement-specification .menu a.item').on('click', function() {
-		var selectedRule;
 		var selectedId = $(this).attr('id');
 		selectedId = selectedId.substring(11);
 		traverseRequirements(function(rule) {
 			if (rule.requirementId == selectedId)
-				selectedRule = rule;
+				currentSelectedRule = rule;
 		});
-		populateRequirementModulesList(selectedRule);
+		populateRequirementModulesList(currentSelectedRule);
 	});
 }
 

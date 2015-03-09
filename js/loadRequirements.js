@@ -19,7 +19,7 @@ function initializeRequirementModules() {
 			console.log(requirements);
 			displayRequirements();
 			loadUserSavedModules();
-			checkRequirements();
+			//checkRequirementsAndColorize();
 		});
 	});
 };
@@ -120,7 +120,7 @@ function findParent(rule,node,level) {
 
 function parseList(rule, listName) {
 	retrieveList(listName, function(list) {
-		if (rule.hasOwnProperty("list")) {
+		if (rule.hasOwnProperty("includeModuleList")) {
 			rule.includeModuleList.push.apply(rule.includeModuleList,list);
 		} else {
 			rule.includeModuleList = list;
@@ -134,9 +134,9 @@ function parseLists(rule) {
 	}
 }
 
-function parseModule(rule, mod) {
-	if (rule.hasOwnProperty("list")) {
-		rule.includeModuleList.push.apply(rule.includeModuleList,mod);
+function parseModule(rule, mod) {console.log(mod)
+	if (rule.hasOwnProperty("includeModuleList")) {
+		rule.includeModuleList.push.apply(rule.includeModuleList,[{module: mod}]);
 	} else {
 		rule.includeModuleList = [{module: mod}];
 	}
@@ -145,6 +145,12 @@ function parseModules(rule) {
 	for (var i in rule.include.MODULES) {
 		parseModule(rule, rule.include.MODULES[i]);
 	}
+}
+
+function checkRequirementsAndColorize() {
+	var colorCode = checkRequirements();
+	colorizeRequirements(colorCode);
+	colorizeRequirementModuleList(colorCode[currentSelectedRule]);
 }
 
 function traverseRequirements(fn) {
