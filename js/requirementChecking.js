@@ -35,12 +35,6 @@ function checkRequirement(rule) {
 	if (rule.include.hasOwnProperty("REGEX")) { //LEVEL, TYPE, TYPES
 
 	}
-	if (rule.include.hasOwnProperty("LEVEL")) {
-
-	}
-	if (rule.include.hasOwnProperty("REGEX")) {
-
-	}
 	if (rule.include.hasOwnProperty("ANY")) {
 
 	}

@@ -54,7 +54,7 @@ $("#semester-container .module-list").sortable({
 			console.log("Module is not found in database");
 			//TODO add module without details into sem
 		}
-		checkRequirementAndColorize();
+		checkRequirementsAndColorize();
 	},
 	update: function(event, ui) {
 		// showAll();
@@ -85,7 +85,7 @@ $("#requirementModules .module-list").sortable({
 		removeClone = true;
 		$("#" + ui.item.attr("id")).remove();
 		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule");
-		checkRequirementAndColorize();
+		checkRequirementsAndColorize();
 	},
 	stop: function(e,ui) {
 		if (removeClone) {
@@ -105,7 +105,7 @@ $("#requirementModules .module-list").sortable({
 	}
 });
 
-function checkRequirementAndColorize() {
+function checkRequirementsAndColorize() {
 	//var colorCode = checkRequirement();
 	//colorizeRequirementModuleList(colorCode);
 	var colorCode = checkRequirements();

@@ -67,7 +67,7 @@ function populateRequirementModulesList(rule) {
 		onComplete: function() {
 			moduleList.html("");
 			insertModulesIntoList(rule);
-			checkRequirementAndColorize();
+			checkRequirementsAndColorize();
 			displayRequirementInEnglish();
 		}
 	});

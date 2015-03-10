@@ -3,8 +3,8 @@ var requirements = [];
 //storage = new Storage();
 
 function initializeRequirementModules() {
-	var degreeName = "Computer Engineering";
-	var degreeCode = "CEG"
+	var degreeName = "";
+	var degreeCode = "PS_HONS"
 	var academicYear = 1415;
 	var specialProgramme = "None";
 	var bridgingModules = "None";
@@ -19,7 +19,7 @@ function initializeRequirementModules() {
 			console.log(requirements);
 			displayRequirements();
 			loadUserSavedModules();
-			//checkRequirementsAndColorize();
+			checkRequirementsAndColorize();
 		});
 	});
 };
@@ -37,11 +37,9 @@ function parseRules(rules) {
 		i++;
 	}
 	while (rules.length != 0) {
-		for (var i in rules) {
-			var level = 0;
-			findParent(rules[i],requirements,level);
-			rules.splice(i,1);
-		}
+		var level = 0;
+		findParent(rules[0],requirements,level);
+		rules.splice(0,1);
 	}
 }
 
@@ -145,12 +143,6 @@ function parseModules(rule) {
 	for (var i in rule.include.MODULES) {
 		parseModule(rule, rule.include.MODULES[i]);
 	}
-}
-
-function checkRequirementsAndColorize() {
-	var colorCode = checkRequirements();
-	colorizeRequirements(colorCode);
-	colorizeRequirementModuleList(colorCode[currentSelectedRule]);
 }
 
 function traverseRequirements(fn) {
