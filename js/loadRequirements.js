@@ -13,7 +13,7 @@ function initializeRequirementModules() {
 		console.log(degreeInfo);
 		retrieveRules(degreeInfo.requirementId, function(rules) {
 			parseRules(rules);
-			traverseRequirements(function(rule) {
+			postOrderTraverseRequirements(function(rule) {
 				parseIncludeExclude(rule);
 			});
 			console.log(requirements);
@@ -56,15 +56,14 @@ function parseIncludeExclude(rule) {
 		includeItems = [rule.includeItem];
 	}
 	var includeObject = {};
+
+
+	//Split includeitems of those with "S" to become array
 	for (var i = 0; i < includeTypes.length; i++) {
 		switch (includeTypes[i]) {
 			case "LISTS":
 				var lists = includeItems[i].split(",");
 				includeObject[includeTypes[i]] = lists;
-				break;
-			case "TYPES":
-				var types = includeItems[i].split(",");
-				includeObject[includeTypes[i]] = types;
 				break;
 			case "MODULES":
 				var modules = includeItems[i].split(",");
@@ -73,19 +72,30 @@ function parseIncludeExclude(rule) {
 				}
 				includeObject[includeTypes[i]] = modules;
 				break;
+			case "REGEXS":
+				var regexs = includeItems[i].split(",");
+				includeObject[includeTypes[i]] = regexs;
+				break;
+			case "FACULTIES":
+				var faculties = includeItems[i].split(",");
+				includeObject[includeTypes[i]] = faculties;
+				break;
 			case "ANY":
 				break;
-			default:
+			default: //those with no S, just append
 				includeObject[includeTypes[i]] = includeItems[i];
 				break;
 		}
 	}
 	rule.include = includeObject;
 
+	rule.parseCount = 0;
+
 	// Retrieve Lists
 	if (rule.include.hasOwnProperty("LIST")) {
 		parseList(rule, rule.include.LIST);
 	} else if (rule.include.hasOwnProperty("LISTS")) {
+		rule.listParseCount = 0;
 		parseLists(rule);
 	}
 
@@ -94,6 +104,34 @@ function parseIncludeExclude(rule) {
 		parseModule(rule, rule.include.MODULE);
 	} else if (rule.include.hasOwnProperty("MODULES")) {
 		parseModules(rule);
+	}
+
+	// Retrieve Regular Expression
+	if (rule.include.hasOwnProperty("REGEX")) {
+		parseRegex(rule);
+	} else if (rule.include.hasOwnProperty("REGEXS")) {
+		parseRegexs(rule);
+	}
+
+	// Retrieve Child
+	if (rule.include.hasOwnProperty("CHILD")) {
+		rule.childParseCount = 0;
+		parseChild(rule);
+	}
+
+	if (rule.include.hasOwnProperty("FACULTY")) {
+		rule.parseCount++;console.log("FACULTY NOT IMPLEMENTED")
+	} else if (rule.include.hasOwnProperty("FACULTIES")) {
+		rule.parseCount++;console.log("FACULTIES NOT IMPLEMENTED")
+	}
+
+	if (rule.include.hasOwnProperty("FROMLIST")) {
+		rule.parseCount++;
+	}
+
+	// Since ANY is also a checked to see if it has been loaded, we need to just say it is done.
+	if (rule.include.hasOwnProperty("ANY")) {
+		rule.parseCount++;
 	}
 }
 
@@ -123,6 +161,14 @@ function parseList(rule, listName) {
 		} else {
 			rule.includeModuleList = list;
 		}
+		rule.listParseCount++;
+		if (rule.include.hasOwnProperty("LISTS")){
+			if (rule.listParseCount == rule.include.LISTS.length){
+				rule.parseCount++;
+			}
+		} else {
+			rule.parseCount++;
+		}
 	});
 }
 
@@ -138,15 +184,50 @@ function parseModule(rule, mod) {
 	} else {
 		rule.includeModuleList = [{module: mod}];
 	}
+	rule.parseCount++;
 }
 function parseModules(rule) {
 	for (var i in rule.include.MODULES) {
 		parseModule(rule, rule.include.MODULES[i]);
 	}
+	rule.parseCount++;
 }
 
-function traverseRequirements(fn) {
-	var currentNode = requirements;
+function parseRegex(rule) {
+	waitForAllModuleList(function() {
+		var regexpString = rule.include.REGEX;
+		var regexp = new RegExp(regexpString, "g");
+		var list = [];
+		for (var i in allModuleList) {
+			if (regexp.test(allModuleList[i].Code)) {
+				list.push({module: allModuleList[i].Code.trim()});
+			}
+		}
+		if (rule.hasOwnProperty("includeModuleList")) {
+			rule.includeModuleList.push.apply(rule.includeModuleList,list);
+		} else {
+			rule.includeModuleList = list;
+		}
+		rule.parseCount++;
+	});
+}
+
+function parseChild(targetRule) {
+	targetRule.includeModuleList = [];
+	postOrderTraverseRequirements(function(rule) {
+		waitForChildParsing(rule, function() {
+			targetRule.includeModuleList.push.apply(targetRule.includeModuleList,rule.includeModuleList);
+			targetRule.childParseCount++;
+			if (targetRule.childParseCount == targetRule.children.length) {
+				targetRule.parseCount++;
+			}
+		});
+		
+	},targetRule);
+}
+
+function traverseRequirements(fn,inputNode) {
+	var currentNode = typeof inputNode !== 'undefined' ? inputNode.children : requirements;
 	callFunction(currentNode,fn);
 	function callFunction(currentNode,fn) {
 		for (var i in currentNode) {
@@ -157,3 +238,44 @@ function traverseRequirements(fn) {
 		}
 	}
 }
+
+function postOrderTraverseRequirements(fn,inputNode) {
+	var currentNode = typeof inputNode !== 'undefined' ? inputNode.children : requirements;
+	callFunction(currentNode,fn);
+	function callFunction(currentNode,fn) {
+		for (var i in currentNode) {
+			if (currentNode[i].hasOwnProperty("children")) {
+				callFunction(currentNode[i].children,fn);
+			}
+			fn(currentNode[i]);
+		}
+	}
+}
+
+function waitForAllModuleList(fn) {
+	var busyWaiting = setInterval(function () {
+		if (allModuleList != undefined) {
+			fn();
+			clearInterval(busyWaiting);
+		} else {
+			console.log("allModuleList not ready yet.");
+		}
+	},1);
+}
+
+function waitForChildParsing(rule, fn) {
+	var busyWaiting = setInterval(function () {
+		if (checkParsingDone(rule)) {
+			fn();
+			clearInterval(busyWaiting);
+		} else {
+			console.log("Waiting for " + rule.ruleName + ": " + rule.parseCount + "/" + Object.keys(rule.include).length);
+		}
+	},1);
+}
+
+function checkParsingDone(rule) {
+	return Object.keys(rule.include).length == rule.parseCount;
+}
+
+		

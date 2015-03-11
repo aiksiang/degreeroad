@@ -1,7 +1,7 @@
 var allModuleList;
 var allModuleListSearch;
 
-(function initializeModuleList() {
+function initializeModuleList() {
 	getAllModuleList(function(data){
 		allModuleList = data;
 		allModuleListSearch = [];
@@ -10,4 +10,5 @@ var allModuleListSearch;
 		}
 		InitializeSearchContent();
 	});
-})();
+}
+initializeModuleList();

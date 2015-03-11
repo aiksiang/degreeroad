@@ -32,9 +32,6 @@ function checkRequirement(rule) {
 			}
 		});
 	}
-	if (rule.include.hasOwnProperty("REGEX")) { //LEVEL, TYPE, TYPES
-
-	}
 	if (rule.include.hasOwnProperty("ANY")) {
 
 	}

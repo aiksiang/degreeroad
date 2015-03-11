@@ -140,15 +140,15 @@ function displayRequirementInEnglish() {
 		if (multipleRule == true) {requirementInEnglish += "and "; multipleRule = false;}
 		if (currentSelectedRule.include.hasOwnProperty("TYPE")) {
 			requirementInEnglish += "that has module code " + currentSelectedRule.include.TYPE;
-		} else if (currentSelectedRule.include.hasOwnProperty("TYPES")) {
-			requirementInEnglish += "that has module code ";
-			for(var i in currentSelectedRule.include.TYPES) {
-				requirementInEnglish += currentSelectedRule.include.TYPES[i];
-				if (i != currentSelectedRule.include.TYPES.length - 1) {
-					requirementInEnglish += ", ";
-				}
-			}
-		}
+		}// else if (currentSelectedRule.include.hasOwnProperty("TYPES")) {
+		// 	requirementInEnglish += "that has module code ";
+		// 	for(var i in currentSelectedRule.include.TYPES) {
+		// 		requirementInEnglish += currentSelectedRule.include.TYPES[i];
+		// 		if (i != currentSelectedRule.include.TYPES.length - 1) {
+		// 			requirementInEnglish += ", ";
+		// 		}
+		// 	}
+		// }
 	}
 
 	if (currentSelectedRule.includeType == "ANY") {
