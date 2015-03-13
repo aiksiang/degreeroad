@@ -100,7 +100,7 @@ function db_retrieve_list() {
 function db_get_all_modules() {
 	
 	$query = "SELECT *
-			FROM `Module`";
+			FROM `module`";
 
 	return getResultingArray($query);
 }

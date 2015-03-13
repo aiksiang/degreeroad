@@ -271,7 +271,7 @@ function waitForChildParsing(rule, fn) {
 		} else {
 			console.log("Waiting for " + rule.ruleName + ": " + rule.parseCount + "/" + Object.keys(rule.include).length);
 		}
-	},1);
+	},2);
 }
 
 function checkParsingDone(rule) {
