@@ -131,6 +131,8 @@ function displayRequirementInEnglish() {
 		requirementInEnglish += "from the list";
 	} else if(currentSelectedRule.include.hasOwnProperty("LISTS")) {
 		requirementInEnglish += "from the list";
+	} else if(currentSelectedRule.include.hasOwnProperty("MODULES")) {
+		requirementInEnglish += "from these modules";
 	} else {
 		var multipleRule = false;
 		if(currentSelectedRule.include.hasOwnProperty("LEVEL")) {

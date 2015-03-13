@@ -93,6 +93,7 @@ function parseIncludeExclude(rule) {
 
 	// Retrieve Lists
 	if (rule.include.hasOwnProperty("LIST")) {
+		rule.listParseCount = 0;
 		parseList(rule, rule.include.LIST);
 	} else if (rule.include.hasOwnProperty("LISTS")) {
 		rule.listParseCount = 0;
@@ -101,8 +102,10 @@ function parseIncludeExclude(rule) {
 
 	// Retrieve Modules
 	if (rule.include.hasOwnProperty("MODULE")) {
+		rule.moduleParseCount = 0;
 		parseModule(rule, rule.include.MODULE);
 	} else if (rule.include.hasOwnProperty("MODULES")) {
+		rule.moduleParseCount = 0;
 		parseModules(rule);
 	}
 
@@ -119,10 +122,13 @@ function parseIncludeExclude(rule) {
 		parseChild(rule);
 	}
 
+	// Retrieve Faculty hosted modules
 	if (rule.include.hasOwnProperty("FACULTY")) {
-		rule.parseCount++;console.log("FACULTY NOT IMPLEMENTED")
+		rule.facultyParseCount = 0;
+		parseFaculty(rule, rule.include.FACULTY);
 	} else if (rule.include.hasOwnProperty("FACULTIES")) {
-		rule.parseCount++;console.log("FACULTIES NOT IMPLEMENTED")
+		rule.facultyParseCount = 0;
+		parseFaculties(rule);
 	}
 
 	if (rule.include.hasOwnProperty("FROMLIST")) {
@@ -184,13 +190,20 @@ function parseModule(rule, mod) {
 	} else {
 		rule.includeModuleList = [{module: mod}];
 	}
-	rule.parseCount++;
+	rule.moduleParseCount++;
+	if (rule.include.hasOwnProperty("MODULES")) {
+		if (rule.moduleParseCount == rule.include.MODULES.length) {
+			rule.parseCount++;
+		}
+	} else {
+		rule.parseCount++;
+	}
 }
+
 function parseModules(rule) {
 	for (var i in rule.include.MODULES) {
 		parseModule(rule, rule.include.MODULES[i]);
 	}
-	rule.parseCount++;
 }
 
 function parseRegex(rule) {
@@ -224,6 +237,72 @@ function parseChild(targetRule) {
 		});
 		
 	},targetRule);
+}
+
+function parseFaculty(rule, facultyName) {
+	var fullFacultyName;
+	switch (facultyName) {
+		case "SOC":
+			fullFacultyName = "SCHOOL OF COMPUTING";
+			break;
+		case "ENG":
+			fullFacultyName = "ENGINEERING";
+			break;
+		case "SCI":
+			fullFacultyName = "SCIENCE";
+			break;
+		case "BIZ":
+			fullFacultyName = "SCHOOL OF BUSINESS";
+			break;
+		case "SDE":
+			fullFacultyName = "SCHOOL OF DESIGN AND ENVIRONMENT";
+			break;
+		case "YST":
+			fullFacultyName = "YONG SIEW TOH CONSERVATORY OF MUSIC";
+			break;
+		case "FASS":
+			fullFacultyName = "ARTS & SOCIAL SCIENCES";
+			break;
+		case "MED":
+			fullFacultyName = "YONG LOO LIN SCHOOL OF MEDICINE";
+			break;
+		case "LAW":
+			fullFacultyName = "LAW";
+			break;
+		case "MDP":
+			fullFacultyName = "JOINT MULTI-DISCIPLINARY PROGRAMMES";
+			break;
+		default:
+			fullFacultyName = "NON-FACULTY-BASED DEPARTMENTS";
+			break;
+	}
+	waitForAllModuleList(function() {
+		var list = [];
+		for (var i in allModuleList) {
+			if (fullFacultyName == allModuleList[i].Faculty) {
+				list.push({module: allModuleList[i].Code.trim()});
+			}
+		}
+		if (rule.hasOwnProperty("includeModuleList")) {
+			rule.includeModuleList.push.apply(rule.includeModuleList,list);
+		} else {
+			rule.includeModuleList = list;
+		}
+		rule.facultyParseCount++;
+		if (rule.include.hasOwnProperty("FACULTIES")) {
+			if (rule.facultyParseCount == rule.include.FACULTIES.length) {
+				rule.parseCount++;
+			}
+		} else {
+			rule.parseCount++;
+		}
+	});
+}
+
+function parseFaculties(rule) {
+	for (var i in rule.include.FACULTIES) {
+		parseFaculty(rule, rule.include.FACULTIES[i]);
+	}	
 }
 
 function traverseRequirements(fn,inputNode) {
