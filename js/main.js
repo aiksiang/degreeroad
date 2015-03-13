@@ -115,9 +115,6 @@ requirementContainer.append(
 				</div>\
 			</div>\
 			<ul class="ui selection list module-list">\
-				<a class="item module">CS1234 The Most Important Module Ever In The History of NUS</a>\
-				<a class="item module">Selection</a>\
-				<a class="item module">Selection</a>\
 			</ul>\
 			<div class="ui bottom right attached label">MCs:0</div>\
 		</div>\
