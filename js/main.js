@@ -2,7 +2,11 @@
 $(document).ready(function(){
 	//Initialize dropdown
 	$('.ui.dropdown').dropdown();
-	$('.ui.menu .dropdown').dropdown({on: 'hover'});
+	$('#course-selection').dropdown({
+		onChange: function(value) {
+			chooseDegree(value);
+		}
+	});
 
 	//Initialize popup
 	$('.popup').popup();
@@ -17,6 +21,20 @@ $(document).ready(function(){
     InitializeActiveClass();
     
 });
+
+function chooseDegree(value) {
+	var degreeCode = "";
+	switch(value) {
+		case "computer engineering":
+			degreeCode = "CEG";
+			break;
+		case "political science(honours)":
+			degreeCode = "PS_HONS";
+			break;
+	}
+	initializeRequirementModules(degreeCode);
+}
+
 function InitializeActiveClass() {
 	$('.menu a.item').on('click', function() {
     	if(!$(this).hasClass('dropdown')) {
@@ -45,7 +63,6 @@ for (var i = 1; i <= noOfSems; i++) {
 	defaultUserSavedModules["semester" + i].mcs = 0;
 }
 defaultUserSavedModules.course = "CEG";
-defaultUserSavedModules.specialization = "None";
 defaultUserSavedModules.chosenModules = {};
 
 

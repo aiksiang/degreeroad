@@ -23,6 +23,9 @@ function retrieveList(listName, callback) {
 }
 
 function getAllModuleList(callback) {
+	// $.getJSON('http://api.nusmods.com/2014-2015/modules.json', function (data) {
+	// 	console.log(data);
+	// });
 	$.getJSON("database.php?action=getAllModuleList", function(data) {
 		callback(data);
 	}).error(function(error) {

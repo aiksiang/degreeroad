@@ -2,26 +2,30 @@ var requirementModules = {};
 var requirements = [];
 //storage = new Storage();
 
-function initializeRequirementModules() {
+function initializeRequirementModules(_degreeCode) {
+	_degreeCode = typeof _degreeCode !== 'undefined' ? _degreeCode : null;
+	requirements = [];
 	var degreeName = "";
-	var degreeCode = "PS_HONS"
+	var degreeCode = _degreeCode;
 	var academicYear = 1415;
 	var specialProgramme = "None";
 	var bridgingModules = "None";
 
-	retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
-		console.log(degreeInfo);
-		retrieveRules(degreeInfo.requirementId, function(rules) {
-			parseRules(rules);
-			postOrderTraverseRequirements(function(rule) {
-				parseIncludeExclude(rule);
+	if (_degreeCode != null) {
+		retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
+			console.log(degreeInfo);
+			retrieveRules(degreeInfo.requirementId, function(rules) {
+				parseRules(rules);
+				postOrderTraverseRequirements(function(rule) {
+					parseIncludeExclude(rule);
+				});
+				console.log(requirements);
+				displayRequirements();
+				loadUserSavedModules();
+				checkRequirementsAndColorize();
 			});
-			console.log(requirements);
-			displayRequirements();
-			loadUserSavedModules();
-			checkRequirementsAndColorize();
 		});
-	});
+	}
 };
 initializeRequirementModules();
 
@@ -113,7 +117,7 @@ function parseIncludeExclude(rule) {
 	if (rule.include.hasOwnProperty("REGEX")) {
 		parseRegex(rule);
 	} else if (rule.include.hasOwnProperty("REGEXS")) {
-		parseRegexs(rule);
+		//parseRegexs(rule);
 	}
 
 	// Retrieve Child
@@ -357,4 +361,23 @@ function checkParsingDone(rule) {
 	return Object.keys(rule.include).length == rule.parseCount;
 }
 
+function checkAllParsingDone() {
+	traverseRequirements(function(rule) {
+		if (!checkParsingDone(rule)) {
+			return false;
+		}
+	});
+	return true;
+}
+
+function waitForAllParsingDone(fn) {
+	var busyWaiting = setInterval(function () {
+		if (checkAllParsingDone()) {
+			fn();
+			clearInterval(busyWaiting);
+		} else {
+			console.log("Not done yet");
+		}
+	},3);
+}
 		

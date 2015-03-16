@@ -75,13 +75,13 @@ $("#requirementModules .module-list").sortable({
 	scroll: true,
 	appendTo: "body",
 	cursor: "-webkit-grabbing",
-	helper: function(event, li) {//console.log(li)
+	helper: function(event, li) {
 		copyHelper = li.clone();
 		copyHelper.attr("id", li.attr("id") + "clone");
 		copyHelper.insertAfter(li);
 		return li.clone();
 	},
-	receive: function(e,ui) {
+	receive: function(e,ui) {console.log("here")
 		removeClone = true;
 		$("#" + ui.item.attr("id")).remove();
 		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule");
@@ -108,8 +108,10 @@ $("#requirementModules .module-list").sortable({
 function checkRequirementsAndColorize() {
 	//var colorCode = checkRequirement();
 	//colorizeRequirementModuleList(colorCode);
-	var colorCode = checkRequirements();
-	colorizeRequirements(colorCode);
+	waitForAllParsingDone(function() {
+		var colorCode = checkRequirements();
+		colorizeRequirements(colorCode);
+	});
 }
 
 //$(".module-list").sortable("refresh");
