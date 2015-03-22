@@ -81,7 +81,7 @@ $("#requirementModules .module-list").sortable({
 		copyHelper.insertAfter(li);
 		return li.clone();
 	},
-	receive: function(e,ui) {console.log("here")
+	receive: function(e,ui) {
 		removeClone = true;
 		$("#" + ui.item.attr("id")).remove();
 		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule");

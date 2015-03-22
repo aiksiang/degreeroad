@@ -1,5 +1,6 @@
 var requirementModules = {};
 var requirements = [];
+var ruleLength = 0;
 //storage = new Storage();
 
 function initializeRequirementModules(_degreeCode) {
@@ -15,6 +16,7 @@ function initializeRequirementModules(_degreeCode) {
 		retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
 			console.log(degreeInfo);
 			retrieveRules(degreeInfo.requirementId, function(rules) {
+				ruleLength = rules.length;
 				parseRules(rules);
 				postOrderTraverseRequirements(function(rule) {
 					parseIncludeExclude(rule);
@@ -27,7 +29,7 @@ function initializeRequirementModules(_degreeCode) {
 		});
 	}
 };
-initializeRequirementModules();
+initializeRequirementModules("CEG");
 
 function parseRules(rules) {
 	var i = 0;
@@ -53,9 +55,9 @@ function parseIncludeExclude(rule) {
 	var includeItems; 
 
 	if (includeTypes.length > 1) { // Multiple include types
-		includeItems = rule.includeItem.match(/\(([^)]+)\)/g);
-		for (var i in includeItems)
-			includeItems[i] = includeItems[i].substring(1, includeItems[i].length - 1);
+		includeItems = rule.includeItem.split("),(");
+		includeItems[0] = includeItems[0].substring(1,includeItems[0].length);
+		includeItems[includeItems.length - 1] = includeItems[includeItems.length - 1].substring(0,includeItems[includeItems.length - 1].length - 1);
 	} else { // Only one include type
 		includeItems = [rule.includeItem];
 	}
@@ -85,6 +87,7 @@ function parseIncludeExclude(rule) {
 				includeObject[includeTypes[i]] = faculties;
 				break;
 			case "ANY":
+				includeObject[includeTypes[i]] = [];
 				break;
 			default: //those with no S, just append
 				includeObject[includeTypes[i]] = includeItems[i];
@@ -115,9 +118,11 @@ function parseIncludeExclude(rule) {
 
 	// Retrieve Regular Expression
 	if (rule.include.hasOwnProperty("REGEX")) {
-		parseRegex(rule);
+		rule.regexParseCount = 0;
+		parseRegex(rule, rule.include.REGEX);
 	} else if (rule.include.hasOwnProperty("REGEXS")) {
-		//parseRegexs(rule);
+		rule.regexParseCount = 0;
+		parseRegexs(rule);
 	}
 
 	// Retrieve Child
@@ -210,9 +215,9 @@ function parseModules(rule) {
 	}
 }
 
-function parseRegex(rule) {
+function parseRegex(rule, regex) {
 	waitForAllModuleList(function() {
-		var regexpString = rule.include.REGEX;
+		var regexpString = regex;
 		var regexp = new RegExp(regexpString, "g");
 		var list = [];
 		for (var i in allModuleList) {
@@ -225,8 +230,21 @@ function parseRegex(rule) {
 		} else {
 			rule.includeModuleList = list;
 		}
-		rule.parseCount++;
+		rule.regexParseCount++;
+		if (rule.include.hasOwnProperty("REGEXS")) {
+			if (rule.regexParseCount == rule.include.REGEXS.length) {
+				rule.parseCount++;
+			}
+		} else {
+			rule.parseCount++;
+		}
 	});
+}
+
+function parseRegexs(rule) {
+	for (var i in rule.include.REGEXS) {
+		parseRegex(rule, rule.include.REGEXS[i]);
+	}
 }
 
 function parseChild(targetRule) {
@@ -361,22 +379,27 @@ function checkParsingDone(rule) {
 	return Object.keys(rule.include).length == rule.parseCount;
 }
 
-function checkAllParsingDone() {
+function checkAllParsingDone() {var counter = 0;
 	traverseRequirements(function(rule) {
 		if (!checkParsingDone(rule)) {
-			return false;
+			counter = 0;
+		} else {
+			counter++;
 		}
 	});
-	return true;
+	if (counter == ruleLength)
+		return true;
+	else
+		return false;
 }
 
 function waitForAllParsingDone(fn) {
 	var busyWaiting = setInterval(function () {
-		if (checkAllParsingDone()) {
+		if (checkAllParsingDone() == true) {
 			fn();
 			clearInterval(busyWaiting);
 		} else {
-			console.log("Not done yet");
+			console.log("Not all the parsing is complete.");
 		}
 	},3);
 }

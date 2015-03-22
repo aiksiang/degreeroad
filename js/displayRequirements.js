@@ -77,6 +77,9 @@ function populateRequirementModulesList(rule) {
 function insertModulesIntoList(rule) {
 	if (rule.hasOwnProperty("includeModuleList")) {
 		for (var i in rule.includeModuleList) {
+			// $.getJSON('http://api.nusmods.com/2014-2015/2/modules/' + rule.includeModuleList[i].module + '.json', function(data) {
+			// 	console.log(data);
+			// });
 			var id = lookupModule(rule.includeModuleList[i].module);
 			if (id != undefined)
 				$("#requirementModules .list").append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
