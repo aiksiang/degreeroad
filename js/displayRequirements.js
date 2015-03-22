@@ -69,6 +69,7 @@ function populateRequirementModulesList(rule) {
 			insertModulesIntoList(rule);
 			checkRequirementsAndColorize();
 			displayRequirementInEnglish();
+    		InitializeModalsTrigger();
 		}
 	});
 	moduleList.transition('slide down');

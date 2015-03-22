@@ -11,12 +11,6 @@ $(document).ready(function(){
 	//Initialize popup
 	$('.popup').popup();
 
-	//Initialize modal
-	$('.modal').modal();
-	$('.standard.modal').modal('attach events', '.standard.demo.button');
-	$('.basic.modal').modal('attach events', '.minimal.demo.button');
-	$('.fullscreen.modal').modal('attach events', '.fullscreen.demo.button');
-
 	//Initialize active class
     InitializeActiveClass();
     
@@ -40,6 +34,26 @@ function InitializeActiveClass() {
     	if(!$(this).hasClass('dropdown')) {
           $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
         }
+	});
+}
+
+function InitializeModalsTrigger() {
+	$('.modal').modal();
+	$('.standard.modal').modal('attach events', '.item.module');
+	$('.item.module').on('click', function() {
+		if ($(this).attr("id") != "notFound") {
+			var moduleLocation = $(this).attr("id").substring(17,$(this).attr("id").length);
+			var mod = allModuleList[moduleLocation];console.log(mod)
+			$(".modal .header").html(mod.Name);
+			$(".modal .content").html("<div><h5>" + "Module Code: " + "</h5>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
+									"<div><h5>" + "Modular Credits: " + "</h5>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
+									"<div><h5>" + "Exam Date: " + "</h5>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
+									"<div><h5>" + "Preclusion: " + "</h5>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
+									"<div><h5>" + "Prerequisite: " + "</h5>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
+									"<div><h5>" + "Description: " + "</h5>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" +
+									"<div class='ui horizontal divider'>Module Declaration</div>" +
+									"<span class='moddule-declaration'></span></div>");
+		}
 	});
 }
 

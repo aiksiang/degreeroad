@@ -47,6 +47,7 @@ $("#semester-container .module-list").sortable({
 		}
 		
 		if (itemLocation != null) {
+			checkPrerequisite(itemLocation);
 			userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
 			userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
 			updateMC(receivedBy, userSavedModules[receivedBy].mcs);
@@ -112,6 +113,69 @@ function checkRequirementsAndColorize() {
 		var colorCode = checkRequirements();
 		colorizeRequirements(colorCode);
 	});
+}
+
+function checkPrerequisite(itemLocation) {
+	console.log(allModuleList[itemLocation])
+	console.log(allModuleList[itemLocation].Prereq)
+	if (itemLocation != undefined) {
+		if (allModuleList[itemLocation].Prereq == undefined || allModuleList[itemLocation].Prereq == "") {
+			//No Prerequisites
+		} else if (allModuleList[itemLocation].Prereq[0] == "*") {
+			//Prerequisites not parsed
+			console.log("Prerequisites are not parsed");
+		} else {
+			console.log(parsePrerequisite(allModuleList[itemLocation].Prereq))
+		}
+	} else {
+
+	}
+}
+
+function parsePrerequisite(preReq) {
+	console.log("current: " + preReq)
+	var firstBlank = preReq.indexOf(' ');
+	if (preReq[0] == "(") {
+		return parsePrerequisite(preReq.substring(1,preReq.length));
+	} else if (preReq[0] == ")") {
+
+	} else if (firstBlank < 0) {
+		if (preReq[preReq.length-1] == ")") {console.log(preReq.substring(0, preReq.length-1) + ": " + isModuleSelected(preReq.substring(0, preReq.length-1)));
+			return isModuleSelected(preReq.substring(0, preReq.length-1));
+		} else {
+			return isModuleSelected(preReq);
+		}
+	} else if (firstBlank >= 0) {
+		var firstPart = preReq.substr(0,firstBlank);
+		if (firstPart[firstPart.length-1] == ")") {
+			firstPart = firstPart.substring(0,firstPart.length-1);
+		}
+		var nextPart = preReq.substr(firstBlank + 1);
+		var nextBlank = nextPart.indexOf(' ');
+		var operator = nextPart.substring(0,nextBlank);
+		if (operator == "or" || operator == "OR") {console.log(firstPart + ": " + isModuleSelected(firstPart));
+			return isModuleSelected(firstPart) || parsePrerequisite(nextPart.substr(nextBlank + 1));
+		} else if (operator == "and" || operator == "AND") {console.log(firstPart + ": " + isModuleSelected(firstPart));
+			return isModuleSelected(firstPart) && parsePrerequisite(nextPart.substr(nextBlank + 1));
+		} else {console.log(firstPart + ": " + isModuleSelected(firstPart));
+			return isModuleSelected(firstPart);
+		}
+	}
+	console.log(preReq);
+}
+
+function parsePreReqBrackets() {
+
+}
+
+function isModuleSelected(moduleToBeChecked) {
+	var result = false;
+	traverseSelectedModules(function (module) {
+		if (module.Code == moduleToBeChecked) {
+			result = true;
+		}
+	});
+	return result;
 }
 
 //$(".module-list").sortable("refresh");

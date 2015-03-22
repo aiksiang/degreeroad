@@ -127,3 +127,13 @@
 	cursor: default !important;
 	background: #46ae5f !important;
 }
+
+h5 {
+	display: inline;
+	line-height: 2;
+}
+
+.modBodyValue {
+	font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	line-height: 1.8;
+}
