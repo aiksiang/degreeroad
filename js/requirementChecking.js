@@ -103,7 +103,7 @@ function traverseSelectedModules(fn) {
 	for (var i in userSavedModules) {
 		if (i.indexOf("semester") >= 0) {
 			for (var j in userSavedModules[i].modules) {
-				fn(userSavedModules[i].modules[j]);
+				fn(userSavedModules[i].modules[j], i);
 			}
 		}
 	}

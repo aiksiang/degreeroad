@@ -47,10 +47,14 @@ $("#semester-container .module-list").sortable({
 		}
 		
 		if (itemLocation != null) {
-			checkPrerequisite(itemLocation);
-			userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
-			userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
-			updateMC(receivedBy, userSavedModules[receivedBy].mcs);
+			if (checkPrerequisite(itemLocation, receivedBy) == false) {
+				removeClone = true;
+				showNotice("<b>You do not meet the Prerequisites for this module: </b><br>" + allModuleList[itemLocation].Prereq)
+			} else {
+				userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
+				userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
+				updateMC(receivedBy, userSavedModules[receivedBy].mcs);
+			}
 		} else {
 			console.log("Module is not found in database");
 			//TODO add module without details into sem
@@ -115,35 +119,52 @@ function checkRequirementsAndColorize() {
 	});
 }
 
-function checkPrerequisite(itemLocation) {
-	console.log(allModuleList[itemLocation])
-	console.log(allModuleList[itemLocation].Prereq)
+function checkPrerequisite(itemLocation, receivedBy) {
 	if (itemLocation != undefined) {
 		if (allModuleList[itemLocation].Prereq == undefined || allModuleList[itemLocation].Prereq == "") {
 			//No Prerequisites
+			return true;
 		} else if (allModuleList[itemLocation].Prereq[0] == "*") {
 			//Prerequisites not parsed
-			console.log("Prerequisites are not parsed");
+			showNotice("<b>Please manually check the Prerequisites for this module: </b><br>" + allModuleList[itemLocation].Prereq.substring(1));
+			return true;
 		} else {
-			console.log(parsePrerequisite(allModuleList[itemLocation].Prereq))
+			modulesPassed = [];
+			return parsePrerequisite(allModuleList[itemLocation].Prereq,receivedBy);
 		}
 	} else {
-
+		console.log("it shouldnt come here");
 	}
 }
 
-function parsePrerequisite(preReq) {
+function parsePrerequisite(preReq, receivedBy) {
 	console.log("current: " + preReq)
 	var firstBlank = preReq.indexOf(' ');
 	if (preReq[0] == "(") {
-		return parsePrerequisite(preReq.substring(1,preReq.length));
-	} else if (preReq[0] == ")") {
+		var nextNest = preReq.substring(1).indexOf("(");
+		var nextEnd = preReq.indexOf(")");
+		if (nextNest > nextEnd) {
+			var nextPart = preReq.substring(nextEnd + 2);
+			var nextBlank = nextPart.indexOf(" ");
+			var nextOperator = nextPart.substring(0, nextBlank);
+			if (nextOperator == "or" || nextOperator == "OR") {
+				return parsePrerequisite(preReq.substring(1,nextEnd), receivedBy) || parsePrerequisite(nextPart.substring(nextBlank + 1), receivedBy);
+			} else if (nextOperator == "and" || nextOperator == "AND") {
+				return parsePrerequisite(preReq.substring(1,nextEnd), receivedBy) && parsePrerequisite(nextPart.substring(nextBlank + 1), receivedBy);
+			} else {
+				console.log("it shouldnt come here");
+			}
 
-	} else if (firstBlank < 0) {
-		if (preReq[preReq.length-1] == ")") {console.log(preReq.substring(0, preReq.length-1) + ": " + isModuleSelected(preReq.substring(0, preReq.length-1)));
-			return isModuleSelected(preReq.substring(0, preReq.length-1));
 		} else {
-			return isModuleSelected(preReq);
+			return parsePrerequisite(preReq.substring(1,preReq.length - 1), receivedBy);
+		}
+	} else if (preReq[0] == ")") {
+		console.log("here got )")
+	} else if (firstBlank < 0) {
+		if (preReq[preReq.length-1] == ")") {console.log(preReq.substring(0, preReq.length-1) + ": " + isModuleSelected(preReq.substring(0, preReq.length-1), receivedBy));
+			return isModuleSelected(preReq.substring(0, preReq.length-1), receivedBy);
+		} else {
+			return isModuleSelected(preReq, receivedBy);
 		}
 	} else if (firstBlank >= 0) {
 		var firstPart = preReq.substr(0,firstBlank);
@@ -153,32 +174,47 @@ function parsePrerequisite(preReq) {
 		var nextPart = preReq.substr(firstBlank + 1);
 		var nextBlank = nextPart.indexOf(' ');
 		var operator = nextPart.substring(0,nextBlank);
-		if (operator == "or" || operator == "OR") {console.log(firstPart + ": " + isModuleSelected(firstPart));
-			return isModuleSelected(firstPart) || parsePrerequisite(nextPart.substr(nextBlank + 1));
-		} else if (operator == "and" || operator == "AND") {console.log(firstPart + ": " + isModuleSelected(firstPart));
-			return isModuleSelected(firstPart) && parsePrerequisite(nextPart.substr(nextBlank + 1));
-		} else {console.log(firstPart + ": " + isModuleSelected(firstPart));
-			return isModuleSelected(firstPart);
+		if (operator == "or" || operator == "OR") {console.log(firstPart + ": " + isModuleSelected(firstPart, receivedBy));
+			return isModuleSelected(firstPart, receivedBy) || parsePrerequisite(nextPart.substr(nextBlank + 1), receivedBy);
+		} else if (operator == "and" || operator == "AND") {console.log(firstPart + ": " + isModuleSelected(firstPart, receivedBy));
+			return isModuleSelected(firstPart, receivedBy) && parsePrerequisite(nextPart.substr(nextBlank + 1), receivedBy);
+		} else {console.log(firstPart + ": " + isModuleSelected(firstPart, receivedBy));
+			return isModuleSelected(firstPart, receivedBy);
 		}
 	}
 	console.log(preReq);
 }
 
-function parsePreReqBrackets() {
-
-}
-
-function isModuleSelected(moduleToBeChecked) {
+function isModuleSelected(moduleToBeChecked, receivedBy) {
 	var result = false;
-	traverseSelectedModules(function (module) {
-		if (module.Code == moduleToBeChecked) {
-			result = true;
+	var indexReceivedBy = receivedBy.substring(8);
+	var stop = false;
+	for (var i in userSavedModules) {
+		if (stop == true) break;
+		if (i.indexOf("semester") >= 0) {
+			for (var j in userSavedModules[i].modules) {
+				var module = userSavedModules[i].modules[j];
+				var semester = i;
+				var indexSemester = semester.substring(8);
+				if (indexReceivedBy <= indexSemester) {
+					result = false;
+				} else if (module.Code == moduleToBeChecked) {
+					result = true;
+					stop = true;
+					break;
+				}
+			}
 		}
-	});
+	}
 	return result;
 }
 
 //$(".module-list").sortable("refresh");
+
+function showNotice(text) {
+	$('.noticeAlert.modal').modal('show');
+	$('.noticeAlert .description').html(text);
+}
 
 function updateMC(identifier, mc) {
 	$("#" + identifier + " .ui.bottom.right.attached.label").html("MCs: " + mc);
