@@ -29,7 +29,7 @@ function initializeRequirementModules(_degreeCode) {
 		});
 	}
 };
-initializeRequirementModules("PS_HONS");
+initializeRequirementModules();
 
 function parseRules(rules) {
 	var i = 0;

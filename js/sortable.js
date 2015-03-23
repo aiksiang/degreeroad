@@ -7,6 +7,7 @@ $("#semester-container .module-list").sortable({
 	forcePlaceholderSize: true,
 	placeholder: "item module-placeholder",
 	revert: 200,
+	delay: 150,
 	scroll: true,
 	helper: "clone",
 	appendTo: "body",
@@ -77,6 +78,7 @@ $("#requirementModules .module-list").sortable({
 	forcePlaceholderSize: true,
 	placeholder: "blank-placeholder",
 	revert: 200,
+	delay: 150,
 	scroll: true,
 	appendTo: "body",
 	cursor: "-webkit-grabbing",
@@ -121,7 +123,7 @@ function checkRequirementsAndColorize() {
 
 function checkPrerequisite(itemLocation, receivedBy) {
 	if (itemLocation != undefined) {
-		if (allModuleList[itemLocation].Prereq == undefined || allModuleList[itemLocation].Prereq == "") {
+		if (allModuleList[itemLocation].Prereq == undefined || allModuleList[itemLocation].Prereq == "" || allModuleList[itemLocation].Prereq == "Nil") {
 			//No Prerequisites
 			return true;
 		} else if (allModuleList[itemLocation].Prereq[0] == "*") {
