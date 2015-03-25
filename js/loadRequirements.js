@@ -1,13 +1,13 @@
 var requirementModules = {};
 var requirements = [];
-var ruleLength = 0;
+var ruleLength = 1;
 //storage = new Storage();
 
 function initializeRequirementModules(_degreeCode, clear) {
 	_degreeCode = typeof _degreeCode !== 'undefined' ? _degreeCode : null;
 	if (clear == true) {
 		requirements = [];
-		ruleLength = 0;
+		ruleLength = 1;
 	}
 	$("#requirementModules .module-list").html("");	
 	var degreeName = "";
@@ -20,7 +20,10 @@ function initializeRequirementModules(_degreeCode, clear) {
 		retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
 			console.log(degreeInfo);
 			retrieveRules(degreeInfo.requirementId, function(rules) {
-				ruleLength += rules.length;
+				if (ruleLength == 1) // Not 0, this is used make sure that waiting for all parsing to be done will be correct
+					ruleLength = rules.length;
+				else
+					ruleLength += rules.length;
 				parseRules(rules, degreeCode);
 				postOrderTraverseRequirements(function(rule) {
 					parseIncludeExclude(rule);
@@ -367,7 +370,7 @@ function waitForAllModuleList(fn) {
 		} else {
 			console.log("allModuleList not ready yet.");
 		}
-	},1000);
+	},1);
 }
 
 function waitForChildParsing(rule, fn) {
@@ -378,17 +381,20 @@ function waitForChildParsing(rule, fn) {
 		} else {
 			console.log("Waiting for " + rule.ruleName + ": " + rule.parseCount + "/" + Object.keys(rule.include).length);
 		}
-	},1001);
+	},5);
 }
 
 function checkParsingDone(rule) {
+	if (rule.doneParsing == true)
+		return true;
 	if (Object.keys(rule.include).length == rule.parseCount) {
 		rule.doneParsing = true;
 	}
 	return Object.keys(rule.include).length == rule.parseCount;
 }
 
-function checkAllParsingDone() {var counter = 0;
+function checkAllParsingDone() {
+	var counter = 0;
 	traverseRequirements(function(rule) {
 		if (!checkParsingDone(rule)) {
 			counter = 0;
@@ -410,6 +416,6 @@ function waitForAllParsingDone(fn) {
 		} else {
 			console.log("Not all the parsing is complete.");
 		}
-	},1002);
+	},10);
 }
 		

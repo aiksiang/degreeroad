@@ -1,5 +1,5 @@
-var currentDegree;
-var currentSecondDegree;
+var currentDegree = null;
+var currentSecondDegree = null;
 
 //Initialize UI elements
 $(document).ready(function(){
@@ -7,22 +7,23 @@ $(document).ready(function(){
 	$('.ui.dropdown').dropdown();
 	$('#course-selection').dropdown({
 		onChange: function(value,text) {
-			if (text != currentSecondDegree) {
-				currentDegree = text;
-			} else {
+			currentDegree = text;
+			if (currentDegree == currentSecondDegree) {
 				$('#second-course-selection .text').html("+");
+				currentSecondDegree = null;
 			}
-			chooseDegree(text,"MainDegree");
+			chooseDegree();
 		}
 	});
 	$('#second-course-selection').dropdown({
 		onChange: function(value,text) {
 			if (text != currentDegree) {
-				currentSecondDegree = text;
-				chooseDegree(text,"Second");
 				$('#second-course-selection .text').html(text);
+				currentSecondDegree = text;
+				chooseDegree();
 			} else {
 				$('#second-course-selection .text').html("+");
+				currentSecondDegree = null;
 			}
 		}
 	});
@@ -51,19 +52,38 @@ function populateDegreeList() {
 	$("#course-selection .menu").html("");
 	$("#second-course-selection .menu").html("");
 	for (var i in degreeList) {
-		$("#course-selection .menu").append('\
-			<div class="item">'+ degreeList[i] +'</div>\
-		');
-		$("#second-course-selection .menu").append('\
-			<div class="item">'+ degreeList[i] +'</div>\
-		');
+		if (i != "ENG" && i!= "ARTS") { // We dont want the faculty to be displayed
+			$("#course-selection .menu").append('\
+				<div class="item">'+ degreeList[i] +'</div>\
+			');
+			$("#second-course-selection .menu").append('\
+				<div class="item">'+ degreeList[i] +'</div>\
+			');
+		}
 	}
 }
 
-function chooseDegree(value, firstOrSecond) {
-	var degreeCode = "";
-	var faculty = "";
-	switch(value) {
+function chooseDegree() {
+	var degreeCodeAndFaculty = getDegreeCode(currentDegree);
+	var degreeCode = degreeCodeAndFaculty[0];
+	var faculty = degreeCodeAndFaculty[1];
+	
+	initializeRequirementModules(degreeCode, true);
+	waitForAllParsingDone(function() {
+		initializeRequirementModules(faculty, false);
+		if (currentSecondDegree != null) {
+				waitForAllParsingDone(function() {
+					degreeCode = getDegreeCode(currentSecondDegree)[0];
+					initializeRequirementModules(degreeCode, false);
+			})
+		}
+	});
+}
+
+function getDegreeCode(text) {
+	var degreeCode;
+	var faculty;
+	switch(text) {
 		case "Computer Engineering":
 			degreeCode = "CEG";
 			faculty = "ENG";
@@ -81,17 +101,8 @@ function chooseDegree(value, firstOrSecond) {
 			faculty = "ARTS";
 			break;
 	}
-	if (firstOrSecond == "MainDegree") {
-		initializeRequirementModules(degreeCode, true);
-		waitForAllParsingDone(function() {
-			initializeRequirementModules(faculty, false);
-		})
-	} else if (firstOrSecond == "Second") {
-		initializeRequirementModules(degreeCode, false);
-	}
+	return [degreeCode, faculty];
 }
-
-
 
 function InitializeActiveClass() {
 	$('.menu a.item').on('click', function() {
