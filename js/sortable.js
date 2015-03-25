@@ -215,7 +215,7 @@ function isModuleSelected(moduleToBeChecked, receivedBy) {
 
 function showNotice(text) {
 	$('.noticeAlert.modal').modal('show');
-	$('.noticeAlert .description').html(text);
+	$('.noticeAlert .content').html(text);
 }
 
 function updateMC(identifier, mc) {

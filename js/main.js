@@ -1,12 +1,32 @@
+var currentDegree;
+var currentSecondDegree;
+
 //Initialize UI elements
 $(document).ready(function(){
 	//Initialize dropdown
 	$('.ui.dropdown').dropdown();
 	$('#course-selection').dropdown({
-		onChange: function(value) {
-			chooseDegree(value);
+		onChange: function(value,text) {
+			if (text != currentSecondDegree) {
+				currentDegree = text;
+			} else {
+				$('#second-course-selection .text').html("+");
+			}
+			chooseDegree(text,"MainDegree");
 		}
 	});
+	$('#second-course-selection').dropdown({
+		onChange: function(value,text) {
+			if (text != currentDegree) {
+				currentSecondDegree = text;
+				chooseDegree(text,"Second");
+				$('#second-course-selection .text').html(text);
+			} else {
+				$('#second-course-selection .text').html("+");
+			}
+		}
+	});
+	
 
 	//Initialize popup
 	$('.popup').popup();
@@ -14,20 +34,64 @@ $(document).ready(function(){
 	//Initialize active class
     InitializeActiveClass();
     
+    //Initialize Degrees
+    populateDegreeList();
 });
 
-function chooseDegree(value) {
+var degreeList = {
+	ENG: "Engineering",
+	ARTS: "Arts",
+	CEG: "Computer Engineering",
+	PS_HONS: "Political Science(Honours)",
+	PS_2MAJ: "Political Science(2nd Major)",
+	PS_MIN: "Political Science(Minor)"
+};
+
+function populateDegreeList() {
+	$("#course-selection .menu").html("");
+	$("#second-course-selection .menu").html("");
+	for (var i in degreeList) {
+		$("#course-selection .menu").append('\
+			<div class="item">'+ degreeList[i] +'</div>\
+		');
+		$("#second-course-selection .menu").append('\
+			<div class="item">'+ degreeList[i] +'</div>\
+		');
+	}
+}
+
+function chooseDegree(value, firstOrSecond) {
 	var degreeCode = "";
+	var faculty = "";
 	switch(value) {
-		case "computer engineering":
+		case "Computer Engineering":
 			degreeCode = "CEG";
+			faculty = "ENG";
 			break;
-		case "political science(honours)":
+		case "Political Science(Honours)":
 			degreeCode = "PS_HONS";
+			faculty = "ARTS";
+			break;
+		case "Political Science(2nd Major)":
+			degreeCode = "PS_2MAJ";
+			faculty = "ARTS";
+			break;
+		case "Political Science(Minor)":
+			degreeCode = "PS_MIN";
+			faculty = "ARTS";
 			break;
 	}
-	initializeRequirementModules(degreeCode);
+	if (firstOrSecond == "MainDegree") {
+		initializeRequirementModules(degreeCode, true);
+		waitForAllParsingDone(function() {
+			initializeRequirementModules(faculty, false);
+		})
+	} else if (firstOrSecond == "Second") {
+		initializeRequirementModules(degreeCode, false);
+	}
 }
+
+
 
 function InitializeActiveClass() {
 	$('.menu a.item').on('click', function() {

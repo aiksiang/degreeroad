@@ -1,10 +1,15 @@
 var requirementSpecification = $("#requirement-specification .module-list");
 var currentSelectedRule;
 
-function displayRequirements() {
+function displayRequirements(degreeName, clear) {
 	requirementSpecification.html("");
 
+	var currentDegree;
 	traverseRequirements(function(rule){
+		if (currentDegree != rule.degree) {
+			requirementSpecification.append('<div class="ui horizontal divider">'+ degreeList[rule.degree] +'</div>')
+			currentDegree = rule.degree;
+		}
 		requirementSpecification.append(listItem("requirement", rule.requirementId, "item", requirementText(rule)));
 	});
 	InitializeActiveClass();

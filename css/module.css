@@ -137,3 +137,8 @@ h5 {
 	font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	line-height: 1.8;
 }
+
+.ui.standard.modal,
+.noticeAlert {
+	margin-top: -200px !important;
+}

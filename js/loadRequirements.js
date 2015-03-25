@@ -3,9 +3,13 @@ var requirements = [];
 var ruleLength = 0;
 //storage = new Storage();
 
-function initializeRequirementModules(_degreeCode) {
+function initializeRequirementModules(_degreeCode, clear) {
 	_degreeCode = typeof _degreeCode !== 'undefined' ? _degreeCode : null;
-	requirements = [];
+	if (clear == true) {
+		requirements = [];
+		ruleLength = 0;
+	}
+	$("#requirementModules .module-list").html("");	
 	var degreeName = "";
 	var degreeCode = _degreeCode;
 	var academicYear = 1415;
@@ -16,13 +20,13 @@ function initializeRequirementModules(_degreeCode) {
 		retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
 			console.log(degreeInfo);
 			retrieveRules(degreeInfo.requirementId, function(rules) {
-				ruleLength = rules.length;
-				parseRules(rules);
+				ruleLength += rules.length;
+				parseRules(rules, degreeCode);
 				postOrderTraverseRequirements(function(rule) {
 					parseIncludeExclude(rule);
 				});
 				console.log(requirements);
-				displayRequirements();
+				displayRequirements(degreeInfo.degreeName, clear);
 				loadUserSavedModules();
 				checkRequirementsAndColorize();
 			});
@@ -31,9 +35,10 @@ function initializeRequirementModules(_degreeCode) {
 };
 initializeRequirementModules();
 
-function parseRules(rules) {
+function parseRules(rules, degreeCode) {
 	var i = 0;
 	while (i < rules.length) {
+		rules[i].degree = degreeCode;
 		if (rules[i].parent == null) {
 			rules[i].level = 0;
 			requirements.push(rules[i]);
@@ -50,103 +55,104 @@ function parseRules(rules) {
 }
 
 function parseIncludeExclude(rule) {
+	if (rule.doneParsing != true){
+		var includeTypes = rule.includeType.split(",");
+		var includeItems; 
 
-	var includeTypes = rule.includeType.split(",");
-	var includeItems; 
-
-	if (includeTypes.length > 1) { // Multiple include types
-		includeItems = rule.includeItem.split("),(");
-		includeItems[0] = includeItems[0].substring(1,includeItems[0].length);
-		includeItems[includeItems.length - 1] = includeItems[includeItems.length - 1].substring(0,includeItems[includeItems.length - 1].length - 1);
-	} else { // Only one include type
-		includeItems = [rule.includeItem];
-	}
-	var includeObject = {};
-
-
-	//Split includeitems of those with "S" to become array
-	for (var i = 0; i < includeTypes.length; i++) {
-		switch (includeTypes[i]) {
-			case "LISTS":
-				var lists = includeItems[i].split(",");
-				includeObject[includeTypes[i]] = lists;
-				break;
-			case "MODULES":
-				var modules = includeItems[i].split(",");
-				for (var j in modules) {
-					modules[j] = modules[j].trim();
-				}
-				includeObject[includeTypes[i]] = modules;
-				break;
-			case "REGEXS":
-				var regexs = includeItems[i].split(",");
-				includeObject[includeTypes[i]] = regexs;
-				break;
-			case "FACULTIES":
-				var faculties = includeItems[i].split(",");
-				includeObject[includeTypes[i]] = faculties;
-				break;
-			case "ANY":
-				includeObject[includeTypes[i]] = [];
-				break;
-			default: //those with no S, just append
-				includeObject[includeTypes[i]] = includeItems[i];
-				break;
+		if (includeTypes.length > 1) { // Multiple include types
+			includeItems = rule.includeItem.split("),(");
+			includeItems[0] = includeItems[0].substring(1,includeItems[0].length);
+			includeItems[includeItems.length - 1] = includeItems[includeItems.length - 1].substring(0,includeItems[includeItems.length - 1].length - 1);
+		} else { // Only one include type
+			includeItems = [rule.includeItem];
 		}
-	}
-	rule.include = includeObject;
+		var includeObject = {};
 
-	rule.parseCount = 0;
 
-	// Retrieve Lists
-	if (rule.include.hasOwnProperty("LIST")) {
-		rule.listParseCount = 0;
-		parseList(rule, rule.include.LIST);
-	} else if (rule.include.hasOwnProperty("LISTS")) {
-		rule.listParseCount = 0;
-		parseLists(rule);
-	}
+		//Split includeitems of those with "S" to become array
+		for (var i = 0; i < includeTypes.length; i++) {
+			switch (includeTypes[i]) {
+				case "LISTS":
+					var lists = includeItems[i].split(",");
+					includeObject[includeTypes[i]] = lists;
+					break;
+				case "MODULES":
+					var modules = includeItems[i].split(",");
+					for (var j in modules) {
+						modules[j] = modules[j].trim();
+					}
+					includeObject[includeTypes[i]] = modules;
+					break;
+				case "REGEXS":
+					var regexs = includeItems[i].split(",");
+					includeObject[includeTypes[i]] = regexs;
+					break;
+				case "FACULTIES":
+					var faculties = includeItems[i].split(",");
+					includeObject[includeTypes[i]] = faculties;
+					break;
+				case "ANY":
+					includeObject[includeTypes[i]] = [];
+					break;
+				default: //those with no S, just append
+					includeObject[includeTypes[i]] = includeItems[i];
+					break;
+			}
+		}
+		rule.include = includeObject;
 
-	// Retrieve Modules
-	if (rule.include.hasOwnProperty("MODULE")) {
-		rule.moduleParseCount = 0;
-		parseModule(rule, rule.include.MODULE);
-	} else if (rule.include.hasOwnProperty("MODULES")) {
-		rule.moduleParseCount = 0;
-		parseModules(rule);
-	}
+		rule.parseCount = 0;
 
-	// Retrieve Regular Expression
-	if (rule.include.hasOwnProperty("REGEX")) {
-		rule.regexParseCount = 0;
-		parseRegex(rule, rule.include.REGEX);
-	} else if (rule.include.hasOwnProperty("REGEXS")) {
-		rule.regexParseCount = 0;
-		parseRegexs(rule);
-	}
+		// Retrieve Lists
+		if (rule.include.hasOwnProperty("LIST")) {
+			rule.listParseCount = 0;
+			parseList(rule, rule.include.LIST);
+		} else if (rule.include.hasOwnProperty("LISTS")) {
+			rule.listParseCount = 0;
+			parseLists(rule);
+		}
 
-	// Retrieve Child
-	if (rule.include.hasOwnProperty("CHILD")) {
-		rule.childParseCount = 0;
-		parseChild(rule);
-	}
+		// Retrieve Modules
+		if (rule.include.hasOwnProperty("MODULE")) {
+			rule.moduleParseCount = 0;
+			parseModule(rule, rule.include.MODULE);
+		} else if (rule.include.hasOwnProperty("MODULES")) {
+			rule.moduleParseCount = 0;
+			parseModules(rule);
+		}
 
-	// Retrieve Faculty hosted modules
-	if (rule.include.hasOwnProperty("FACULTY")) {
-		rule.facultyParseCount = 0;
-		parseFaculty(rule, rule.include.FACULTY);
-	} else if (rule.include.hasOwnProperty("FACULTIES")) {
-		rule.facultyParseCount = 0;
-		parseFaculties(rule);
-	}
+		// Retrieve Regular Expression
+		if (rule.include.hasOwnProperty("REGEX")) {
+			rule.regexParseCount = 0;
+			parseRegex(rule, rule.include.REGEX);
+		} else if (rule.include.hasOwnProperty("REGEXS")) {
+			rule.regexParseCount = 0;
+			parseRegexs(rule);
+		}
 
-	if (rule.include.hasOwnProperty("FROMLIST")) {
-		rule.parseCount++;
-	}
+		// Retrieve Child
+		if (rule.include.hasOwnProperty("CHILD")) {
+			rule.childParseCount = 0;
+			parseChild(rule);
+		}
 
-	// Since ANY is also a checked to see if it has been loaded, we need to just say it is done.
-	if (rule.include.hasOwnProperty("ANY")) {
-		rule.parseCount++;
+		// Retrieve Faculty hosted modules
+		if (rule.include.hasOwnProperty("FACULTY")) {
+			rule.facultyParseCount = 0;
+			parseFaculty(rule, rule.include.FACULTY);
+		} else if (rule.include.hasOwnProperty("FACULTIES")) {
+			rule.facultyParseCount = 0;
+			parseFaculties(rule);
+		}
+
+		if (rule.include.hasOwnProperty("FROMLIST")) {
+			rule.parseCount++;
+		}
+
+		// Since ANY is also a checked to see if it has been loaded, we need to just say it is done.
+		if (rule.include.hasOwnProperty("ANY")) {
+			rule.parseCount++;
+		}
 	}
 }
 
@@ -361,7 +367,7 @@ function waitForAllModuleList(fn) {
 		} else {
 			console.log("allModuleList not ready yet.");
 		}
-	},1);
+	},1000);
 }
 
 function waitForChildParsing(rule, fn) {
@@ -372,10 +378,13 @@ function waitForChildParsing(rule, fn) {
 		} else {
 			console.log("Waiting for " + rule.ruleName + ": " + rule.parseCount + "/" + Object.keys(rule.include).length);
 		}
-	},2);
+	},1001);
 }
 
 function checkParsingDone(rule) {
+	if (Object.keys(rule.include).length == rule.parseCount) {
+		rule.doneParsing = true;
+	}
 	return Object.keys(rule.include).length == rule.parseCount;
 }
 
@@ -401,6 +410,6 @@ function waitForAllParsingDone(fn) {
 		} else {
 			console.log("Not all the parsing is complete.");
 		}
-	},3);
+	},1002);
 }
 		
