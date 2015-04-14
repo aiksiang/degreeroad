@@ -154,7 +154,7 @@ function parseIncludeExclude(rule) {
 
 		// Since ANY is also a checked to see if it has been loaded, we need to just say it is done.
 		if (rule.include.hasOwnProperty("ANY")) {
-			rule.parseCount++;
+			parseAny(rule);
 		}
 	}
 }
@@ -334,6 +334,21 @@ function parseFaculties(rule) {
 	for (var i in rule.include.FACULTIES) {
 		parseFaculty(rule, rule.include.FACULTIES[i]);
 	}	
+}
+
+function parseAny(rule) {
+	waitForAllModuleList(function() {
+		var list = [];
+		for (var i in allModuleList) {
+				list.push({module: allModuleList[i].Code.trim()});
+		}
+		if (rule.hasOwnProperty("includeModuleList")) {
+			rule.includeModuleList.push.apply(rule.includeModuleList,list);
+		} else {
+			rule.includeModuleList = list;
+		}
+		rule.parseCount++;
+	});
 }
 
 function traverseRequirements(fn,inputNode) {

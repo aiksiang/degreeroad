@@ -108,14 +108,14 @@
 	height: 0px;
 }
 
-#selection input {
+#requirementModules input {
 	height: 21px;
 	margin: -6px;
 	font-size: 12px;
 	width: 204px;
 }
 
-#selection .icon {
+#requirementModules .icon {
 	font-size: 12px;
 }
 

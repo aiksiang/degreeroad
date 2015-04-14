@@ -132,15 +132,6 @@ function InitializeModalsTrigger() {
 	});
 }
 
-function InitializeSearchContent() {
-	$('.ui.search').search({
-		searchFields: ["title"],
-    	source: allModuleListSearch,
-    	searchDelay: 100,
-    	transition: "slide down"
-    });
-}
-
 var qwe;
 var noOfSems = 8;
 
@@ -187,6 +178,12 @@ requirementContainer.append(
 		<div class="ui segment">\
 			<div class="ui top attached label">\
 				Requirement Modules\
+				<div class="ui search">\
+					<div class="ui icon input">\
+						<input class="prompt" type="text" placeholder="Search Modules">\
+						<i class="search icon"></i>\
+					</div>\
+				</div>\
 			</div>\
 			<ul class="ui selection list module-list"></ul>\
 			<div class="ui bottom right attached label">0/0</div>\
@@ -206,25 +203,6 @@ requirementContainer.append(
 	</div>');
 
 
-//Insert Selection
-requirementContainer.append(
-	'<div id="selection" class="semester">\
-		<div class="ui segment">\
-			<div class="ui top attached label">\
-				Selection\
-				<div class="ui search">\
-				<div class="ui icon input">\
-					<input class="prompt" type="text" placeholder="Search Modules">\
-					<i class="search icon"></i>\
-				</div>\
-				<div class="results"></div>\
-				</div>\
-			</div>\
-			<ul class="ui selection list module-list">\
-			</ul>\
-			<div class="ui bottom right attached label">MCs:0</div>\
-		</div>\
-	</div>');
 
 //Drag Scrolling
 var reqContainerClicked = false;

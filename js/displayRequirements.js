@@ -1,5 +1,6 @@
 var requirementSpecification = $("#requirement-specification .module-list");
 var currentSelectedRule;
+var ruleModuleList = [];
 
 function displayRequirements(degreeName, clear) {
 	requirementSpecification.html("");
@@ -80,22 +81,50 @@ function populateRequirementModulesList(rule) {
 	moduleList.transition('slide down');
 }
 
-function insertModulesIntoList(rule) {
+function insertModulesIntoList(rule) {console.log(rule)
+	ruleModuleList = [];
 	if (rule.hasOwnProperty("includeModuleList")) {
 		for (var i in rule.includeModuleList) {
-			// $.getJSON('http://api.nusmods.com/2014-2015/2/modules/' + rule.includeModuleList[i].module + '.json', function(data) {
-			// 	console.log(data);
-			// });
 			var id = lookupModule(rule.includeModuleList[i].module);
-			if (id != undefined)
-				$("#requirementModules .list").append(listItem("requirementModule", id, "item module", allModuleList[id].Code + " " + allModuleList[id].Name));
-			else
-				$("#requirementModules .list").append(listItem("notFound", rule.includeModuleList[i].module, "item module", rule.includeModuleList[i].module));
+			if (id != undefined) {
+				ruleModuleList.push({
+					title: allModuleList[id].Code + " " + allModuleList[id].Name,
+					index: id
+				});
+			} else {
+				ruleModuleList.push({
+					title: rule.includeModuleList[i].module,
+					index: null
+				});
+			}
 		}
 		$("#requirementModules .ui.bottom.right.attached.label").html("0/0");
 	} else {
 		$("#requirementModules .ui.bottom.right.attached.label").html("0/0");
 	}
+	initializeSearch();
+	updateModuleList("");
+}
+
+function initializeSearch() {
+	$(".ui.search .input input").keyup(function() {
+		var searchVal = $("#requirementModules input").val();
+		updateModuleList(searchVal);
+	});
+}
+
+function updateModuleList(searchVal) {
+	$("#requirementModules .list").html("");
+	for (var i in ruleModuleList) {
+		if (ruleModuleList[i].title.indexOf(searchVal) >= 0) {
+			if (ruleModuleList[i].index != null)
+				$("#requirementModules .list").append(listItem("requirementModule", ruleModuleList[i].index, "item module", ruleModuleList[i].title));
+			else
+				$("#requirementModules .list").append(listItem("notFound", ruleModuleList[i].title, "item module", ruleModuleList[i].title));
+		}
+	}
+
+
 }
 
 function removePreviousEnglish() {
