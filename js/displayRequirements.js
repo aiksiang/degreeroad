@@ -1,6 +1,7 @@
 var requirementSpecification = $("#requirement-specification .module-list");
 var currentSelectedRule;
 var ruleModuleList = [];
+var currentModuleDisplayedUntil = 0;
 
 function displayRequirements(degreeName, clear) {
 	requirementSpecification.html("");
@@ -73,7 +74,6 @@ function populateRequirementModulesList(rule) {
 		onComplete: function() {
 			moduleList.html("");
 			insertModulesIntoList(rule);
-			checkRequirementsAndColorize();
 			displayRequirementInEnglish();
     		InitializeModalsTrigger();
 		}
@@ -81,7 +81,7 @@ function populateRequirementModulesList(rule) {
 	moduleList.transition('slide down');
 }
 
-function insertModulesIntoList(rule) {console.log(rule)
+function insertModulesIntoList(rule) {
 	ruleModuleList = [];
 	if (rule.hasOwnProperty("includeModuleList")) {
 		for (var i in rule.includeModuleList) {
@@ -103,29 +103,46 @@ function insertModulesIntoList(rule) {console.log(rule)
 		$("#requirementModules .ui.bottom.right.attached.label").html("0/0");
 	}
 	initializeSearch();
-	updateModuleList("");
+	$("#requirementModules .list").html("");
+	currentModuleDisplayedUntil = 0;
+	updateModuleList("", 0);
 }
 
 function initializeSearch() {
 	$(".ui.search .input input").keyup(function() {
 		var searchVal = $("#requirementModules input").val();
-		updateModuleList(searchVal);
+		$("#requirementModules .list").html("");
+		currentModuleDisplayedUntil = 0;
+		updateModuleList(searchVal, 0);
 	});
 }
 
-function updateModuleList(searchVal) {
-	$("#requirementModules .list").html("");
+function updateModuleList(searchVal, initialValue) {
+	var numberOfModulesShown = 20;
+	var j = 0;
 	for (var i in ruleModuleList) {
-		if (ruleModuleList[i].title.indexOf(searchVal) >= 0) {
+		i = parseInt(i) + parseInt(initialValue);
+		if (j >= numberOfModulesShown || i > ruleModuleList.length - 1)
+			break;
+		if (ruleModuleList[i].title.toLowerCase().indexOf(searchVal.toLowerCase()) >= 0) {
 			if (ruleModuleList[i].index != null)
 				$("#requirementModules .list").append(listItem("requirementModule", ruleModuleList[i].index, "item module", ruleModuleList[i].title));
 			else
 				$("#requirementModules .list").append(listItem("notFound", ruleModuleList[i].title, "item module", ruleModuleList[i].title));
+			j++;
 		}
 	}
-
-
+	currentModuleDisplayedUntil += j;
+	checkRequirementsAndColorize();
 }
+
+$("#requirementModules .module-list").scroll(function() {
+	var searchVal = $("#requirementModules input").val();
+	var list = $("#requirementModules .module-list");
+	if (list.scrollTop() + list.height() > list[0].lastChild.offsetTop) {
+		updateModuleList(searchVal,currentModuleDisplayedUntil);
+	}
+});
 
 function removePreviousEnglish() {
 	$("#requirement" + currentSelectedRule.requirementId).html(requirementText(currentSelectedRule));

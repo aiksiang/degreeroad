@@ -5,9 +5,16 @@ function colorizeRequirementModuleList(colorCode, rule) {
 	for (var i in colorCode){
 		if (i.indexOf("module") >= 0) { //Only the indexes, not other properties
 			i = i.substring(6,i.length);
-			$(requirementList[i]).addClass("selectedModule");
-			if ($(requirementList[i]).attr("id").indexOf("clone") < 0)
-				$(requirementList[i]).attr("id", $(requirementList[i]).attr("id") + "clone");
+			var id = lookupModule(i);
+			if (id != undefined)
+				identifier = "#requirementModule" + id;
+			else
+				identifier = "notFound" + i;
+			
+			if ($("#requirementModules "+ identifier) != undefined) {
+				$("#requirementModules "+ identifier).attr("id", $("#requirementModules "+ identifier).attr("id") + "clone");
+			}
+			$("#requirementModules "+ identifier + "clone").addClass("selectedModule");
 		}
 	}
 	if (colorCode.satisfied) {

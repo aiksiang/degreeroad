@@ -27,7 +27,7 @@ function checkRequirement(rule) {
 				if (rule.includeModuleList[i].module == mod.Code) {
 					mcOfModules += parseInt(mod.Credit);
 					noOfModules++;
-					colorCode["module" + i] = "Green";
+					colorCode["module" + mod.Code] = "Green";
 				}
 			}
 		});
