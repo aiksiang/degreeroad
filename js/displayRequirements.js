@@ -69,16 +69,37 @@ function populateRequirementModulesList(rule) {
 	var moduleList = $("#requirementModules .module-list");
 	var listItems = 0;
 
-	moduleList.transition({
-		animation: 'slide down',
-		onComplete: function() {
-			moduleList.html("");
-			insertModulesIntoList(rule);
-			displayRequirementInEnglish();
-    		InitializeModalsTrigger();
-		}
-	});
-	moduleList.transition('slide down');
+	if (moduleList.html() == "") {
+		moduleList.transition({
+			animation: 'slide down',
+			duration   : '0s',
+			onComplete: function() {
+				moduleList.html("");
+				insertModulesIntoList(rule);
+				displayRequirementInEnglish();
+	    		InitializeModalsTrigger();
+				moduleList.transition({
+					animation: 'slide down',
+					duration: '0.3s'
+				});
+			}
+		});
+	} else {
+		moduleList.transition({
+			animation: 'slide down',
+			duration   : '0.3s',
+			onComplete: function() {
+				moduleList.html("");
+				insertModulesIntoList(rule);
+				displayRequirementInEnglish();
+	    		InitializeModalsTrigger();
+				moduleList.transition({
+					animation: 'slide down',
+					duration: '0.3s'
+				});
+			}
+		});
+	}
 }
 
 function insertModulesIntoList(rule) {
@@ -103,7 +124,6 @@ function insertModulesIntoList(rule) {
 		$("#requirementModules .ui.bottom.right.attached.label").html("0/0");
 	}
 	initializeSearch();
-	$("#requirementModules .list").html("");
 	currentModuleDisplayedUntil = 0;
 	updateModuleList("", 0);
 }
