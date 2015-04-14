@@ -9,8 +9,8 @@ function colorizeRequirementModuleList(colorCode, rule) {
 			if (id != undefined)
 				identifier = "#requirementModule" + id;
 			else
-				identifier = "notFound" + i;
-			
+				identifier = "#notFound" + i;
+
 			if ($("#requirementModules "+ identifier) != undefined) {
 				$("#requirementModules "+ identifier).attr("id", $("#requirementModules "+ identifier).attr("id") + "clone");
 			}

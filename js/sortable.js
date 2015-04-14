@@ -33,7 +33,22 @@ $("#semester-container .module-list").sortable({
 			}
 		} else {
 			console.log("Warning: Module is not found in database");
-			//TODO remove module without details into sem
+			var module = {};
+			module.Code = ui.item.attr('id').substring(8);
+			module.Name = "";
+			module.Credit = 0;
+			module.acadYear = "";
+			module.Description = "";
+			module.Examdate = "";
+			module.Faculty = "";
+			module.Preclude = "";
+			module.Prereq = "";
+			module.Semester = "";
+			for (var j in userSavedModules[removedFrom].modules) {
+				if (userSavedModules[removedFrom].modules[j].Code == module.Code) {
+					userSavedModules[removedFrom].modules.splice(j, 1);
+				}
+			}
 		}
 	},
 	receive: function(event,ui) {
@@ -57,8 +72,19 @@ $("#semester-container .module-list").sortable({
 				updateMC(receivedBy, userSavedModules[receivedBy].mcs);
 			}
 		} else {
-			console.log("Module is not found in database");
-			//TODO add module without details into sem
+			console.log("Warning: Module is not found in database");
+			var module = {};
+			module.Code = ui.item.attr('id').substring(8);
+			module.Name = "";
+			module.Credit = 0;
+			module.acadYear = "";
+			module.Description = "";
+			module.Examdate = "";
+			module.Faculty = "";
+			module.Preclude = "";
+			module.Prereq = "";
+			module.Semester = "";
+			userSavedModules[receivedBy].modules.push(module);
 		}
 		checkRequirementsAndColorize();
 	},

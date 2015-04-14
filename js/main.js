@@ -116,19 +116,32 @@ function InitializeModalsTrigger() {
 	$('.modal').modal();
 	$('.standard.modal').modal('attach events', '.item.module');
 	$('.item.module').on('click', function() {
-		if ($(this).attr("id") != "notFound") {
+		var mod = {};
+		if ($(this).attr("id").indexOf("notFound") < 0) {
 			var moduleLocation = $(this).attr("id").substring(17,$(this).attr("id").length);
-			var mod = allModuleList[moduleLocation];console.log(mod)
-			$(".modal .header").html(mod.Name);
-			$(".modal .content").html("<div><h5>" + "Module Code: " + "</h5>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
-									"<div><h5>" + "Modular Credits: " + "</h5>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
-									"<div><h5>" + "Exam Date: " + "</h5>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
-									"<div><h5>" + "Preclusion: " + "</h5>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
-									"<div><h5>" + "Prerequisite: " + "</h5>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
-									"<div><h5>" + "Description: " + "</h5>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" +
-									"<div class='ui horizontal divider'>Module Declaration</div>" +
-									"<span class='moddule-declaration'></span></div>");
+			mod = allModuleList[moduleLocation];
+		} else {
+			var modCode = $(this).attr("id").substring(8);
+			mod.Code = modCode;
+			mod.Name = modCode;
+			mod.Credit = 0;
+			mod.acadYear = "";
+			mod.Description = "Module is not found in database";
+			mod.Examdate = "";
+			mod.Faculty = "";
+			mod.Preclude = "";
+			mod.Prereq = "";
+			mod.Semester = "";
 		}
+		$(".modal .header").html(mod.Name);
+		$(".modal .content").html("<div><h5>" + "Module Code: " + "</h5>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
+								"<div><h5>" + "Modular Credits: " + "</h5>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
+								"<div><h5>" + "Exam Date: " + "</h5>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
+								"<div><h5>" + "Preclusion: " + "</h5>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
+								"<div><h5>" + "Prerequisite: " + "</h5>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
+								"<div><h5>" + "Description: " + "</h5>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" +
+								"<div class='ui horizontal divider'>Module Declaration</div>" +
+								"<span class='moddule-declaration'></span></div>");
 	});
 }
 
