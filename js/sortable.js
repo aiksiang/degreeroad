@@ -42,7 +42,7 @@ $("#semester-container .module-list").sortable({
 			module.Examdate = "";
 			module.Faculty = "";
 			module.Preclude = "";
-			module.Prereq = "";
+			module.Prereq = "*";
 			module.Semester = "";
 			for (var j in userSavedModules[removedFrom].modules) {
 				if (userSavedModules[removedFrom].modules[j].Code == module.Code) {
@@ -63,14 +63,9 @@ $("#semester-container .module-list").sortable({
 		}
 		
 		if (itemLocation != null) {
-			if (checkPrerequisite(itemLocation, receivedBy) == false) {
-				removeClone = true;
-				showNotice("<b>You do not meet the Prerequisites for this module: </b><br>" + allModuleList[itemLocation].Prereq)
-			} else {
-				userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
-				userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
-				updateMC(receivedBy, userSavedModules[receivedBy].mcs);
-			}
+			userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
+			userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
+			updateMC(receivedBy, userSavedModules[receivedBy].mcs);
 		} else {
 			console.log("Warning: Module is not found in database");
 			var module = {};
@@ -82,7 +77,7 @@ $("#semester-container .module-list").sortable({
 			module.Examdate = "";
 			module.Faculty = "";
 			module.Preclude = "";
-			module.Prereq = "";
+			module.Prereq = "*";
 			module.Semester = "";
 			userSavedModules[receivedBy].modules.push(module);
 		}
@@ -142,99 +137,10 @@ function checkRequirementsAndColorize() {
 	//var colorCode = checkRequirement();
 	//colorizeRequirementModuleList(colorCode);
 	waitForAllParsingDone(function() {
-		var colorCode = checkRequirements();
-		colorizeRequirements(colorCode);
+		var colorCodes = checkRequirements();
+		colorizeRequirements(colorCodes);
+		colorizeSemesters(colorCodes);
 	});
-}
-
-function checkPrerequisite(itemLocation, receivedBy) {
-	if (itemLocation != undefined) {
-		if (allModuleList[itemLocation].Prereq == undefined || allModuleList[itemLocation].Prereq == "" || allModuleList[itemLocation].Prereq == "Nil") {
-			//No Prerequisites
-			return true;
-		} else if (allModuleList[itemLocation].Prereq[0] == "*") {
-			//Prerequisites not parsed
-			showNotice("<b>Please manually check the Prerequisites for this module: </b><br>" + allModuleList[itemLocation].Prereq.substring(1));
-			return true;
-		} else {
-			modulesPassed = [];
-			return parsePrerequisite(allModuleList[itemLocation].Prereq,receivedBy);
-		}
-	} else {
-		console.log("it shouldnt come here");
-	}
-}
-
-function parsePrerequisite(preReq, receivedBy) {
-	console.log("current: " + preReq)
-	var firstBlank = preReq.indexOf(' ');
-	if (preReq[0] == "(") {
-		var nextNest = preReq.substring(1).indexOf("(");
-		var nextEnd = preReq.indexOf(")");
-		if (nextNest > nextEnd) {
-			var nextPart = preReq.substring(nextEnd + 2);
-			var nextBlank = nextPart.indexOf(" ");
-			var nextOperator = nextPart.substring(0, nextBlank);
-			if (nextOperator == "or" || nextOperator == "OR") {
-				return parsePrerequisite(preReq.substring(1,nextEnd), receivedBy) || parsePrerequisite(nextPart.substring(nextBlank + 1), receivedBy);
-			} else if (nextOperator == "and" || nextOperator == "AND") {
-				return parsePrerequisite(preReq.substring(1,nextEnd), receivedBy) && parsePrerequisite(nextPart.substring(nextBlank + 1), receivedBy);
-			} else {
-				console.log("it shouldnt come here");
-			}
-
-		} else {
-			return parsePrerequisite(preReq.substring(1,preReq.length - 1), receivedBy);
-		}
-	} else if (preReq[0] == ")") {
-		console.log("here got )")
-	} else if (firstBlank < 0) {
-		if (preReq[preReq.length-1] == ")") {console.log(preReq.substring(0, preReq.length-1) + ": " + isModuleSelected(preReq.substring(0, preReq.length-1), receivedBy));
-			return isModuleSelected(preReq.substring(0, preReq.length-1), receivedBy);
-		} else {
-			return isModuleSelected(preReq, receivedBy);
-		}
-	} else if (firstBlank >= 0) {
-		var firstPart = preReq.substr(0,firstBlank);
-		if (firstPart[firstPart.length-1] == ")") {
-			firstPart = firstPart.substring(0,firstPart.length-1);
-		}
-		var nextPart = preReq.substr(firstBlank + 1);
-		var nextBlank = nextPart.indexOf(' ');
-		var operator = nextPart.substring(0,nextBlank);
-		if (operator == "or" || operator == "OR") {console.log(firstPart + ": " + isModuleSelected(firstPart, receivedBy));
-			return isModuleSelected(firstPart, receivedBy) || parsePrerequisite(nextPart.substr(nextBlank + 1), receivedBy);
-		} else if (operator == "and" || operator == "AND") {console.log(firstPart + ": " + isModuleSelected(firstPart, receivedBy));
-			return isModuleSelected(firstPart, receivedBy) && parsePrerequisite(nextPart.substr(nextBlank + 1), receivedBy);
-		} else {console.log(firstPart + ": " + isModuleSelected(firstPart, receivedBy));
-			return isModuleSelected(firstPart, receivedBy);
-		}
-	}
-	console.log(preReq);
-}
-
-function isModuleSelected(moduleToBeChecked, receivedBy) {
-	var result = false;
-	var indexReceivedBy = receivedBy.substring(8);
-	var stop = false;
-	for (var i in userSavedModules) {
-		if (stop == true) break;
-		if (i.indexOf("semester") >= 0) {
-			for (var j in userSavedModules[i].modules) {
-				var module = userSavedModules[i].modules[j];
-				var semester = i;
-				var indexSemester = semester.substring(8);
-				if (indexReceivedBy <= indexSemester) {
-					result = false;
-				} else if (module.Code == moduleToBeChecked) {
-					result = true;
-					stop = true;
-					break;
-				}
-			}
-		}
-	}
-	return result;
 }
 
 //$(".module-list").sortable("refresh");

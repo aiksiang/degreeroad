@@ -39,3 +39,42 @@ function colorizeRequirements(colorCodes) {
 	});
 
 }
+
+function colorizeSemesters(colorCodes) {
+	traverseSelectedModules(function(mod) {
+		var id = lookupModule(mod.Code);
+		if (id != undefined)
+			identifier = "#requirementModule" + id;
+		else
+			identifier = "#notFound" + mod.Code;
+		$("#semester-container " + identifier).removeClass("errorModule");
+		$("#semester-container " + identifier).removeAttr("data-content");
+		$("#semester-container " + identifier).removeAttr("data-position");
+		$("#semester-container " + identifier).popup('destroy');
+	});
+	for (var i in colorCodes.semester) {
+		var index = colorCodes.semester[i].mod.Code;
+		var id = lookupModule(index);
+		if (id != undefined)
+			identifier = "#requirementModule" + id;
+		else
+			identifier = "#notFound" + index;
+
+		if (colorCodes.semester[i].errorType == "prerequisiteNotMet") {
+			$("#semester-container " + identifier).addClass("errorModule");
+			$(".errorModule").attr("data-content", "Pre-Requisites not met");
+			$(".errorModule").attr("data-position", "top center");
+		} else if (colorCodes.semester[i].errorType == "manuallyCheck") {
+			$("#semester-container " + identifier).addClass("noticeModule");
+			$(".noticeModule").attr("data-content", "Manually check Pre-Requisites");
+			$(".noticeModule").attr("data-position", "top center");
+		}
+		if (id == undefined) {
+			$("#semester-container " + identifier).addClass("noticeModule");
+			$(".noticeModule").attr("data-content", "Module not in database");
+			$(".noticeModule").attr("data-position", "top center");
+		}
+	}
+	$(".errorModule").popup();
+	$(".noticeModule").popup();
+}

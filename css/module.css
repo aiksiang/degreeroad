@@ -128,6 +128,16 @@
 	background: #46ae5f !important;
 }
 
+.errorModule {
+	background: #d95c5c !important;
+	cursor: pointer !important;
+}
+
+.noticeModule {
+	background: #f0f0f0 !important;
+	cursor: pointer !important;
+}
+
 h5 {
 	display: inline;
 	line-height: 2;

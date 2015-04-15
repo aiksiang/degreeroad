@@ -77,7 +77,6 @@ function populateRequirementModulesList(rule) {
 				moduleList.html("");
 				insertModulesIntoList(rule);
 				displayRequirementInEnglish();
-	    		InitializeModalsTrigger();
 				moduleList.transition({
 					animation: 'slide down',
 					duration: '0.3s'
@@ -92,7 +91,6 @@ function populateRequirementModulesList(rule) {
 				moduleList.html("");
 				insertModulesIntoList(rule);
 				displayRequirementInEnglish();
-	    		InitializeModalsTrigger();
 				moduleList.transition({
 					animation: 'slide down',
 					duration: '0.3s'
@@ -126,6 +124,7 @@ function insertModulesIntoList(rule) {
 	initializeSearch();
 	currentModuleDisplayedUntil = 0;
 	updateModuleList("", 0);
+	$("#requirementModules input").val("")
 }
 
 function initializeSearch() {
@@ -154,6 +153,7 @@ function updateModuleList(searchVal, initialValue) {
 	}
 	currentModuleDisplayedUntil += j;
 	checkRequirementsAndColorize();
+	InitializeModalsTrigger();
 }
 
 $("#requirementModules .module-list").scroll(function() {

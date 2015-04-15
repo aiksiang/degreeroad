@@ -5,6 +5,15 @@ function checkRequirements() {
 		colorCodes[rule.requirementId] = checkRequirement(rule);
 	});
 
+	var colorCode = [];
+	traverseSelectedModules(function(mod, semNumber) {
+		var result = checkPrerequisite(mod, semNumber);
+		if (result.noError == false) {
+			colorCode.push(result);
+			colorCodes["semester"] = colorCode;
+		}
+	});
+
 	return colorCodes;
 }
 
