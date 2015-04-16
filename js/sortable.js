@@ -94,9 +94,9 @@ $("#semester-container .module-list").sortable({
 		checkRequirementsAndColorize();
 	},
 	update: function(event, ui) {
-		waitForPassedModule(function() {
-			showAll();
-		});
+		// waitForPassedModule(function() {
+		// 	showAll();
+		// });
 		// console.log($(ui.sender).parent());
 		// displayRequirements();
 		// storage.put(userSavedModules);
@@ -138,6 +138,7 @@ $("#requirementModules .module-list").sortable({
 		removeClone = true;
 	},
 	update: function(event, ui) {
+		InitializeModalsTrigger();
 		//colorizeRequirementModuleList(colorCode);
 
 		// showAll();

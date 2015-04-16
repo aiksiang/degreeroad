@@ -1,5 +1,6 @@
 var currentDegree = null;
 var currentSecondDegree = null;
+var currentMod = null;
 
 //Initialize UI elements
 $(document).ready(function(){
@@ -127,12 +128,62 @@ function InitializeModalsTrigger() {
 	$('.standard.modal').modal('attach events', '.item.module');
 	$('.item.module').on('click', function() {
 		var mod = {};
+		var HTMLtoBeInserted = "";
 		if ($(this).attr("id").indexOf("notFound") < 0) {
 			var moduleLocation = $(this).attr("id").substring(17,$(this).attr("id").length);
 			if (moduleLocation.indexOf("clone") >= 0) {
 				moduleLocation = moduleLocation.substring(0,moduleLocation.length - 5);
 			}
+			var modFromList = allModuleList[moduleLocation];
 			mod = allModuleList[moduleLocation];
+			traverseSelectedModules(function(moduleFromSem) {
+				if (moduleFromSem.Code == modFromList.Code) {
+					HTMLtoBeInserted = "\
+						<div><h5>Module Code: </h5><span class='modBodyValue'>" + moduleFromSem.Code + "</span></div>\
+						<div><h5>Modular Credits: </h5><span class='modBodyValue'>" + moduleFromSem.Credit + "</span></div>\
+						<div><h5>Exam Date: </h5><span class='modBodyValue'>" + moduleFromSem.Examdate + "</span></div>\
+						<div><h5>Preclusion: </h5><span class='modBodyValue'>" + moduleFromSem.Preclude + "</span></div>\
+						<div><h5>Prerequisite: </h5><span class='modBodyValue'>" + moduleFromSem.Prereq + "</span></div>\
+						<div><h5>Description: </h5><span class='modBodyValue'>" + moduleFromSem.Description + "</span></div>\
+						<div class='ui horizontal divider'>Module Declaration</div>\
+						<div id='module-declaration' class='ui dropdown item'>\
+					";
+					HTMLtoBeInserted += '\
+							<div class="text">' + moduleFromSem.declaration.ruleName + '</div>\
+							<i class="dropdown icon"></i>\
+							<div id="declaration-options" class="menu">\
+					';
+					for (var k in moduleFromSem.doubleCountable) {
+						HTMLtoBeInserted += '\
+								<div class="item">'+ moduleFromSem.doubleCountable[k].ruleName +'</div>\
+						';
+					}
+					HTMLtoBeInserted += '\
+							</div>\
+						</div>\
+					';
+					
+					$(".modal .content").html(HTMLtoBeInserted);
+					currentMod = moduleFromSem;
+					waitForInsertionOfHTML(function() {
+						$('#module-declaration').dropdown({
+							onChange: function(value,text) {
+								console.log(currentMod.doubleCountable);
+							}
+						});
+					});
+
+					$(".modal .actions").html('\
+						<div class="ui black button">\
+							Cancel\
+						</div>\
+						<div class="ui positive right labeled icon button">\
+							Ok\
+							<i class="checkmark icon"></i>\
+						</div>\
+					');
+				}
+			});
 		} else {
 			var modCode = $(this).attr("id").substring(8);
 			mod.Code = modCode;
@@ -147,35 +198,19 @@ function InitializeModalsTrigger() {
 			mod.Semester = "";
 		}
 		$(".modal .header").html(mod.Name);
-		HTMLtoBeInserted = "\
-			<div>\
-				<h5>Module Code: </h5>\
-				<span class='modBodyValue'>" + mod.Code + "</span>\
-			</div>\
-			<div>\
-				<h5>Modular Credits: </h5>\
-				<span class='modBodyValue'>" + mod.Credit + "</span>\
-			</div>\
-			<div>\
-				<h5>Exam Date: </h5>\
-				<span class='modBodyValue'>" + mod.Examdate + "</span>\
-			</div>\
-			<div>\
-				<h5>Preclusion: </h5>\
-				<span class='modBodyValue'>" + mod.Preclude + "</span>\
-			</div>\
-			<div>\
-				<h5>Prerequisite: </h5>\
-				<span class='modBodyValue'>" + mod.Prereq + "</span>\
-			</div>\
-			<div>\
-				<h5>Description: </h5>\
-				<span class='modBodyValue'>" + mod.Description + "</span>\
-			</div>\
-		";
-		//if (mod.declaration.hasOwnProperty("exclusive")) {
-		//	console.log("exclusive");
-		//}
+		if (HTMLtoBeInserted == "") {
+			HTMLtoBeInserted = "\
+				<div><h5>Module Code: </h5><span class='modBodyValue'>" + mod.Code + "</span></div>\
+				<div><h5>Modular Credits: </h5><span class='modBodyValue'>" + mod.Credit + "</span></div>\
+				<div><h5>Exam Date: </h5><span class='modBodyValue'>" + mod.Examdate + "</span></div>\
+				<div><h5>Preclusion: </h5><span class='modBodyValue'>" + mod.Preclude + "</span></div>\
+				<div><h5>Prerequisite: </h5><span class='modBodyValue'>" + mod.Prereq + "</span></div>\
+				<div><h5>Description: </h5><span class='modBodyValue'>" + mod.Description + "</span></div>\
+			";
+			$(".modal .actions").html("");
+			currentMod = mod;
+		}
+
 		$(".modal .content").html(HTMLtoBeInserted);
 	});
 }
@@ -285,3 +320,14 @@ topContainer.on({
 			$(this).css("cursor","-webkit-grab");
 	}
 });
+
+function waitForInsertionOfHTML(fn) {
+	var busyWaiting = setInterval(function () {
+		if ($('#module-declaration')[0] != undefined) {
+			fn();
+			clearInterval(busyWaiting);
+		} else {
+			console.log("Wait for insertion of HTML");
+		}
+	},1);
+}

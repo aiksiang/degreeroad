@@ -173,6 +173,7 @@ function findParent(rule,node,level,degreeCode) {
 				innerNode.children = [];
 			}
 			rule.level = level;
+			rule.parentNode = innerNode;
 			innerNode.children.push(rule);
 		}
 	}

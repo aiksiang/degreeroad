@@ -17,6 +17,16 @@ function checkRequirements() {
 	return colorCodes;
 }
 
+function isAnyAncestorExclusive(rule) {
+	if (rule.exclusive == "true") {
+		return {ancestor: rule, answer: true};
+	} else if (rule.level == 0) {
+		return {ancestor: rule, answer: false};
+	} else {
+		return isAnyAncestorExclusive(rule.parentNode);
+	}
+}
+
 function checkRequirement(rule) {
 	rule = typeof rule !== 'undefined' ? rule : currentSelectedRule;
 
@@ -29,14 +39,41 @@ function checkRequirement(rule) {
 	var mcOfModules = 0;
 
 	var quantifier = rule.quantifier;
-
 	if (rule.hasOwnProperty("includeModuleList")) { //LIST, LISTS, MODULE, MODULES
 		traverseSelectedModules(function(mod) {
 			for (var i in rule.includeModuleList) {
 				if (rule.includeModuleList[i].module == mod.Code) {
-					mcOfModules += parseInt(mod.Credit);
-					noOfModules++;
-					colorCode["module" + mod.Code] = "Green";
+					// console.log("checking for: " + rule.ruleName)
+					if (rule.exclusive == "all") {
+						// console.log("no need care")
+						mcOfModules += parseInt(mod.Credit);
+						noOfModules++;
+						colorCode["module" + mod.Code] = "Green";
+					} else if (isAnyAncestorExclusive(rule).answer) {
+						modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
+						ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
+						if (modAncestor.ruleName == ruleAncestor.ruleName && modAncestor.degree == ruleAncestor.degree) {
+							// console.log("got count")
+							mcOfModules += parseInt(mod.Credit);
+							noOfModules++;
+							colorCode["module" + mod.Code] = "Green";
+						} else {
+							// console.log("no count")
+						}
+						if (!mod.hasOwnProperty("doubleCountable")) 
+							mod.doubleCountable = [];
+						console.log(rule.ruleName)
+						mod.doubleCountable.push(rule);
+					} else {
+						// console.log("not exclusive")
+						mcOfModules += parseInt(mod.Credit);
+						noOfModules++;
+						colorCode["module" + mod.Code] = "Green";
+
+						if (!mod.hasOwnProperty("doubleCountable")) 
+							mod.doubleCountable = [];
+						mod.doubleCountable.push(rule);
+					}
 				}
 			}
 		});
