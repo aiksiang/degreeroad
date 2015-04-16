@@ -68,6 +68,7 @@ function lookupModule(moduleCode) {
 function populateRequirementModulesList(rule) {
 	var moduleList = $("#requirementModules .module-list");
 	var listItems = 0;
+	pushToTop = false;
 
 	if (moduleList.html() == "") {
 		moduleList.transition({

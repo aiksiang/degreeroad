@@ -1,3 +1,5 @@
+var pushToTop = false;
+
 function colorizeRequirementModuleList(colorCode, rule) {
 	rule = typeof rule !== 'undefined' ? rule : currentSelectedRule;
 
@@ -6,17 +8,40 @@ function colorizeRequirementModuleList(colorCode, rule) {
 		if (i.indexOf("module") >= 0) { //Only the indexes, not other properties
 			i = i.substring(6,i.length);
 			var id = lookupModule(i);
-			if (id != undefined)
+			var mod;
+			if (id != undefined) {
 				identifier = "#requirementModule" + id;
-			else
+				mod = {
+					title: allModuleList[id].Code + " " + allModuleList[id].Name,
+					index: id
+				};
+			} else {
 				identifier = "#notFound" + i;
+				mod = {
+					title: i,
+					index: null
+				};
+			}
 
 			if ($("#requirementModules "+ identifier) != undefined) {
 				$("#requirementModules "+ identifier).attr("id", $("#requirementModules "+ identifier).attr("id") + "clone");
 			}
 			$("#requirementModules "+ identifier + "clone").addClass("selectedModule");
+			if (rule.degree == "UNI" && pushToTop != true) {
+				for (var j in ruleModuleList) {
+					if (ruleModuleList[j].title == mod.title) {
+						ruleModuleList.splice(j,1);
+						ruleModuleList.unshift(mod);
+						$("#requirementModules .list").html("");
+						updateModuleList("", 0);
+						break;
+					}
+				}
+			}
 		}
 	}
+	pushToTop = true;
+
 	if (colorCode.satisfied) {
 		$("#requirement" + currentSelectedRule.requirementId).addClass("ruleSatisfied");
 	} else {

@@ -52,7 +52,7 @@ function parseRules(rules, degreeCode) {
 	}
 	while (rules.length != 0) {
 		var level = 0;
-		findParent(rules[0],requirements,level);
+		findParent(rules[0],requirements,level, degreeCode);
 		rules.splice(0,1);
 	}
 }
@@ -159,16 +159,16 @@ function parseIncludeExclude(rule) {
 	}
 }
 
-function findParent(rule,node,level) {
+function findParent(rule,node,level,degreeCode) {
 	var targetParent = rule.parent;
 	var innerNode;
 	level++;
 	for (var i in node) {
 		innerNode = node[i];
 		if (innerNode.hasOwnProperty("children")) {
-			findParent(rule,innerNode.children,level);
+			findParent(rule,innerNode.children,level,degreeCode);
 		}
-		if (innerNode.ruleId == targetParent) {
+		if (innerNode.ruleId == targetParent && innerNode.degree == degreeCode) {
 			if (innerNode.children == null) {
 				innerNode.children = [];
 			}
@@ -402,10 +402,10 @@ function waitForChildParsing(rule, fn) {
 function checkParsingDone(rule) {
 	if (rule.doneParsing == true)
 		return true;
-	if (Object.keys(rule.include).length == rule.parseCount) {
+	if (Object.keys(rule.include).length <= rule.parseCount) {
 		rule.doneParsing = true;
 	}
-	return Object.keys(rule.include).length == rule.parseCount;
+	return Object.keys(rule.include).length <= rule.parseCount;
 }
 
 function checkAllParsingDone() {

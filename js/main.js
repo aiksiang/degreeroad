@@ -17,7 +17,7 @@ $(document).ready(function(){
 	});
 	$('#second-course-selection').dropdown({
 		onChange: function(value,text) {
-			if (text != currentDegree) {
+			if (text != currentDegree && currentDegree != null) {
 				$('#second-course-selection .text').html(text);
 				currentSecondDegree = text;
 				chooseDegree();
@@ -40,6 +40,7 @@ $(document).ready(function(){
 });
 
 var degreeList = {
+	UNI: "University",
 	ENG: "Engineering",
 	ARTS: "Arts",
 	CEG: "Computer Engineering",
@@ -52,7 +53,7 @@ function populateDegreeList() {
 	$("#course-selection .menu").html("");
 	$("#second-course-selection .menu").html("");
 	for (var i in degreeList) {
-		if (i != "ENG" && i!= "ARTS") { // We dont want the faculty to be displayed
+		if (i != "ENG" && i!= "ARTS" && i!= "UNI" ) { // We dont want the faculty to be displayed
 			$("#course-selection .menu").append('\
 				<div class="item">'+ degreeList[i] +'</div>\
 			');
@@ -64,19 +65,26 @@ function populateDegreeList() {
 }
 
 function chooseDegree() {
-	var degreeCodeAndFaculty = getDegreeCode(currentDegree);
-	var degreeCode = degreeCodeAndFaculty[0];
-	var faculty = degreeCodeAndFaculty[1];
+	var degreeCode = getDegreeCode(currentDegree)[0];
+	var faculty = getDegreeCode(currentDegree)[1];
 	
 	initializeRequirementModules(degreeCode, true);
 	waitForAllParsingDone(function() {
 		initializeRequirementModules(faculty, false);
-		if (currentSecondDegree != null) {
+		waitForAllParsingDone(function() {
+			initializeRequirementModules("UNI", false);
+			if (currentSecondDegree != null) {
 				waitForAllParsingDone(function() {
 					degreeCode = getDegreeCode(currentSecondDegree)[0];
+					faculty = getDegreeCode(currentSecondDegree)[1];
 					initializeRequirementModules(degreeCode, false);
-			})
-		}
+					waitForAllParsingDone(function() {
+						initializeRequirementModules(faculty, false);
+					});
+				});
+			}
+		});
+		
 	});
 }
 
@@ -94,11 +102,11 @@ function getDegreeCode(text) {
 			break;
 		case "Political Science(2nd Major)":
 			degreeCode = "PS_2MAJ";
-			faculty = "ARTS";
+			faculty = null;
 			break;
 		case "Political Science(Minor)":
 			degreeCode = "PS_MIN";
-			faculty = "ARTS";
+			faculty = null;
 			break;
 	}
 	return [degreeCode, faculty];
