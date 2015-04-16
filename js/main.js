@@ -54,9 +54,11 @@ function populateDegreeList() {
 	$("#second-course-selection .menu").html("");
 	for (var i in degreeList) {
 		if (i != "ENG" && i!= "ARTS" && i!= "UNI" ) { // We dont want the faculty to be displayed
-			$("#course-selection .menu").append('\
-				<div class="item">'+ degreeList[i] +'</div>\
-			');
+			if (i.indexOf("2MAJ") < 0 && i.indexOf("MIN") < 0) {
+				$("#course-selection .menu").append('\
+					<div class="item">'+ degreeList[i] +'</div>\
+				');
+			}
 			$("#second-course-selection .menu").append('\
 				<div class="item">'+ degreeList[i] +'</div>\
 			');
@@ -127,6 +129,9 @@ function InitializeModalsTrigger() {
 		var mod = {};
 		if ($(this).attr("id").indexOf("notFound") < 0) {
 			var moduleLocation = $(this).attr("id").substring(17,$(this).attr("id").length);
+			if (moduleLocation.indexOf("clone") >= 0) {
+				moduleLocation = moduleLocation.substring(0,moduleLocation.length - 5);
+			}
 			mod = allModuleList[moduleLocation];
 		} else {
 			var modCode = $(this).attr("id").substring(8);
