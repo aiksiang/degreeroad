@@ -338,16 +338,13 @@ function parseFaculties(rule) {
 }
 
 function parseAny(rule) {
-	waitForAllModuleList(function() {
+	waitForAllModuleList(function() {console.log(rule)
 		var list = [];
 		for (var i in allModuleList) {
-				list.push({module: allModuleList[i].Code.trim()});
+			list.push({module: allModuleList[i].Code.trim()});
 		}
-		if (rule.hasOwnProperty("includeModuleList")) {
-			rule.includeModuleList.push.apply(rule.includeModuleList,list);
-		} else {
-			rule.includeModuleList = list;
-		}
+		rule.includeModuleList = list;
+		
 		rule.parseCount++;
 	});
 }
@@ -403,10 +400,10 @@ function waitForChildParsing(rule, fn) {
 function checkParsingDone(rule) {
 	if (rule.doneParsing == true)
 		return true;
-	if (Object.keys(rule.include).length <= rule.parseCount) {
+	if (Object.keys(rule.include).length == rule.parseCount) {
 		rule.doneParsing = true;
 	}
-	return Object.keys(rule.include).length <= rule.parseCount;
+	return Object.keys(rule.include).length == rule.parseCount;
 }
 
 function checkAllParsingDone() {

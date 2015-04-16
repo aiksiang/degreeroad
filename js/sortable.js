@@ -140,7 +140,6 @@ $("#requirementModules .module-list").sortable({
 	update: function(event, ui) {
 		InitializeModalsTrigger();
 		//colorizeRequirementModuleList(colorCode);
-
 		// showAll();
 		//console.log($(ui.sender).parent());
 		// displayRequirements();

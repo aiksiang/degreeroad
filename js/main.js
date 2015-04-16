@@ -168,20 +168,14 @@ function InitializeModalsTrigger() {
 					waitForInsertionOfHTML(function() {
 						$('#module-declaration').dropdown({
 							onChange: function(value,text) {
-								console.log(currentMod.doubleCountable);
+								for (var l in currentMod.doubleCountable) {
+									if (currentMod.doubleCountable[l].ruleName == text) {
+										currentMod.declaration = currentMod.doubleCountable[l];
+									}
+								}
 							}
 						});
 					});
-
-					$(".modal .actions").html('\
-						<div class="ui black button">\
-							Cancel\
-						</div>\
-						<div class="ui positive right labeled icon button">\
-							Ok\
-							<i class="checkmark icon"></i>\
-						</div>\
-					');
 				}
 			});
 		} else {
