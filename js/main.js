@@ -147,14 +147,36 @@ function InitializeModalsTrigger() {
 			mod.Semester = "";
 		}
 		$(".modal .header").html(mod.Name);
-		$(".modal .content").html("<div><h5>" + "Module Code: " + "</h5>" + "<span class='modBodyValue'>" + mod.Code + "</span></div>" +
-								"<div><h5>" + "Modular Credits: " + "</h5>" + "<span class='modBodyValue'>" + mod.Credit + "</span></div>" +
-								"<div><h5>" + "Exam Date: " + "</h5>" + "<span class='modBodyValue'>" + mod.Examdate + "</span></div>" +
-								"<div><h5>" + "Preclusion: " + "</h5>" + "<span class='modBodyValue'>" + mod.Preclude + "</span></div>" +
-								"<div><h5>" + "Prerequisite: " + "</h5>" + "<span class='modBodyValue'>" + mod.Prereq + "</span></div>" +
-								"<div><h5>" + "Description: " + "</h5>" + "<span class='modBodyValue'>" + mod.Description + "</span></div>" +
-								"<div class='ui horizontal divider'>Module Declaration</div>" +
-								"<span class='moddule-declaration'></span></div>");
+		HTMLtoBeInserted = "\
+			<div>\
+				<h5>Module Code: </h5>\
+				<span class='modBodyValue'>" + mod.Code + "</span>\
+			</div>\
+			<div>\
+				<h5>Modular Credits: </h5>\
+				<span class='modBodyValue'>" + mod.Credit + "</span>\
+			</div>\
+			<div>\
+				<h5>Exam Date: </h5>\
+				<span class='modBodyValue'>" + mod.Examdate + "</span>\
+			</div>\
+			<div>\
+				<h5>Preclusion: </h5>\
+				<span class='modBodyValue'>" + mod.Preclude + "</span>\
+			</div>\
+			<div>\
+				<h5>Prerequisite: </h5>\
+				<span class='modBodyValue'>" + mod.Prereq + "</span>\
+			</div>\
+			<div>\
+				<h5>Description: </h5>\
+				<span class='modBodyValue'>" + mod.Description + "</span>\
+			</div>\
+		";
+		//if (mod.declaration.hasOwnProperty("exclusive")) {
+		//	console.log("exclusive");
+		//}
+		$(".modal .content").html(HTMLtoBeInserted);
 	});
 }
 

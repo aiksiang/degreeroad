@@ -1,4 +1,5 @@
 var removeClone = true;
+var passedModule = null;
 
 $("#semester-container .module-list").sortable({
 	connectWith: ".module-list",
@@ -14,38 +15,26 @@ $("#semester-container .module-list").sortable({
 	cursor: "-webkit-grabbing",
 	remove: function(event,ui) {
 		var removedFrom = $($(this)[0].parentNode).parent().attr('id');
-		var itemLocation;
+		var moduleCode;
 
 		if (ui.item.attr('id').indexOf("requirementModule") >= 0) {
+			var module;
+			var itemLocation;
 			itemLocation = ui.item.attr('id').substring(17);
-		} else {
-			moduleCode = ui.item.attr('id').substring(8);console.log(moduleCode)
-		}
-
-		if (itemLocation != null) {
-			var index = userSavedModules[removedFrom].modules.indexOf(allModuleList[itemLocation]);
-			if (index >= 0) {
-				userSavedModules[removedFrom].modules.splice(index, 1);
-				userSavedModules[removedFrom].mcs -= parseInt(allModuleList[itemLocation].Credit);
-				updateMC(removedFrom, userSavedModules[removedFrom].mcs);
-			} else {
-				console.log("Error: Unable to remove module, module not found");
+			module = allModuleList[itemLocation];
+			moduleCode = module.Code;
+			for (var i in userSavedModules[removedFrom].modules) {
+				if (userSavedModules[removedFrom].modules[i].Code == moduleCode) {
+					passedModule = userSavedModules[removedFrom].modules[i];
+					userSavedModules[removedFrom].modules.splice(i, 1);
+					userSavedModules[removedFrom].mcs -= parseInt(allModuleList[itemLocation].Credit);
+					updateMC(removedFrom, userSavedModules[removedFrom].mcs);
+				}
 			}
 		} else {
-			console.log("Warning: Module is not found in database");
-			var module = {};
-			module.Code = ui.item.attr('id').substring(8);
-			module.Name = "";
-			module.Credit = 0;
-			module.acadYear = "";
-			module.Description = "";
-			module.Examdate = "";
-			module.Faculty = "";
-			module.Preclude = "";
-			module.Prereq = "*";
-			module.Semester = "";
+			moduleCode = ui.item.attr('id').substring(8);
 			for (var j in userSavedModules[removedFrom].modules) {
-				if (userSavedModules[removedFrom].modules[j].Code == module.Code) {
+				if (userSavedModules[removedFrom].modules[j].Code == moduleCode) {
 					userSavedModules[removedFrom].modules.splice(j, 1);
 				}
 			}
@@ -54,38 +43,61 @@ $("#semester-container .module-list").sortable({
 	receive: function(event,ui) {
 		removeClone = false;
 		var receivedBy = $($(this)[0].parentNode).parent().attr('id');
-		var itemLocation;
+		var module;
 
 		if (ui.item.attr('id').indexOf("requirementModule") >= 0) {
+			var itemLocation;
 			itemLocation = ui.item.attr('id').substring(17);
+			waitForPassedModule(function() {
+				if (passedModule != null && passedModule != "fromList") {
+					module = passedModule;
+				} else {
+					var moduleFromList = allModuleList[itemLocation];
+					module = {};
+					module.Code = moduleFromList.Code;
+					module.Name = moduleFromList.Name;
+					module.Credit = moduleFromList.Credit;
+					module.acadYear = moduleFromList.acadYear;
+					module.Description = moduleFromList.Description;
+					module.Examdate = moduleFromList.Examdate;
+					module.Faculty = moduleFromList.Faculty;
+					module.Preclude = moduleFromList.Preclude;
+					module.Prereq = moduleFromList.Prereq;
+					module.Semester = moduleFromList.Semester;
+					module.declaration = currentSelectedRule;
+				}
+				userSavedModules[receivedBy].modules.push(module);
+				userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
+				updateMC(receivedBy, userSavedModules[receivedBy].mcs);
+			});
 		} else {
-			itemLocation = null;
-		}
-		
-		if (itemLocation != null) {
-			userSavedModules[receivedBy].modules.push(allModuleList[itemLocation]);
-			userSavedModules[receivedBy].mcs += parseInt(allModuleList[itemLocation].Credit);
-			updateMC(receivedBy, userSavedModules[receivedBy].mcs);
-		} else {
-			console.log("Warning: Module is not found in database");
-			var module = {};
-			module.Code = ui.item.attr('id').substring(8);
-			module.Name = "";
-			module.Credit = 0;
-			module.acadYear = "";
-			module.Description = "";
-			module.Examdate = "";
-			module.Faculty = "";
-			module.Preclude = "";
-			module.Prereq = "*";
-			module.Semester = "";
-			userSavedModules[receivedBy].modules.push(module);
+			waitForPassedModule(function() {
+				if (passedModule != null && passedModule != "fromList") {
+					module = passedModule;
+				} else {
+					module = {};
+					module.Code = ui.item.attr('id').substring(8);
+					module.Name = "";
+					module.Credit = 0;
+					module.acadYear = "";
+					module.Description = "";
+					module.Examdate = "";
+					module.Faculty = "";
+					module.Preclude = "";
+					module.Prereq = "*";
+					module.Semester = "";
+					module.declaration = currentSelectedRule;
+				}
+				userSavedModules[receivedBy].modules.push(module);
+			});
 		}
 		checkRequirementsAndColorize();
 	},
 	update: function(event, ui) {
-		// showAll();
-		//console.log($(ui.sender).parent());
+		waitForPassedModule(function() {
+			showAll();
+		});
+		// console.log($(ui.sender).parent());
 		// displayRequirements();
 		// storage.put(userSavedModules);
 		// storage.save();
@@ -114,6 +126,9 @@ $("#requirementModules .module-list").sortable({
 		$("#" + ui.item.attr("id")).remove();
 		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule");
 		checkRequirementsAndColorize();
+	},
+	remove: function() {
+		passedModule = "fromList";
 	},
 	stop: function(e,ui) {
 		if (removeClone) {
@@ -161,7 +176,18 @@ function showAll() {
 			for (var j in userSavedModules[i].modules) {
 				console.log(userSavedModules[i].modules[j]);
 			}
-			console.log("MCs: " + userSavedModules[i].mcs)
+			console.log("MCs: " + userSavedModules[i].mcs);
 		}
 	}
+}
+
+function waitForPassedModule(fn) {
+	var busyWaiting = setInterval(function () {
+		if (passedModule != undefined) {
+			fn();
+			clearInterval(busyWaiting);
+		} else {
+			console.log("Wait for passing of module");
+		}
+	},1);
 }

@@ -394,7 +394,7 @@ function waitForChildParsing(rule, fn) {
 			fn();
 			clearInterval(busyWaiting);
 		} else {
-			console.log("Waiting for " + rule.ruleName + ": " + rule.parseCount + "/" + Object.keys(rule.include).length);
+			//console.log("Waiting for " + rule.ruleName + ": " + rule.parseCount + "/" + Object.keys(rule.include).length);
 		}
 	},5);
 }
