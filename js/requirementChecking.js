@@ -56,7 +56,7 @@ function checkRequirement(rule) {
 						} else if (isAnyAncestorExclusive(rule).answer) {
 							modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
 							ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
-							if (modAncestor.ruleName == ruleAncestor.ruleName && modAncestor.degree == ruleAncestor.degree) {
+							if (modAncestor.ruleName == ruleAncestor.ruleName) {
 								// console.log("got count")
 								mcOfModules += parseInt(mod.Credit);
 								noOfModules++;
@@ -71,7 +71,7 @@ function checkRequirement(rule) {
 							// console.log("not exclusive")
 							modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
 							ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
-							if (modAncestor.ruleName == ruleAncestor.ruleName && modAncestor.degree == ruleAncestor.degree) {
+							if (modAncestor.ruleName == ruleAncestor.ruleName) {
 								// console.log("got count")
 								mcOfModules += parseInt(mod.Credit);
 								noOfModules++;

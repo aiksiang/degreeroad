@@ -52,9 +52,9 @@ function colorizeRequirementModuleList(colorCode, rule) {
 	pushToTop = true;
 
 	if (colorCode.satisfied) {
-		$("#requirement" + currentSelectedRule.requirementId).addClass("ruleSatisfied");
+		$(".requirement" + currentSelectedRule.requirementId).addClass("ruleSatisfied");
 	} else {
-		$("#requirement" + currentSelectedRule.requirementId).removeClass("ruleSatisfied");
+		$(".requirement" + currentSelectedRule.requirementId).removeClass("ruleSatisfied");
 	}
 	$("#requirementModules .ui.bottom.right.attached.label").html(colorCode.percentage);
 }
@@ -65,9 +65,9 @@ function colorizeRequirements(colorCodes) {
 			colorizeRequirementModuleList(colorCodes[rule.requirementId], rule);
 		} else {
 			if (colorCodes[rule.requirementId].satisfied) {
-				$("#requirement" + rule.requirementId).addClass("ruleSatisfied");
+				$(".requirement" + rule.requirementId).addClass("ruleSatisfied");
 			} else {
-				$("#requirement" + rule.requirementId).removeClass("ruleSatisfied");
+				$(".requirement" + rule.requirementId).removeClass("ruleSatisfied");
 			}
 		}
 	});

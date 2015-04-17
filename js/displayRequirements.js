@@ -12,7 +12,7 @@ function displayRequirements(degreeName, clear) {
 			requirementSpecification.append('<div class="ui horizontal divider">'+ degreeList[rule.degree] +'</div>')
 			currentDegree = rule.degree;
 		}
-		requirementSpecification.append(listItem("requirement", rule.requirementId, "item", requirementText(rule)));
+		requirementSpecification.append(listItem("requirement", rule.requirementId, "item requirement" + rule.requirementId, requirementText(rule)));
 	});
 	InitializeActiveClass();
 	InitializeRequirementSelection();
@@ -166,7 +166,7 @@ $("#requirementModules .module-list").scroll(function() {
 });
 
 function removePreviousEnglish() {
-	$("#requirement" + currentSelectedRule.requirementId).html(requirementText(currentSelectedRule));
+	$(".requirement" + currentSelectedRule.requirementId).html(requirementText(currentSelectedRule));
 }
 
 function displayRequirementInEnglish() {
@@ -234,5 +234,5 @@ function displayRequirementInEnglish() {
 	}
 			//requirementInEnglish = requirementInEnglish.substring(0,requirementInEnglish.length - 5);
 
-	$("#requirement" + currentSelectedRule.requirementId).append(" (" + requirementInEnglish + ")");
+	$(".requirement" + currentSelectedRule.requirementId).append(" (" + requirementInEnglish + ")");
 }
