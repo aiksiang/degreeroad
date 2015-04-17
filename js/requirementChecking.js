@@ -31,6 +31,15 @@ function isAnyAncestorExclusive(rule) {
 	}
 }
 
+function listHasOriginalModule(list, originalModule) {
+	for (var i in list) {
+		if (list[i].module == originalModule) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function checkRequirement(rule) {
 	rule = typeof rule !== 'undefined' ? rule : currentSelectedRule;
 
@@ -46,60 +55,94 @@ function checkRequirement(rule) {
 	if (rule.hasOwnProperty("includeModuleList")) { //LIST, LISTS, MODULE, MODULES
 			traverseSelectedModules(function(mod) {
 				for (var i in rule.includeModuleList) {
-					if (rule.includeModuleList[i].module == mod.Code) {
-						// console.log("checking for: " + rule.ruleName)
-						if (rule.exclusive == "all") {
-							// console.log("no need care")
-							mcOfModules += parseInt(mod.Credit);
-							noOfModules++;
-							colorCode["module" + mod.Code] = "Green";
-						} else if (isAnyAncestorExclusive(rule).answer) {
-							modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
-							ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
-							if (modAncestor.ruleName == ruleAncestor.ruleName) {
-								// console.log("got count")
+					var alternativeModule = true;
+					var alternativeModulesNumber = 0;
+					var originalModule = rule.includeModuleList[i].module; 
+					while (alternativeModule == true) {
+						if (rule.includeModuleList[i].module == mod.Code) { 
+							// console.log("checking for: " + rule.ruleName)
+							if (rule.exclusive == "all") {
+								// console.log("no need care")
 								mcOfModules += parseInt(mod.Credit);
 								noOfModules++;
-								colorCode["module" + mod.Code] = "Green";
-							} else {
-								// console.log("no count");
-								colorCode["module" + mod.Code] = "Grey";
-							}
-
-							var itExists = false
-							for (var k in mod.doubleCountable) {
-								if (isAnyAncestorExclusive(rule).ancestor.ruleName == mod.doubleCountable[k].ruleName) {
-									itExists = true;
+								colorCode["module" + mod.Code] = {color: "Green"};
+							} else if (isAnyAncestorExclusive(rule).answer) {
+								modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
+								ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
+								if (modAncestor.ruleName == ruleAncestor.ruleName) {
+									// console.log("got count")
+									if (rule.includeModuleList[i].module != originalModule) {
+										colorCode["module" + originalModule] = {color: "Grey"};
+										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
+									} else {
+										colorCode["module" + mod.Code] = {color: "Green"};
+										mcOfModules += parseInt(mod.Credit);
+										noOfModules++;
+									}
+								} else {
+									// console.log("no count");
+									if (rule.includeModuleList[i].module != originalModule) {
+										colorCode["module" + originalModule] = {color: "Grey"};
+										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
+									} else {
+										colorCode["module" + mod.Code] = {color: "Grey"};
+									}
 								}
-							}
-							if (itExists == false) {
-								mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
-							}
-						} else {
-							// console.log("not exclusive")
-							modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
-							ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
-							if (modAncestor.ruleName == ruleAncestor.ruleName) {
-								// console.log("got count")
-								mcOfModules += parseInt(mod.Credit);
-								noOfModules++;
-								colorCode["module" + mod.Code] = "Green";
-							} else {
-								// console.log("no count");
-								colorCode["module" + mod.Code] = "Grey";
-							}
 
-							var itExists = false
-							for (var k in mod.doubleCountable) {
-								if (isAnyAncestorExclusive(rule).ancestor.ruleName == mod.doubleCountable[k].ruleName) {
-									itExists = true;
+								var itExists = false
+								for (var k in mod.doubleCountable) {
+									if (isAnyAncestorExclusive(rule).ancestor.ruleName == mod.doubleCountable[k].ruleName) {
+										itExists = true;
+									}
 								}
-							}
-							if (itExists == false) {
-								mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
+								if (itExists == false) {
+									mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
+								}
+							} else {
+								// console.log("not exclusive")
+								modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
+								ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
+								if (modAncestor.ruleName == ruleAncestor.ruleName) {
+									// console.log("got count")
+									mcOfModules += parseInt(mod.Credit);
+									noOfModules++;
+									if (rule.includeModuleList[i].module != originalModule) {
+										colorCode["module" + originalModule] = {color: "Green"};
+										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
+									} else {
+										colorCode["module" + mod.Code] = {color: "Green"};
+									}
+								} else {
+									// console.log("no count");
+									if (rule.includeModuleList[i].module != originalModule) {
+										colorCode["module" + originalModule] = {color: "Grey"};
+										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
+									} else {
+										colorCode["module" + mod.Code] = {color: "Grey"};
+									}
+								}
+
+								var itExists = false
+								for (var k in mod.doubleCountable) {
+									if (isAnyAncestorExclusive(rule).ancestor.ruleName == mod.doubleCountable[k].ruleName) {
+										itExists = true;
+									}
+								}
+								if (itExists == false) {
+									mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
+								}
 							}
 						}
+						alternativeModule = false;
+						if (rule.includeModuleList[i].hasOwnProperty("alternativeModules")){
+							if (rule.includeModuleList[i].module != mod.Code && alternativeModulesNumber < rule.includeModuleList[i].alternativeModules.length) {
+								rule.includeModuleList[i].module = rule.includeModuleList[i].alternativeModules[alternativeModulesNumber];
+								alternativeModulesNumber++;
+								alternativeModule = true;
+							}
+						}	
 					}
+					rule.includeModuleList[i].module = originalModule;
 				}
 			}, function(){
 				// console.log(colorCode)

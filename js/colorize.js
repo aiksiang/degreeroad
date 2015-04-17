@@ -25,10 +25,16 @@ function colorizeRequirementModuleList(colorCode, rule) {
 			if ($("#requirementModules "+ identifier) != undefined) {
 				$("#requirementModules "+ identifier).attr("id", $("#requirementModules "+ identifier).attr("id") + "clone");
 			}
-			if (colorCode[i] == "Green")
+			if (colorCode[i].color == "Green")
 				$("#requirementModules "+ identifier + "clone").addClass("selectedModule").addClass("greenModule").removeClass("greyModule");
-			else if (colorCode[i] == "Grey")
+			else if (colorCode[i].color == "Grey")
 				$("#requirementModules "+ identifier + "clone").addClass("selectedModule").addClass("greyModule").removeClass("greenModule");
+
+			if (colorCode[i].hasOwnProperty("alternativeModule")) {
+				$("#requirementModules "+ identifier + "clone").attr("data-content", "Replaced By: " + colorCode[i].alternativeModule);
+				$("#requirementModules "+ identifier + "clone").attr("data-position", "right center");
+				$("#requirementModules "+ identifier + "clone").popup();
+			}
 
 			if ((rule.degree == "UNI" || 
 				rule.requirementId == "20" || 

@@ -28,6 +28,9 @@ function initializeRequirementModules(_degreeCode, clear) {
 				postOrderTraverseRequirements(function(rule) {
 					parseIncludeExclude(rule);
 				});
+				waitForAllParsingDone(function() {
+					parseAlternativeModules();
+				});
 				console.log(requirements);
 				displayRequirements(degreeInfo.degreeName, clear);
 				loadUserSavedModules();
@@ -55,6 +58,23 @@ function parseRules(rules, degreeCode) {
 		findParent(rules[0],requirements,level, degreeCode);
 		rules.splice(0,1);
 	}
+}
+
+function parseAlternativeModules() {
+	traverseRequirements(function(rule) {
+		for (var i in rule.includeModuleList) {
+			var moduleCode = rule.includeModuleList[i].module;
+			var id = lookupModule(moduleCode);
+			if (id != undefined) {
+				if (allModuleList[id].hasOwnProperty("alternativeModules")) {
+					if (allModuleList[id].alternativeModules != null) {
+						var listOfAlternativeModules = allModuleList[id].alternativeModules.split(",");
+						rule.includeModuleList[i].alternativeModules = listOfAlternativeModules;
+					}
+				}
+			}
+		}
+	});
 }
 
 function parseIncludeExclude(rule) {
