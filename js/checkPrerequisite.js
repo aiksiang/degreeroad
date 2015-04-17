@@ -68,14 +68,15 @@ function isModuleSelected(moduleToBeCheckedCode, receivedBy) {
 	var indexReceivedBy = receivedBy.substring(8);
 	var stop = false;
 	var id = lookupModule(moduleToBeCheckedCode);
-	var modulesToBeChecked;
+	var modulesToBeChecked = [];
 	if (id != undefined) {
 		var moduleToBeChecked = allModuleList[id];
 		if (moduleToBeChecked.alternativeModules != null) {
 			modulesToBeChecked = moduleToBeChecked.alternativeModules.split(",");
-			modulesToBeChecked.push(moduleToBeChecked.Code);
 		}
 	}
+	modulesToBeChecked.push(moduleToBeCheckedCode);
+
 
 	for (var i in userSavedModules) {
 		if (stop == true) break;
@@ -88,8 +89,8 @@ function isModuleSelected(moduleToBeCheckedCode, receivedBy) {
 					result = false;
 				} else {
 					var itExists = false;
-					for (var i in modulesToBeChecked) {
-						if (module.Code == modulesToBeChecked[i]) {
+					for (var k in modulesToBeChecked) {
+						if (module.Code == modulesToBeChecked[k]) {
 							itExists = true;
 						}
 					}
