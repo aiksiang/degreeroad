@@ -265,6 +265,9 @@ function parseChild(targetRule) {
 			targetRule.childParseCount++;
 			if (targetRule.childParseCount == targetRule.children.length) {
 				targetRule.parseCount++;
+				console.log(targetRule.includeModuleList)
+				targetRule.includeModuleList = removeDuplicates(targetRule.includeModuleList);
+				console.log(targetRule.includeModuleList)
 			}
 		});
 		
@@ -347,6 +350,22 @@ function parseAny(rule) {
 		
 		rule.parseCount++;
 	});
+}
+
+function removeDuplicates(arrayList) {
+	var unique = [];
+	for(var i in arrayList) {
+		var itExists = false;
+		for(var j in unique) {
+			if (arrayList[i].module == unique[j].module) {
+				itExists = true;
+			}
+		}
+		if (itExists == false) {
+			unique.push(arrayList[i]);
+		}
+	}
+	return unique;
 }
 
 function traverseRequirements(fn,inputNode) {

@@ -156,6 +156,26 @@ function checkRequirement(rule) {
 			break;
 	}
 
+	if (rule.hasOwnProperty("children")) {
+		if (rule.ruleName.indexOf("Specialization") >= 0 && rule.parent == null) {
+			var rulesFulfilled = rule.children.length;
+			for (var l in rule.children) {
+				if (checkRequirement(rule.children[l]).satisfied == false) {
+					rulesFulfilled--;
+				}
+			}
+			if (rulesFulfilled == 0) {
+				satisfied = false;
+			}
+		} else {
+			for (var l in rule.children) {
+				if (checkRequirement(rule.children[l]).satisfied == false) {
+					satisfied = false;
+				}
+			}
+		}
+	}
+
 	if (satisfied == true) {
 		colorCode.satisfied = true;
 	} else {
