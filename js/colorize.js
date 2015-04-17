@@ -100,21 +100,29 @@ function colorizeSemesters(colorCodes) {
 		else
 			identifier = "#notFound" + index;
 
+		
+
 		if (colorCodes.semester[i].errorType == "prerequisiteNotMet") {
 			$("#semester-container " + identifier).addClass("errorModule");
-			$(".errorModule").attr("data-content", "Pre-Requisites not met");
-			$(".errorModule").attr("data-position", "top center");
+			$("#semester-container " + identifier).attr("data-position", "top center");
+			$("#semester-container " + identifier).popup({content: "Pre-Requisites not met"});
 		} else if (colorCodes.semester[i].errorType == "manuallyCheck") {
 			$("#semester-container " + identifier).addClass("noticeModule");
-			$(".noticeModule").attr("data-content", "Manually check Pre-Requisites");
-			$(".noticeModule").attr("data-position", "top center");
+			$("#semester-container " + identifier).attr("data-position", "top center");
+			$("#semester-container " + identifier).popup({content: "Manually check Pre-Requisites"});
 		}
+		if (colorCodes.semester[i].errorType == "wrongSemester") {
+			$("#semester-container " + identifier).addClass("errorModule").removeClass("noticeModule");
+			$("#semester-container " + identifier).attr("data-position", "top center");
+			$("#semester-container " + identifier).popup({content: colorCodes.semester[i].details});
+		}
+
 		if (id == undefined) {
 			$("#semester-container " + identifier).addClass("noticeModule");
 			$(".noticeModule").attr("data-content", "Module not in database");
 			$(".noticeModule").attr("data-position", "top center");
 		}
 	}
-	$(".errorModule").popup();
-	$(".noticeModule").popup();
+	//$(".errorModule").popup();
+	// $(".noticeModule").popup();
 }

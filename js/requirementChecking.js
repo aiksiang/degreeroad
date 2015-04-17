@@ -12,13 +12,40 @@ function checkRequirements() {
 			var result = checkPrerequisite(mod, semNumber);
 			if (result.noError == false) {
 				colorCode.push(result);
-				colorCodes["semester"] = colorCode;
 			}
+			var semResult = checkSemester(mod, semNumber);
+			if (semResult.noError == false) {
+				colorCode.push(semResult);
+			}
+			colorCodes["semester"] = colorCode;
 		});
 	});
 	
 
 	return colorCodes;
+}
+
+function checkSemester(mod, modLocationSemester) {
+	if (mod != undefined) {
+		if (mod.Semester == undefined || mod.Semester == "") {
+			//No semester details
+			return {errorType: "manuallyCheck", noError: false, mod: mod};
+		} else {
+			var result = false;
+			var semestersAvailable = mod.Semester.split(",");
+			for (var i in semestersAvailable) {
+				var modOfferedIn = parseInt(modLocationSemester.substring(8)) % 2;
+				if (modOfferedIn == 0)
+					modOfferedIn = 2;
+				if (modOfferedIn == semestersAvailable[i]) {
+					result = true;
+				}
+			}
+			return {errorType: "wrongSemester", noError: result, mod: mod, details: "Module only offered in Semester " + modOfferedIn};
+		}
+	} else {
+		console.log("Error: Semester checking for module not found");
+	}
 }
 
 function isAnyAncestorExclusive(rule) {
