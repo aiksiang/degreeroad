@@ -65,8 +65,16 @@ function checkRequirement(rule) {
 								// console.log("no count");
 								colorCode["module" + mod.Code] = "Grey";
 							}
-							if (mod.doubleCountable.indexOf(isAnyAncestorExclusive(rule).ancestor) < 0)
+
+							var itExists = false
+							for (var k in mod.doubleCountable) {
+								if (isAnyAncestorExclusive(rule).ancestor.ruleName == mod.doubleCountable[k].ruleName) {
+									itExists = true;
+								}
+							}
+							if (itExists == false) {
 								mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
+							}
 						} else {
 							// console.log("not exclusive")
 							modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
@@ -81,8 +89,15 @@ function checkRequirement(rule) {
 								colorCode["module" + mod.Code] = "Grey";
 							}
 
-							if (mod.doubleCountable.indexOf(isAnyAncestorExclusive(rule).ancestor) < 0)
+							var itExists = false
+							for (var k in mod.doubleCountable) {
+								if (isAnyAncestorExclusive(rule).ancestor.ruleName == mod.doubleCountable[k].ruleName) {
+									itExists = true;
+								}
+							}
+							if (itExists == false) {
 								mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
+							}
 						}
 					}
 				}
