@@ -63,10 +63,20 @@ function parsePrerequisite(preReq, modLocationSemester) {
 	}
 }
 
-function isModuleSelected(moduleToBeChecked, receivedBy) {
+function isModuleSelected(moduleToBeCheckedCode, receivedBy) {
 	var result = false;
 	var indexReceivedBy = receivedBy.substring(8);
 	var stop = false;
+	var id = lookupModule(moduleToBeCheckedCode);
+	var modulesToBeChecked;
+	if (id != undefined) {
+		var moduleToBeChecked = allModuleList[id];
+		if (moduleToBeChecked.alternativeModules != null) {
+			modulesToBeChecked = moduleToBeChecked.alternativeModules.split(",");
+			modulesToBeChecked.push(moduleToBeChecked.Code);
+		}
+	}
+
 	for (var i in userSavedModules) {
 		if (stop == true) break;
 		if (i.indexOf("semester") >= 0) {
@@ -76,10 +86,18 @@ function isModuleSelected(moduleToBeChecked, receivedBy) {
 				var indexSemester = semester.substring(8);
 				if (indexReceivedBy <= indexSemester) {
 					result = false;
-				} else if (module.Code == moduleToBeChecked) {
-					result = true;
-					stop = true;
-					break;
+				} else {
+					var itExists = false;
+					for (var i in modulesToBeChecked) {
+						if (module.Code == modulesToBeChecked[i]) {
+							itExists = true;
+						}
+					}
+					if (itExists) {
+						result = true;
+						stop = true;
+						break;
+					}
 				}
 			}
 		}
