@@ -62,21 +62,32 @@ function checkRequirement(rule) {
 								noOfModules++;
 								colorCode["module" + mod.Code] = "Green";
 							} else {
-								// console.log("no count")
+								// console.log("no count");
+								colorCode["module" + mod.Code] = "Grey";
 							}
-							if (mod.doubleCountable.indexOf(rule) < 0)
-								mod.doubleCountable.push(rule);
+							if (mod.doubleCountable.indexOf(isAnyAncestorExclusive(rule).ancestor) < 0)
+								mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
 						} else {
 							// console.log("not exclusive")
-							mcOfModules += parseInt(mod.Credit);
-							noOfModules++;
-							colorCode["module" + mod.Code] = "Green";
+							modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
+							ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
+							if (modAncestor.ruleName == ruleAncestor.ruleName && modAncestor.degree == ruleAncestor.degree) {
+								// console.log("got count")
+								mcOfModules += parseInt(mod.Credit);
+								noOfModules++;
+								colorCode["module" + mod.Code] = "Green";
+							} else {
+								// console.log("no count");
+								colorCode["module" + mod.Code] = "Grey";
+							}
 
-							if (mod.doubleCountable.indexOf(rule) < 0)
-								mod.doubleCountable.push(rule);
+							if (mod.doubleCountable.indexOf(isAnyAncestorExclusive(rule).ancestor) < 0)
+								mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
 						}
 					}
 				}
+			}, function(){
+				// console.log(colorCode)
 			});
 	}
 	if (rule.include.hasOwnProperty("ANY")) {
@@ -137,7 +148,7 @@ function checkRequirement(rule) {
 	}
 
 	if (quantifier == "MC") {
-		colorCode.percentage = mcOfModules + "/" + rule.number;
+		colorCode.percentage = mcOfModules + "/" + rule.number + " MCs";
 	} else if (quantifier == "MODULE") {
 		colorCode.percentage = noOfModules + "/" + rule.number;
 	} else if (inequality == "ALL") {

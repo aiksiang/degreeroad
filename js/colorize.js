@@ -2,12 +2,11 @@ var pushToTop = false;
 
 function colorizeRequirementModuleList(colorCode, rule) {
 	rule = typeof rule !== 'undefined' ? rule : currentSelectedRule;
-
 	var requirementList = $("#requirementModules .module-list a");
 	for (var i in colorCode){
 		if (i.indexOf("module") >= 0) { //Only the indexes, not other properties
-			i = i.substring(6,i.length);
-			var id = lookupModule(i);
+			idx = i.substring(6,i.length);
+			var id = lookupModule(idx);
 			var mod;
 			if (id != undefined) {
 				identifier = "#requirementModule" + id;
@@ -16,9 +15,9 @@ function colorizeRequirementModuleList(colorCode, rule) {
 					index: id
 				};
 			} else {
-				identifier = "#notFound" + i;
+				identifier = "#notFound" + idx;
 				mod = {
-					title: i,
+					title: idx,
 					index: null
 				};
 			}
@@ -26,8 +25,18 @@ function colorizeRequirementModuleList(colorCode, rule) {
 			if ($("#requirementModules "+ identifier) != undefined) {
 				$("#requirementModules "+ identifier).attr("id", $("#requirementModules "+ identifier).attr("id") + "clone");
 			}
-			$("#requirementModules "+ identifier + "clone").addClass("selectedModule");
-			if (rule.degree == "UNI" && pushToTop != true) {
+			if (colorCode[i] == "Green")
+				$("#requirementModules "+ identifier + "clone").addClass("selectedModule").addClass("greenModule").removeClass("greyModule");
+			else if (colorCode[i] == "Grey")
+				$("#requirementModules "+ identifier + "clone").addClass("selectedModule").addClass("greyModule").removeClass("greenModule");
+
+			if ((rule.degree == "UNI" || 
+				rule.requirementId == "20" || 
+				rule.requirementId == "21" || 
+				rule.requirementId == "22" ||
+				rule.requirementId == "23" || 
+				rule.requirementId == "24" || 
+				rule.requirementId == "25") && pushToTop != true) {
 				for (var j in ruleModuleList) {
 					if (ruleModuleList[j].title == mod.title) {
 						ruleModuleList.splice(j,1);

@@ -1,13 +1,15 @@
 var requirementModules = {};
 var requirements = [];
-var ruleLength = 1;
+var ruleLength = 0;
+var ruleLengthUpdated = false;
 //storage = new Storage();
 
 function initializeRequirementModules(_degreeCode, clear) {
 	_degreeCode = typeof _degreeCode !== 'undefined' ? _degreeCode : null;
+	ruleLengthUpdated = false;
 	if (clear == true) {
 		requirements = [];
-		ruleLength = 1;
+		ruleLength = 0;
 	}
 	$("#requirementModules .module-list").html("");	
 	var degreeName = "";
@@ -20,10 +22,8 @@ function initializeRequirementModules(_degreeCode, clear) {
 		retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
 			console.log(degreeInfo);
 			retrieveRules(degreeInfo.requirementId, function(rules) {
-				if (ruleLength == 1) // Not 0, this is used make sure that waiting for all parsing to be done will be correct
-					ruleLength = rules.length;
-				else
-					ruleLength += rules.length;
+				ruleLength += rules.length;
+				ruleLengthUpdated = true;
 				parseRules(rules, degreeCode);
 				postOrderTraverseRequirements(function(rule) {
 					parseIncludeExclude(rule);

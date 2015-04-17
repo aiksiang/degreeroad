@@ -70,18 +70,17 @@ function populateDegreeList() {
 function chooseDegree() {
 	var degreeCode = getDegreeCode(currentDegree)[0];
 	var faculty = getDegreeCode(currentDegree)[1];
-	
 	initializeRequirementModules(degreeCode, true);
-	waitForAllParsingDone(function() {
+	waitForDegreeLoad(function() {
 		initializeRequirementModules(faculty, false);
-		waitForAllParsingDone(function() {
+		waitForDegreeLoad(function() {
 			initializeRequirementModules("UNI", false);
 			if (currentSecondDegree != null) {
-				waitForAllParsingDone(function() {
+				waitForDegreeLoad(function() {
 					degreeCode = getDegreeCode(currentSecondDegree)[0];
 					faculty = getDegreeCode(currentSecondDegree)[1];
 					initializeRequirementModules(degreeCode, false);
-					waitForAllParsingDone(function() {
+					waitForDegreeLoad(function() {
 						initializeRequirementModules(faculty, false);
 					});
 				});
@@ -128,7 +127,7 @@ function InitializeModalsTrigger() {
 	$('.standard.modal').modal('attach events', '.item.module');
 	$('.item.module').on('click', function() {
 		var mod = {};
-		var HTMLtoBeInserted = "";
+		var modFromSem = false;
 		if ($(this).attr("id").indexOf("notFound") < 0) {
 			var moduleLocation = $(this).attr("id").substring(17,$(this).attr("id").length);
 			if (moduleLocation.indexOf("clone") >= 0) {
@@ -138,44 +137,26 @@ function InitializeModalsTrigger() {
 			mod = allModuleList[moduleLocation];
 			traverseSelectedModules(function(moduleFromSem) {
 				if (moduleFromSem.Code == modFromList.Code) {
-					HTMLtoBeInserted = "\
-						<div><h5>Module Code: </h5><span class='modBodyValue'>" + moduleFromSem.Code + "</span></div>\
-						<div><h5>Modular Credits: </h5><span class='modBodyValue'>" + moduleFromSem.Credit + "</span></div>\
-						<div><h5>Exam Date: </h5><span class='modBodyValue'>" + moduleFromSem.Examdate + "</span></div>\
-						<div><h5>Preclusion: </h5><span class='modBodyValue'>" + moduleFromSem.Preclude + "</span></div>\
-						<div><h5>Prerequisite: </h5><span class='modBodyValue'>" + moduleFromSem.Prereq + "</span></div>\
-						<div><h5>Description: </h5><span class='modBodyValue'>" + moduleFromSem.Description + "</span></div>\
-						<div class='ui horizontal divider'>Module Declaration</div>\
-						<div id='module-declaration' class='ui dropdown item'>\
-					";
-					HTMLtoBeInserted += '\
-							<div class="text">' + moduleFromSem.declaration.ruleName + '</div>\
-							<i class="dropdown icon"></i>\
-							<div id="declaration-options" class="menu">\
-					';
+					modFromSem = true;
+					$("#moduleCode").html(moduleFromSem.Code);
+					$("#moduleCredits").html(moduleFromSem.Credit);
+					$("#moduleExam").html(moduleFromSem.Examdate);
+					$("#modulePreclusion").html(moduleFromSem.Preclude);
+					$("#modulePrerequisite").html(moduleFromSem.Prereq);
+					$("#moduleDescription").html(moduleFromSem.Description);
+					$("#module-declaration-divider").html("Module Declaration");
+					$("#module-declaration-divider").show();
+					$("#module-declaration-ruleName").html(isAnyAncestorExclusive(moduleFromSem.declaration).ancestor.ruleName);
+					$("#declaration-options").html("");
 					for (var k in moduleFromSem.doubleCountable) {
-						HTMLtoBeInserted += '\
-								<div class="item">'+ moduleFromSem.doubleCountable[k].ruleName +'</div>\
-						';
+						$("#declaration-options").append('\
+							<div class="item">'+ moduleFromSem.doubleCountable[k].ruleName +'</div>\
+						')
 					}
-					HTMLtoBeInserted += '\
-							</div>\
-						</div>\
-					';
+
+					$("#module-declaration").show();
 					
-					$(".modal .content").html(HTMLtoBeInserted);
 					currentMod = moduleFromSem;
-					waitForInsertionOfHTML(function() {
-						$('#module-declaration').dropdown({
-							onChange: function(value,text) {
-								for (var l in currentMod.doubleCountable) {
-									if (currentMod.doubleCountable[l].ruleName == text) {
-										currentMod.declaration = currentMod.doubleCountable[l];
-									}
-								}
-							}
-						});
-					});
 				}
 			});
 		} else {
@@ -192,20 +173,28 @@ function InitializeModalsTrigger() {
 			mod.Semester = "";
 		}
 		$(".modal .header").html(mod.Name);
-		if (HTMLtoBeInserted == "") {
-			HTMLtoBeInserted = "\
-				<div><h5>Module Code: </h5><span class='modBodyValue'>" + mod.Code + "</span></div>\
-				<div><h5>Modular Credits: </h5><span class='modBodyValue'>" + mod.Credit + "</span></div>\
-				<div><h5>Exam Date: </h5><span class='modBodyValue'>" + mod.Examdate + "</span></div>\
-				<div><h5>Preclusion: </h5><span class='modBodyValue'>" + mod.Preclude + "</span></div>\
-				<div><h5>Prerequisite: </h5><span class='modBodyValue'>" + mod.Prereq + "</span></div>\
-				<div><h5>Description: </h5><span class='modBodyValue'>" + mod.Description + "</span></div>\
-			";
-			$(".modal .actions").html("");
+		if (modFromSem == false) {
+			$("#moduleCode").html(mod.Code);
+			$("#moduleCredits").html(mod.Credit);
+			$("#moduleExam").html(mod.Examdate);
+			$("#modulePreclusion").html(mod.Preclude);
+			$("#modulePrerequisite").html(mod.Prereq);
+			$("#moduleDescription").html(mod.Description);
+			$("#module-declaration-divider").hide();
+			$("#module-declaration").hide();
 			currentMod = mod;
 		}
+	});
 
-		$(".modal .content").html(HTMLtoBeInserted);
+	$('#module-declaration').dropdown({
+		onChange: function(value,text) {
+			for (var l in currentMod.doubleCountable) {
+				if (currentMod.doubleCountable[l].ruleName == text) {
+					currentMod.declaration = currentMod.doubleCountable[l];
+					checkRequirementsAndColorize();
+				}
+			}
+		}
 	});
 }
 
@@ -315,13 +304,13 @@ topContainer.on({
 	}
 });
 
-function waitForInsertionOfHTML(fn) {
+function waitForDegreeLoad(fn) {
 	var busyWaiting = setInterval(function () {
-		if ($('#module-declaration')[0] != undefined) {
+		if (ruleLengthUpdated == true && checkAllParsingDone() == true) {
 			fn();
 			clearInterval(busyWaiting);
 		} else {
-			console.log("Wait for insertion of HTML");
+			console.log("Wait for degree to load");
 		}
-	},1);
+	},20);
 }

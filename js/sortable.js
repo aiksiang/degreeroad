@@ -124,7 +124,7 @@ $("#requirementModules .module-list").sortable({
 	receive: function(e,ui) {
 		removeClone = true;
 		$("#" + ui.item.attr("id")).remove();
-		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule");
+		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule").removeClass("greenModule");
 		checkRequirementsAndColorize();
 	},
 	remove: function() {

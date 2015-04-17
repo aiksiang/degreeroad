@@ -125,7 +125,14 @@
 
 .selectedModule {
 	cursor: default !important;
+}
+
+.greenModule {
 	background: #46ae5f !important;
+}
+
+.greyModule {
+	background: #e0e0e0 !important;
 }
 
 .errorModule {
@@ -151,4 +158,8 @@ h5 {
 .ui.standard.modal,
 .noticeAlert {
 	margin-top: -200px !important;
+}
+
+#module-declaration {
+	width: 40%;
 }
