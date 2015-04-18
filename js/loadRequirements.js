@@ -20,7 +20,6 @@ function initializeRequirementModules(_degreeCode, clear) {
 
 	if (_degreeCode != null) {
 		retrieveDegreeRequirements(academicYear, degreeCode, specialProgramme, function(degreeInfo) {
-			console.log(degreeInfo);
 			retrieveRules(degreeInfo.requirementId, function(rules) {
 				ruleLength += rules.length;
 				ruleLengthUpdated = true;
@@ -31,15 +30,12 @@ function initializeRequirementModules(_degreeCode, clear) {
 				waitForAllParsingDone(function() {
 					parseAlternativeModules();
 				});
-				console.log(requirements);
 				displayRequirements(degreeInfo.degreeName, clear);
-				loadUserSavedModules();
 				checkRequirementsAndColorize();
 			});
 		});
 	}
 };
-initializeRequirementModules();
 
 function parseRules(rules, degreeCode) {
 	var i = 0;
@@ -47,6 +43,12 @@ function parseRules(rules, degreeCode) {
 		rules[i].degree = degreeCode;
 		if (rules[i].parent == null) {
 			rules[i].level = 0;
+			rules[i].parentNode = {};
+			rules[i].parentNode["exclusive"] = rules[i].exclusive;
+			rules[i].parentNode["level"] = rules[i].level;
+			rules[i].parentNode["ruleName"] = rules[i].ruleName;
+			rules[i].parentNode["degree"] = rules[i].degree;
+			rules[i].parentNode["parentNode"] = null;
 			requirements.push(rules[i]);
 			rules.splice(i,1);
 			i--;
@@ -57,6 +59,32 @@ function parseRules(rules, degreeCode) {
 		var level = 0;
 		findParent(rules[0],requirements,level, degreeCode);
 		rules.splice(0,1);
+	}
+}
+
+function findParent(rule,node,level,degreeCode) {
+	var targetParent = rule.parent;
+	var innerNode;
+	level++;
+	for (var i in node) {
+		innerNode = node[i];
+		if (innerNode.hasOwnProperty("children")) {
+			findParent(rule,innerNode.children,level,degreeCode);
+		}
+		if (innerNode.ruleId == targetParent && innerNode.degree == degreeCode) {
+			if (innerNode.children == null) {
+				innerNode.children = [];
+			}
+			rule.level = level;
+			rule.parentNode = {};
+			rule.parentNode["exclusive"] = innerNode.exclusive;
+			rule.parentNode["level"] = innerNode.level;
+			rule.parentNode["ruleName"] = innerNode.ruleName;
+			rule.parentNode["degree"] = innerNode.degree;
+			rule.parentNode["parentNode"] = innerNode.parentNode;
+
+			innerNode.children.push(rule);
+		}
 	}
 }
 
@@ -179,26 +207,6 @@ function parseIncludeExclude(rule) {
 	}
 }
 
-function findParent(rule,node,level,degreeCode) {
-	var targetParent = rule.parent;
-	var innerNode;
-	level++;
-	for (var i in node) {
-		innerNode = node[i];
-		if (innerNode.hasOwnProperty("children")) {
-			findParent(rule,innerNode.children,level,degreeCode);
-		}
-		if (innerNode.ruleId == targetParent && innerNode.degree == degreeCode) {
-			if (innerNode.children == null) {
-				innerNode.children = [];
-			}
-			rule.level = level;
-			rule.parentNode = innerNode;
-			innerNode.children.push(rule);
-		}
-	}
-}
-
 function parseList(rule, listName) {
 	retrieveList(listName, function(list) {
 		if (rule.hasOwnProperty("includeModuleList")) {
@@ -285,9 +293,7 @@ function parseChild(targetRule) {
 			targetRule.childParseCount++;
 			if (targetRule.childParseCount == targetRule.children.length) {
 				targetRule.parseCount++;
-				console.log(targetRule.includeModuleList)
 				targetRule.includeModuleList = removeDuplicates(targetRule.includeModuleList);
-				console.log(targetRule.includeModuleList)
 			}
 		});
 		
@@ -361,7 +367,7 @@ function parseFaculties(rule) {
 }
 
 function parseAny(rule) {
-	waitForAllModuleList(function() {console.log(rule)
+	waitForAllModuleList(function() {
 		var list = [];
 		for (var i in allModuleList) {
 			list.push({module: allModuleList[i].Code.trim()});

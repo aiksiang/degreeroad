@@ -56,28 +56,36 @@ function colorizeRequirementModuleList(colorCode, rule) {
 		}
 	}
 	pushToTop = true;
-
+	var ruleSatisfied = false;
 	if (colorCode.satisfied) {
 		$(".requirement" + currentSelectedRule.requirementId).addClass("ruleSatisfied");
+		ruleSatisfied = true;
 	} else {
 		$(".requirement" + currentSelectedRule.requirementId).removeClass("ruleSatisfied");
+		ruleSatisfied = false;
 	}
 	$("#requirementModules .ui.bottom.right.attached.label").html(colorCode.percentage);
+	return ruleSatisfied;
 }
 
 function colorizeRequirements(colorCodes) {
+	var totalRuleSatisfied = 0;
 	traverseRequirements(function(rule) {
+		var ruleSatisfied;
 		if (rule == currentSelectedRule) {
-			colorizeRequirementModuleList(colorCodes[rule.requirementId], rule);
+			ruleSatisfied = colorizeRequirementModuleList(colorCodes[rule.requirementId], rule);
 		} else {
 			if (colorCodes[rule.requirementId].satisfied) {
 				$(".requirement" + rule.requirementId).addClass("ruleSatisfied");
+				ruleSatisfied = true;
 			} else {
 				$(".requirement" + rule.requirementId).removeClass("ruleSatisfied");
 			}
 		}
+		if (ruleSatisfied)
+			totalRuleSatisfied++;
 	});
-
+	$("#requirement-specification .ui.bottom.right.label").html(totalRuleSatisfied + "/" + ruleLength);
 }
 
 function colorizeSemesters(colorCodes) {

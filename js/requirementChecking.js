@@ -33,7 +33,13 @@ function checkSemester(mod, modLocationSemester) {
 		} else {
 			var result = false;
 			var semestersAvailable = mod.Semester.split(",");
+			var onlyOfferedIn = "";
 			for (var i in semestersAvailable) {
+				if (onlyOfferedIn != "")
+					onlyOfferedIn += ", "
+				if (onlyOfferedIn != "" && i == semestersAvailable.length - 1)
+					onlyOfferedIn = onlyOfferedIn.substring(0, onlyOfferedIn.length - 2);
+				onlyOfferedIn += semestersAvailable[i];
 				var modOfferedIn = parseInt(modLocationSemester.substring(8)) % 2;
 				if (modOfferedIn == 0)
 					modOfferedIn = 2;
@@ -41,7 +47,7 @@ function checkSemester(mod, modLocationSemester) {
 					result = true;
 				}
 			}
-			return {errorType: "wrongSemester", noError: result, mod: mod, details: "Module only offered in Semester " + modOfferedIn};
+			return {errorType: "wrongSemester", noError: result, mod: mod, details: "Module only offered in Semester " + onlyOfferedIn};
 		}
 	} else {
 		console.log("Error: Semester checking for module not found");
@@ -87,9 +93,7 @@ function checkRequirement(rule) {
 					var originalModule = rule.includeModuleList[i].module; 
 					while (alternativeModule == true) {
 						if (rule.includeModuleList[i].module == mod.Code) { 
-							// console.log("checking for: " + rule.ruleName)
 							if (rule.exclusive == "all") {
-								// console.log("no need care")
 								mcOfModules += parseInt(mod.Credit);
 								noOfModules++;
 								colorCode["module" + mod.Code] = {color: "Green"};
@@ -97,7 +101,6 @@ function checkRequirement(rule) {
 								modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
 								ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
 								if (modAncestor.ruleName == ruleAncestor.ruleName) {
-									// console.log("got count")
 									if (rule.includeModuleList[i].module != originalModule) {
 										colorCode["module" + originalModule] = {color: "Grey"};
 										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
@@ -107,7 +110,6 @@ function checkRequirement(rule) {
 										noOfModules++;
 									}
 								} else {
-									// console.log("no count");
 									if (rule.includeModuleList[i].module != originalModule) {
 										colorCode["module" + originalModule] = {color: "Grey"};
 										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
@@ -126,11 +128,16 @@ function checkRequirement(rule) {
 									mod.doubleCountable.push(isAnyAncestorExclusive(rule).ancestor);
 								}
 							} else {
-								// console.log("not exclusive")
 								modAncestor = isAnyAncestorExclusive(mod.declaration).ancestor;
 								ruleAncestor = isAnyAncestorExclusive(rule).ancestor;
-								if (modAncestor.ruleName == ruleAncestor.ruleName) {
-									// console.log("got count")
+								if (isAnyAncestorExclusive(mod.declaration).answer) {
+									if (rule.includeModuleList[i].module != originalModule) {
+										colorCode["module" + originalModule] = {color: "Grey"};
+										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
+									} else {
+										colorCode["module" + mod.Code] = {color: "Grey"};
+									}
+								} else {
 									mcOfModules += parseInt(mod.Credit);
 									noOfModules++;
 									if (rule.includeModuleList[i].module != originalModule) {
@@ -138,14 +145,6 @@ function checkRequirement(rule) {
 										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
 									} else {
 										colorCode["module" + mod.Code] = {color: "Green"};
-									}
-								} else {
-									// console.log("no count");
-									if (rule.includeModuleList[i].module != originalModule) {
-										colorCode["module" + originalModule] = {color: "Grey"};
-										colorCode["module" + originalModule].alternativeModule = rule.includeModuleList[i].module;
-									} else {
-										colorCode["module" + mod.Code] = {color: "Grey"};
 									}
 								}
 

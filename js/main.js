@@ -9,9 +9,11 @@ $(document).ready(function(){
 	$('#course-selection').dropdown({
 		onChange: function(value,text) {
 			currentDegree = text;
+			userSavedModules.currentDegree = currentDegree;
 			if (currentDegree == currentSecondDegree) {
 				$('#second-course-selection .text').html("+");
 				currentSecondDegree = null;
+				userSavedModules.currentSecondDegree = currentSecondDegree;
 			}
 			chooseDegree();
 		}
@@ -20,11 +22,14 @@ $(document).ready(function(){
 		onChange: function(value,text) {
 			if (text != currentDegree && currentDegree != null) {
 				$('#second-course-selection .text').html(text);
+
+				userSavedModules.currentSecondDegree = currentSecondDegree;
 				currentSecondDegree = text;
 				chooseDegree();
 			} else {
 				$('#second-course-selection .text').html("+");
 				currentSecondDegree = null;
+				userSavedModules.currentSecondDegree = currentSecondDegree;
 			}
 		}
 	});
@@ -38,6 +43,7 @@ $(document).ready(function(){
     
     //Initialize Degrees
     populateDegreeList();
+    
 });
 
 var degreeList = {
@@ -74,7 +80,13 @@ function chooseDegree() {
 	waitForDegreeLoad(function() {
 		initializeRequirementModules(faculty, false);
 		waitForDegreeLoad(function() {
-			initializeRequirementModules("UNI", false);
+			if (!(currentDegree == null && currentSecondDegree == null)){
+				initializeRequirementModules("UNI", false);
+				waitForAllParsingDone(function() {
+					if (currentSecondDegree == null)
+						console.log("All requirements finished Loading");
+				});
+			}
 			if (currentSecondDegree != null) {
 				waitForDegreeLoad(function() {
 					degreeCode = getDegreeCode(currentSecondDegree)[0];
@@ -82,6 +94,9 @@ function chooseDegree() {
 					initializeRequirementModules(degreeCode, false);
 					waitForDegreeLoad(function() {
 						initializeRequirementModules(faculty, false);
+						waitForAllParsingDone(function() {
+							console.log("All requirements finished Loading");
+						});
 					});
 				});
 			}
@@ -108,6 +123,10 @@ function getDegreeCode(text) {
 			break;
 		case "Political Science(Minor)":
 			degreeCode = "PS_MIN";
+			faculty = null;
+			break;
+		default:
+			degreeCode = null;
 			faculty = null;
 			break;
 	}
@@ -192,6 +211,7 @@ function InitializeModalsTrigger() {
 				if (currentMod.doubleCountable[l].ruleName == text) {
 					currentMod.declaration = currentMod.doubleCountable[l];
 					checkRequirementsAndColorize();
+					saveStorage("user");
 				}
 			}
 		}
@@ -208,7 +228,8 @@ for (var i = 1; i <= noOfSems; i++) {
 	defaultUserSavedModules["semester" + i].modules = [];
 	defaultUserSavedModules["semester" + i].mcs = 0;
 }
-defaultUserSavedModules.course = "CEG";
+defaultUserSavedModules.currentDegree = null;
+defaultUserSavedModules.currentSecondDegree = null;
 defaultUserSavedModules.chosenModules = {};
 
 
@@ -307,6 +328,9 @@ topContainer.on({
 function waitForDegreeLoad(fn) {
 	var busyWaiting = setInterval(function () {
 		if (ruleLengthUpdated == true && checkAllParsingDone() == true) {
+			fn();
+			clearInterval(busyWaiting);
+		} else if (currentDegree == null && currentSecondDegree == null) {
 			fn();
 			clearInterval(busyWaiting);
 		} else {

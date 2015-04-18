@@ -30,3 +30,13 @@ body {
 ::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.4);
 }
+
+#loadData:hover {
+	background: rgba(255, 255, 255, 0.1);
+	color: #ffffff;
+}
+
+#clearData:hover {
+	background: rgba(255, 255, 255, 0.1);
+	color: #ffffff;
+}

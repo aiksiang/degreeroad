@@ -94,9 +94,9 @@ $("#semester-container .module-list").sortable({
 		checkRequirementsAndColorize();
 	},
 	update: function(event, ui) {
-		// waitForPassedModule(function() {
-		// 	showAll();
-		// });
+		waitForPassedModule(function() {
+			saveStorage("user");
+		});
 		// console.log($(ui.sender).parent());
 		// displayRequirements();
 		// storage.put(userSavedModules);
@@ -124,7 +124,7 @@ $("#requirementModules .module-list").sortable({
 	receive: function(e,ui) {
 		removeClone = true;
 		$("#" + ui.item.attr("id")).remove();
-		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule").removeClass("greenModule");
+		$("#" + ui.item.attr("id") + "clone").attr("id", ui.item.attr("id")).removeClass("selectedModule").removeClass("greenModule").removeClass("greyModule");
 		checkRequirementsAndColorize();
 	},
 	remove: function() {
