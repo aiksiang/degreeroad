@@ -31,6 +31,8 @@ function InitializeRequirementSelection() {
 				currentSelectedRule = rule;
 		});
 		populateRequirementModulesList(currentSelectedRule);
+		removeImage2();
+		showTutorial(3);
 	});
 }
 

@@ -139,6 +139,8 @@ $("#requirementModules .module-list").sortable({
 	},
 	update: function(event, ui) {
 		InitializeModalsTrigger();
+		if (tutorialModeOn)
+			showTutorial(4);
 		//colorizeRequirementModuleList(colorCode);
 		// showAll();
 		//console.log($(ui.sender).parent());

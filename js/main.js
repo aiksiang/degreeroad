@@ -15,8 +15,14 @@ $(document).ready(function(){
 				currentSecondDegree = null;
 				userSavedModules.currentSecondDegree = currentSecondDegree;
 			}
-			chooseDegree();
+			if (tutorialModeOn)
+				showTutorial(2);
+			else
+				chooseDegree();
 		}
+	});
+	$('#course-selection').click(function() {
+		removeImage1();
 	});
 	$('#second-course-selection').dropdown({
 		onChange: function(value,text) {
@@ -83,8 +89,9 @@ function chooseDegree() {
 			if (!(currentDegree == null && currentSecondDegree == null)){
 				initializeRequirementModules("UNI", false);
 				waitForAllParsingDone(function() {
-					if (currentSecondDegree == null)
+					if (currentSecondDegree == null) {
 						console.log("All requirements finished Loading");
+					}
 				});
 			}
 			if (currentSecondDegree != null) {

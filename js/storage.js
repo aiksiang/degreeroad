@@ -32,19 +32,35 @@ function clearStorage(location) {
 	localStorage[location] = JSON.stringify(defaultUserSavedModules);
 }
 
-$("#loadData").click(function() {
-	loadStorage("user");
-	currentDegree = userSavedModules.currentDegree;
-	currentSecondDegree = userSavedModules.currentSecondDegree;
-	$('#course-selection .text').html(currentDegree);
-	if (currentSecondDegree == null)
-		$('#second-course-selection .text').html("+");
-	else
-		$('#second-course-selection .text').html(currentSecondDegree);
-
-	chooseDegree();
-	InitializeModalsTrigger();
+$("#loadData").popup({
+	content: "Load Previous Plan",
+	position: "bottom right"
 });
+
+$("#clearData").popup({
+	content: "Delete Save File",
+	position: "bottom right"
+});
+
+function initalizeLoadData() {
+	$("#loadData").click(function() {
+		loadStorage("user");
+		currentDegree = userSavedModules.currentDegree;
+		currentSecondDegree = userSavedModules.currentSecondDegree;
+		$('#course-selection .text').html(currentDegree);
+		if (currentSecondDegree == null)
+			$('#second-course-selection .text').html("+");
+		else
+			$('#second-course-selection .text').html(currentSecondDegree);
+
+		chooseDegree();
+		InitializeModalsTrigger();
+		$("#loadData").off('click');
+		$("#loadData").addClass("iconNoHover");
+		$("#loadData").popup("destroy");
+	});
+}
+initalizeLoadData();
 
 $("#clearData").click(function() {
 	clearStorage("user");
@@ -65,3 +81,4 @@ $("#clearData").click(function() {
 	$("#requirement-specification .ui.bottom.right.label").html("0/0");
 	InitializeModalsTrigger();
 });
+
