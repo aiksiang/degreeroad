@@ -8,7 +8,7 @@ if (localStorage["beenBefore"] == undefined) {
 	tutorialModeOn = false
 }
 
-function showTutorial(pageNumber) {console.log(pageNumber)
+function showTutorial(pageNumber) {
 	if (tutorialModeOn) {
 		$("#requirement-specification").css("z-index", "initial");
 		$("#tutorial").css("z-index", 100);

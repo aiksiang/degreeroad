@@ -9,7 +9,6 @@ function checkPrerequisite(mod, modLocationSemester) {
 		} else {
 			modulesPassed = [];
 			var result = parsePrerequisite(mod.Prereq,modLocationSemester);
-			console.log(mod.Code + " Prerequisites: " + mod.Prereq + ", satisfied: " + result);
 			return {errorType: "prerequisiteNotMet", noError: result, mod: mod};
 		}
 	} else {
@@ -38,11 +37,10 @@ function parsePrerequisite(preReq, modLocationSemester) {
 			return parsePrerequisite(preReq.substring(1,preReq.length - 1), modLocationSemester);
 		}
 	} else if (preReq[0] == ")") {
-		console.log("here got )")
 	} else if (firstBlank < 0) {
-		if (preReq[preReq.length-1] == ")") {console.log(preReq.substring(0, preReq.length-1) + ": " + isModuleSelected(preReq.substring(0, preReq.length-1), modLocationSemester));
+		if (preReq[preReq.length-1] == ")") {
 			return isModuleSelected(preReq.substring(0, preReq.length-1), modLocationSemester);
-		} else {console.log(preReq + ": " + isModuleSelected(preReq.substring(0, preReq.length-1), modLocationSemester));
+		} else {
 			return isModuleSelected(preReq, modLocationSemester);
 		}
 	} else if (firstBlank >= 0) {
@@ -53,11 +51,11 @@ function parsePrerequisite(preReq, modLocationSemester) {
 		var nextPart = preReq.substr(firstBlank + 1);
 		var nextBlank = nextPart.indexOf(' ');
 		var operator = nextPart.substring(0,nextBlank);
-		if (operator == "or" || operator == "OR") {console.log(firstPart + ": " + isModuleSelected(firstPart, modLocationSemester));
+		if (operator == "or" || operator == "OR") {
 			return isModuleSelected(firstPart, modLocationSemester) || parsePrerequisite(nextPart.substr(nextBlank + 1), modLocationSemester);
-		} else if (operator == "and" || operator == "AND") {console.log(firstPart + ": " + isModuleSelected(firstPart, modLocationSemester));
+		} else if (operator == "and" || operator == "AND") {
 			return isModuleSelected(firstPart, modLocationSemester) && parsePrerequisite(nextPart.substr(nextBlank + 1), modLocationSemester);
-		} else {console.log(firstPart + ": " + isModuleSelected(firstPart, modLocationSemester));
+		} else {
 			return isModuleSelected(firstPart, modLocationSemester);
 		}
 	}
