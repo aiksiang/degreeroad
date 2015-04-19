@@ -15,10 +15,15 @@ $(document).ready(function(){
 				currentSecondDegree = null;
 				userSavedModules.currentSecondDegree = currentSecondDegree;
 			}
+
 			if (tutorialModeOn)
 				showTutorial(2);
 			else
 				chooseDegree();
+			
+			$("#loadData").off('click');
+			$("#loadData").addClass("iconNoHover");
+			$("#loadData").popup("destroy");
 		}
 	});
 	$('#course-selection').click(function() {
