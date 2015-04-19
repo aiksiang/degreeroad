@@ -3,7 +3,6 @@ if (localStorage["beenBefore"] == undefined) {
 	console.log("first time");
 	tutorialModeOn = true;
 	showTutorial(1);
-	// localStorage["beenBefore"] = true;
 } else {
 	console.log("been here before");
 	tutorialModeOn = false
@@ -45,13 +44,15 @@ function showTutorial(pageNumber) {console.log(pageNumber)
 				$("#tutorialImage3a").fadeOut(500, function() {
 					$("#tutorialImage3a").remove();
 					$("#top-container").after("<img id='tutorialImage4' src=img/done.png style='display:none'>");
-					$("#tutorialImage4").fadeIn(1500, function() {
-						$("#tutorial").fadeTo(1000,0, function() {
+					$("#tutorialImage4").fadeIn(500, function() {
+						$("#tutorial").fadeTo(1500,0, function() {
 							$("#tutorial").remove();
 						});
-						$("#tutorialImage4").fadeOut(1000);
+						$("#tutorialImage4").fadeOut(1500);
 					});
 				});
+				tutorialModeOn = false;
+				localStorage["beenBefore"] = true;
 			break;
 		}
 	}
