@@ -55,6 +55,9 @@ function initalizeLoadData() {
 
 		chooseDegree();
 		InitializeModalsTrigger();
+		for (var i = 1; i <= noOfSems; i++) {
+			$("#semester" + i + " .ui.bottom.right.label").html("MCs: " + userSavedModules["semester" + i].mcs);
+		}
 		$("#loadData").off('click');
 		$("#loadData").addClass("iconNoHover");
 		$("#loadData").popup("destroy");
